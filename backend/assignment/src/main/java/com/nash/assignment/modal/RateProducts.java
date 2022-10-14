@@ -1,4 +1,4 @@
-package com.nash.assignment.model;
+package com.nash.assignment.modal;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;

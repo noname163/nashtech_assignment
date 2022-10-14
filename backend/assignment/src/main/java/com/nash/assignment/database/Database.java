@@ -4,11 +4,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 
-import com.nash.assignment.model.Accounts;
-import com.nash.assignment.model.Categories;
-import com.nash.assignment.model.Products;
-import com.nash.assignment.model.Roles;
-import com.nash.assignment.model.Status;
+import com.nash.assignment.modal.Accounts;
+import com.nash.assignment.modal.Categories;
+import com.nash.assignment.modal.Products;
+import com.nash.assignment.modal.Roles;
+import com.nash.assignment.modal.Status;
 import com.nash.assignment.service.AccountsServiceImpl;
 import com.nash.assignment.service.CategoriesServiceImpl;
 import com.nash.assignment.service.ProductsServiceImpl;

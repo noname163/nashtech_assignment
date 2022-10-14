@@ -3,7 +3,7 @@ package com.nash.assignment.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.nash.assignment.model.Products;
+import com.nash.assignment.modal.Products;
 import com.nash.assignment.repositories.ProductsRepositories;
 
 @Service

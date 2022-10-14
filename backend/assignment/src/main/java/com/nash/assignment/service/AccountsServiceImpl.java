@@ -3,7 +3,7 @@ package com.nash.assignment.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.nash.assignment.model.Accounts;
+import com.nash.assignment.modal.Accounts;
 import com.nash.assignment.repositories.AccountRepositories;
 
 @Service

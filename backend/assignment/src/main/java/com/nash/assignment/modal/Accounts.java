@@ -1,4 +1,4 @@
-package com.nash.assignment.model;
+package com.nash.assignment.modal;
 
 import java.util.HashSet;
 import java.util.Set;

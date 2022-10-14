@@ -1,6 +1,6 @@
 package com.nash.assignment.service;
 
-import com.nash.assignment.model.Roles;
+import com.nash.assignment.modal.Roles;
 
 public interface RolesService {
     Roles insertRole(Roles role);
