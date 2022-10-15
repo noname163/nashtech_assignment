@@ -4,6 +4,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 
+import com.nash.assignment.constant_variable.RoleEnum;
+import com.nash.assignment.constant_variable.StatusEnum;
 import com.nash.assignment.modal.Accounts;
 import com.nash.assignment.modal.Categories;
 import com.nash.assignment.modal.Products;
@@ -29,14 +31,14 @@ public class Database {
         return new CommandLineRunner() {
             @Override
             public void run(String... args) throws Exception {
-                Roles adminRole = new Roles("ROLE_ADMIN");
-                Roles userRole = new Roles("ROLE_USER");
-
+                Roles adminRole = new Roles(RoleEnum.ROLE_ADMIN.name());
+                Roles userRole = new Roles(RoleEnum.ROLE_USER.name());
+                System.out.println("Role: " + RoleEnum.ROLE_ADMIN.name());
                 logger.info("Insert Roles ", rolesServicesImpl.insertRole(adminRole));
                 logger.info("Insert Roles ", rolesServicesImpl.insertRole(userRole));
 
-                Status activeStatus = new Status("Active");
-                Status unactiveStatus = new Status("Unactive");
+                Status activeStatus = new Status(StatusEnum.Active.name());
+                Status unactiveStatus = new Status(StatusEnum.Deactivate.name());
 
                 logger.info("Insert Status ", statusServiceImpl.insertStatus(activeStatus));
                 logger.info("Insert Status ", statusServiceImpl.insertStatus(unactiveStatus));
