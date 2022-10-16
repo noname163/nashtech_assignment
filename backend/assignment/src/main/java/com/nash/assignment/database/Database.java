@@ -1,8 +1,10 @@
 package com.nash.assignment.database;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.nash.assignment.constant_variable.RoleEnum;
 import com.nash.assignment.constant_variable.StatusEnum;
@@ -17,15 +19,18 @@ import com.nash.assignment.service.ProductsServiceImpl;
 import com.nash.assignment.service.RolesServicesImpl;
 import com.nash.assignment.service.StatusServiceImpl;
 
+import lombok.RequiredArgsConstructor;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Configuration
+@RequiredArgsConstructor
 public class Database {
     private static final Logger logger = LoggerFactory.getLogger(Database.class);
-
+    @Autowired AccountsServiceImpl accountsServiceImpl;
     @Bean
-    CommandLineRunner initDatabase(AccountsServiceImpl accountsServiceImpl, StatusServiceImpl statusServiceImpl,
+    CommandLineRunner initDatabase( StatusServiceImpl statusServiceImpl,
             RolesServicesImpl rolesServicesImpl, ProductsServiceImpl productsServiceImpl,
             CategoriesServiceImpl categoriesServiceImpl) {
         return new CommandLineRunner() {
@@ -43,9 +48,9 @@ public class Database {
                 logger.info("Insert Status ", statusServiceImpl.insertStatus(activeStatus));
                 logger.info("Insert Status ", statusServiceImpl.insertStatus(unactiveStatus));
 
-                Accounts adminAccount = new Accounts("012345678", "Admin", "Admin User", "admin", adminRole,
+                Accounts adminAccount = new Accounts("0345323543", "Admin", "Admin User", "admin", adminRole,
                         activeStatus);
-                Accounts userAccount = new Accounts("029384621", "User", "Customer User", "user", userRole,
+                Accounts userAccount = new Accounts("0345323542", "User", "Customer User", "user", userRole,
                         unactiveStatus);
 
                 logger.info("Insert Account ", accountsServiceImpl.insertAccounts(adminAccount));

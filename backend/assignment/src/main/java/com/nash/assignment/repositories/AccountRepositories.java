@@ -10,5 +10,7 @@ import com.nash.assignment.modal.Status;
 public interface AccountRepositories extends JpaRepository<Accounts, Long> {
     Accounts findByPhoneNumber(String phoneNumber);
 
+    Accounts findByUsername(String Username);
+
     Iterable<Accounts> findByStatus(Status status);
 }

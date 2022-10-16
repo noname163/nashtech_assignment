@@ -1,27 +1,48 @@
 package com.nash.assignment.service;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.nash.assignment.constant_variable.RoleEnum;
 import com.nash.assignment.constant_variable.StatusEnum;
+import com.nash.assignment.database.Database;
 import com.nash.assignment.modal.Accounts;
 import com.nash.assignment.modal.Roles;
 import com.nash.assignment.modal.Status;
 import com.nash.assignment.repositories.AccountRepositories;
-
-import net.bytebuddy.implementation.bytecode.Throw;
+import com.nash.assignment.repositories.RolesRepositories;
+import com.nash.assignment.repositories.StatusRepositories;
 
 @Service
-public class AccountsServiceImpl implements AccountService {
+public class AccountsServiceImpl implements AccountService, UserDetailsService {
     @Autowired
     AccountRepositories accountRepositories;
+    @Autowired
+    RolesRepositories rolesRepositories;
+    @Autowired
+    StatusRepositories statusRepositories;
+    private final PasswordEncoder passwordEncoder;
 
-    public AccountsServiceImpl(AccountRepositories accountRepositories) {
+    private static final Logger logger = LoggerFactory.getLogger(Database.class);
+
+    public AccountsServiceImpl(AccountRepositories accountRepositories, RolesRepositories rolesRepositories,
+            StatusRepositories statusRepositories, PasswordEncoder passwordEncoder) {
         this.accountRepositories = accountRepositories;
+        this.rolesRepositories = rolesRepositories;
+        this.statusRepositories = statusRepositories;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -49,6 +70,7 @@ public class AccountsServiceImpl implements AccountService {
         }
         Accounts insert = null;
         try {
+            accounts.setPassword(passwordEncoder.encode(accounts.getPassword()));
             insert = accountRepositories.save(accounts);
         } catch (Exception e) {
             throw new RuntimeException("Error When Insert Account.", e);
@@ -77,12 +99,12 @@ public class AccountsServiceImpl implements AccountService {
             account = accountRepositories.findByPhoneNumber(accountValue.getPhoneNumber());
             Status status = null;
             if (statusValue == 1) {
-                status = new Status(StatusEnum.Active.name());
+                status = statusRepositories.findByStatus(StatusEnum.Active.name());
             } else if (statusValue == 2) {
-                status = new Status(StatusEnum.Deactivate.name());
+                status = statusRepositories.findByStatus(StatusEnum.Deactivate.name());
             }
             account.setStatus(status);
-            accountRepositories.save(account);
+            account = accountRepositories.save(account);
         } catch (Exception e) {
             throw new RuntimeException("Error When Update Account Status", e);
         }
@@ -119,10 +141,10 @@ public class AccountsServiceImpl implements AccountService {
         try {
             Roles role = null;
             if (roleValue == 1) {
-                role = new Roles(RoleEnum.ROLE_ADMIN.name());
+                role = rolesRepositories.findByRole(RoleEnum.ROLE_ADMIN.name());
             }
             if (roleValue == 2) {
-                role = new Roles(RoleEnum.ROLE_USER.name());
+                role = rolesRepositories.findByRole(RoleEnum.ROLE_USER.name());
             }
             account.setRole(role);
             account = accountRepositories.save(account);
@@ -130,6 +152,21 @@ public class AccountsServiceImpl implements AccountService {
             throw new RuntimeException("Error When Update Account Role", e);
         }
         return account;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Accounts account = accountRepositories.findByUsername(username);
+        if (account == null) {
+            logger.error("Username Not Found");
+            throw new UsernameNotFoundException("Username Not found");
+        } else {
+            logger.info("User found in the database: {}", username);
+        }
+        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(account.getRole().getRole()));
+        return new org.springframework.security.core.userdetails.User(account.getUsername(), account.getPassword(),
+                authorities);
     }
 
 }
