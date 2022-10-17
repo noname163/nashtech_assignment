@@ -2,6 +2,7 @@ package com.nash.assignment.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -87,6 +88,10 @@ public class AccountsServiceImpl implements AccountService, UserDetailsService {
             throw new RuntimeException("Error When Get All Account.", e);
         }
         return list;
+    }
+
+    public Optional<Accounts> getAccountById(long id){
+        return accountRepositories.findById(id);
     }
 
     @Override
