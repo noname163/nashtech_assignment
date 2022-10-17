@@ -1,4 +1,4 @@
-package com.nash.assignment.service;
+package com.nash.assignment.services;
 
 import com.nash.assignment.modal.Status;
 

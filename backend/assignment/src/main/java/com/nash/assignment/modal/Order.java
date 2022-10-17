@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "orders")
-public class Orders {
+public class Order {
     @Id
     @SequenceGenerator(name = "orders_sequence", sequenceName = "orders_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "orders_sequence")
@@ -35,16 +35,16 @@ public class Orders {
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "account_id")
-    private Accounts account;
+    private Account account;
 
     @JsonBackReference
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "order", cascade = CascadeType.PERSIST)
-    private Set<OrderDetails> orderDetails = new HashSet<>();
+    private Set<OrderDetail> orderDetails = new HashSet<>();
 
-    public Orders() {
+    public Order() {
     }
 
-    public Orders(String orderDate, String deliveryDate, Accounts account) {
+    public Order(String orderDate, String deliveryDate, Account account) {
         this.orderDate = orderDate;
         this.deliveryDate = deliveryDate;
         this.account = account;
@@ -70,19 +70,19 @@ public class Orders {
         this.deliveryDate = deliveryDate;
     }
 
-    public Accounts getAccount() {
+    public Account getAccount() {
         return account;
     }
 
-    public void setAccount(Accounts account) {
+    public void setAccount(Account account) {
         this.account = account;
     }
 
-    public Set<OrderDetails> getOrderDetails() {
+    public Set<OrderDetail> getOrderDetails() {
         return orderDetails;
     }
 
-    public void setOrderDetails(Set<OrderDetails> orderDetails) {
+    public void setOrderDetails(Set<OrderDetail> orderDetails) {
         this.orderDetails = orderDetails;
     }
 

@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Table
 @Entity
-public class Categories {
+public class Category {
     @Id
     @SequenceGenerator(name = "categories_sequence", sequenceName = "categories_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "categories_sequence")
@@ -29,12 +29,12 @@ public class Categories {
 
     @JsonBackReference
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "categories", cascade = CascadeType.REFRESH)
-    private Set<Products> product_id = new HashSet<>();
+    private Set<Product> product_id = new HashSet<>();
 
-    public Categories() {
+    public Category() {
     }
 
-    public Categories(String name) {
+    public Category(String name) {
         this.name = name;
     }
 
@@ -46,11 +46,11 @@ public class Categories {
         this.name = name;
     }
 
-    public Set<Products> getProduct_id() {
+    public Set<Product> getProduct_id() {
         return product_id;
     }
 
-    public void setProduct_id(Set<Products> product_id) {
+    public void setProduct_id(Set<Product> product_id) {
         this.product_id = product_id;
     }
 

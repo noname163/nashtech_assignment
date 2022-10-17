@@ -1,9 +1,9 @@
-package com.nash.assignment.service;
+package com.nash.assignment.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.nash.assignment.modal.Categories;
+import com.nash.assignment.modal.Category;
 import com.nash.assignment.repositories.CategoriesRepositories;
 
 @Service
@@ -12,14 +12,14 @@ public class CategoriesServiceImpl implements CategoriesService {
     CategoriesRepositories categoriesRepositories;
 
     @Override
-    public Categories insertCategories(Categories categories) {
-        Categories insert = categoriesRepositories.save(categories);
+    public Category insertCategories(Category categories) {
+        Category insert = categoriesRepositories.save(categories);
         return insert;
     }
 
     @Override
-    public Iterable<Categories> getAllCategories() {
-        Iterable<Categories> list = categoriesRepositories.findAll();
+    public Iterable<Category> getAllCategories() {
+        Iterable<Category> list = categoriesRepositories.findAll();
         return list;
     }
 

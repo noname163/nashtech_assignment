@@ -6,6 +6,8 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,10 +20,11 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.nash.assignment.constant.StatusEnum;
 
 @Entity
 @Table
-public class Accounts {
+public class Account {
     @Id
     @SequenceGenerator(name = "account_sequence", sequenceName = "account_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "account_sequence")
@@ -41,24 +44,23 @@ public class Accounts {
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "role_id")
-    private Roles role;
+    private Role role;
 
-    @JsonManagedReference
-    @ManyToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.REFRESH)
-    @JoinColumn(name = "status_id")
-    private Status status;
+    @Column
+    @Enumerated(EnumType.STRING)
+    private StatusEnum status;
 
     @JsonBackReference
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "account", cascade = CascadeType.REFRESH)
-    private Set<Orders> order = new HashSet<>();
+    private Set<Order> order = new HashSet<>();
     @JsonBackReference
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "account", cascade = CascadeType.REFRESH)
-    private Set<RateProducts> rate = new HashSet<>();
+    private Set<RateProduct> rate = new HashSet<>();
 
-    public Accounts() {
+    public Account() {
     }
 
-    public Accounts(String phoneNumber, String fullName, String userName, String password, Roles role, Status status) {
+    public Account(String phoneNumber, String fullName, String userName, String password, Role role, StatusEnum status) {
         this.phoneNumber = phoneNumber;
         this.fullName = fullName;
         this.username = userName;
@@ -73,14 +75,6 @@ public class Accounts {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
     }
 
     public long getId() {
@@ -116,11 +110,11 @@ public class Accounts {
         this.password = password;
     }
 
-    public Roles getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(Roles role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
@@ -132,12 +126,24 @@ public class Accounts {
         this.avatar = avatar;
     }
 
-    public Set<Orders> getOrder() {
+    public Set<Order> getOrder() {
         return order;
     }
 
-    public void setOrder(Set<Orders> order) {
+    public void setOrder(Set<Order> order) {
         this.order = order;
+    }
+
+    
+
+    
+
+    public StatusEnum getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusEnum status) {
+        this.status = status;
     }
 
     @Override

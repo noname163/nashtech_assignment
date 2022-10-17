@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table
-public class RateProducts {
+public class RateProduct {
     @Id
     @SequenceGenerator(name = "productRates_sequence", sequenceName = "productRates_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "productRates_sequence")
@@ -28,17 +28,17 @@ public class RateProducts {
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "account_id")
-    private Accounts account;
+    private Account account;
 
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "product_id")
-    private Products product;
+    private Product product;
 
-    public RateProducts() {
+    public RateProduct() {
     }
 
-    public RateProducts(int rate, Accounts account, Products product) {
+    public RateProduct(int rate, Account account, Product product) {
         this.rate = rate;
         this.account = account;
         this.product = product;
@@ -60,19 +60,19 @@ public class RateProducts {
         this.rate = rate;
     }
 
-    public Accounts getAccount() {
+    public Account getAccount() {
         return account;
     }
 
-    public void setAccount(Accounts account) {
+    public void setAccount(Account account) {
         this.account = account;
     }
 
-    public Products getProduct() {
+    public Product getProduct() {
         return product;
     }
 
-    public void setProduct(Products product) {
+    public void setProduct(Product product) {
         this.product = product;
     }
 

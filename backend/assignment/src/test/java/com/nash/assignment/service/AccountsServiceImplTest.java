@@ -16,14 +16,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-import com.nash.assignment.constant_variable.RoleEnum;
-import com.nash.assignment.constant_variable.StatusEnum;
-import com.nash.assignment.modal.Accounts;
-import com.nash.assignment.modal.Roles;
+import com.nash.assignment.constant.RoleEnum;
+import com.nash.assignment.constant.StatusEnum;
+import com.nash.assignment.modal.Account;
+import com.nash.assignment.modal.Role;
 import com.nash.assignment.modal.Status;
 import com.nash.assignment.repositories.AccountRepositories;
 import com.nash.assignment.repositories.RolesRepositories;
 import com.nash.assignment.repositories.StatusRepositories;
+import com.nash.assignment.services.AccountsServiceImpl;
 
 public class AccountsServiceImplTest {
 
@@ -38,9 +39,9 @@ public class AccountsServiceImplTest {
     @Autowired
     PasswordEncoder passwordEncoder;
     @Autowired
-    Roles role;
-    @Autowired
-    Status status;
+    Role role;
+    
+    private StatusEnum status;
 
     @BeforeEach
     void setUpBeforeTest() {
@@ -49,8 +50,7 @@ public class AccountsServiceImplTest {
         rolesRepositories = mock(RolesRepositories.class);
         accountsServiceImpl = new AccountsServiceImpl(accountRepositories, rolesRepositories, statusRepositories,
                 passwordEncoder);
-        role = mock(Roles.class);
-        status = mock(Status.class);
+        role = mock(Role.class);
     }
 
     @Test
@@ -62,7 +62,7 @@ public class AccountsServiceImplTest {
 
     @Test
     void testInsertAccounts_WhenUsernameEmpty_ShouldThrowNewRuntimeexception() {
-        Accounts account = new Accounts("0122345", "kjkjk", "", "null", role, status);
+        Account account = new Account("0122345", "kjkjk", "", "null", role, status);
         RuntimeException expected = Assertions.assertThrows(RuntimeException.class,
                 () -> accountsServiceImpl.insertAccounts(account));
         Assertions.assertEquals("Missing Information.", expected.getMessage());
@@ -70,7 +70,7 @@ public class AccountsServiceImplTest {
 
     @Test
     void testInsertAccounts_WhenFullnameEmpty_ShouldThrowNewRuntimeexception() {
-        Accounts account = new Accounts("0123456", "", "null", "null", role, status);
+        Account account = new Account("0123456", "", "null", "null", role, status);
         RuntimeException expected = Assertions.assertThrows(RuntimeException.class,
                 () -> accountsServiceImpl.insertAccounts(account));
         Assertions.assertEquals("Missing Information.", expected.getMessage());
@@ -78,7 +78,7 @@ public class AccountsServiceImplTest {
 
     @Test
     void testInsertAccounts_WhenPasswordEmpty_ShouldThrowNewRuntimeexception() {
-        Accounts account = new Accounts("0123456", "lklklk", "kkjkj", "", role, status);
+        Account account = new Account("0123456", "lklklk", "kkjkj", "", role, status);
         RuntimeException expected = Assertions.assertThrows(RuntimeException.class,
                 () -> accountsServiceImpl.insertAccounts(account));
         Assertions.assertEquals("Missing Information.", expected.getMessage());
@@ -86,7 +86,7 @@ public class AccountsServiceImplTest {
 
     @Test
     void testInsertAccounts_WhenPhonenumberEmpty_ShouldThrowNewRuntimeexception() {
-        Accounts account = new Accounts("", "adsasds", "null", "null", role, status);
+        Account account = new Account("", "adsasds", "null", "null", role, status);
         RuntimeException expected = Assertions.assertThrows(RuntimeException.class,
                 () -> accountsServiceImpl.insertAccounts(account));
         Assertions.assertEquals("Missing Information.", expected.getMessage());
@@ -94,7 +94,7 @@ public class AccountsServiceImplTest {
 
     @Test
     void testInsertAccounts_WhenPhonenumberNotValid_ShouldThrowNewRuntimeexception() {
-        Accounts account = new Accounts("12345", "adsasds", "null", "null", role, status);
+        Account account = new Account("12345", "adsasds", "null", "null", role, status);
         RuntimeException expected = Assertions.assertThrows(RuntimeException.class,
                 () -> accountsServiceImpl.insertAccounts(account));
         Assertions.assertEquals("Phone Number Not Valid Format.", expected.getMessage());
@@ -102,7 +102,7 @@ public class AccountsServiceImplTest {
 
     @Test
     void testInsertAccounts_WhenFullNameNull_ShouldThrowNewRuntimeexception() {
-        Accounts account = new Accounts("0998779755", null, "null", "null", role, status);
+        Account account = new Account("0998779755", null, "null", "null", role, status);
         RuntimeException expected = Assertions.assertThrows(RuntimeException.class,
                 () -> accountsServiceImpl.insertAccounts(account));
         Assertions.assertEquals("Missing Information.", expected.getMessage());
@@ -110,7 +110,7 @@ public class AccountsServiceImplTest {
 
     @Test
     void testInsertAccounts_WhenUsernameNull_ShouldThrowNewRuntimeexception() {
-        Accounts account = new Accounts(null, "adsasds", null, "null", role, status);
+        Account account = new Account(null, "adsasds", null, "null", role, status);
         RuntimeException expected = Assertions.assertThrows(RuntimeException.class,
                 () -> accountsServiceImpl.insertAccounts(account));
         Assertions.assertEquals("Missing Information.", expected.getMessage());
@@ -118,7 +118,7 @@ public class AccountsServiceImplTest {
 
     @Test
     void testInsertAccounts_WhenPasswordNull_ShouldThrowNewRuntimeexception() {
-        Accounts account = new Accounts(null, "adsasds", "null", null, role, status);
+        Account account = new Account(null, "adsasds", "null", null, role, status);
         RuntimeException expected = Assertions.assertThrows(RuntimeException.class,
                 () -> accountsServiceImpl.insertAccounts(account));
         Assertions.assertEquals("Missing Information.", expected.getMessage());
@@ -126,7 +126,7 @@ public class AccountsServiceImplTest {
 
     @Test
     void testInsertAccounts_WhenPhonenumberNull_ShouldThrowNewRuntimeexception() {
-        Accounts account = new Accounts(null, "adsasds", "null", "null", role, status);
+        Account account = new Account(null, "adsasds", "null", "null", role, status);
         RuntimeException expected = Assertions.assertThrows(RuntimeException.class,
                 () -> accountsServiceImpl.insertAccounts(account));
         Assertions.assertEquals("Missing Information.", expected.getMessage());
@@ -134,7 +134,7 @@ public class AccountsServiceImplTest {
 
     @Test
     void testUpdateAccountInformation_WhenAccountNull_ShouldThrowNewRuntimeexception() {
-        Accounts account = new Accounts(null, "adsasds", "null", "null", role, status);
+        Account account = new Account(null, "adsasds", "null", "null", role, status);
         when(accountRepositories.findByPhoneNumber(account.getPhoneNumber())).thenReturn(null);
         RuntimeException expected = Assertions.assertThrows(RuntimeException.class,
                 () -> accountsServiceImpl.updateAccountInformation(account));
@@ -143,11 +143,11 @@ public class AccountsServiceImplTest {
 
     @Test
     void testUpdateAccountInformation_WhenMissingSetFullname_ShouldReturnAccount() {
-        Accounts initAccount = mock(Accounts.class);
-        Accounts expecAccount = mock(Accounts.class);
+        Account initAccount = mock(Account.class);
+        Account expecAccount = mock(Account.class);
         when(accountRepositories.findByPhoneNumber(initAccount.getPhoneNumber())).thenReturn(initAccount);
         when(accountRepositories.save(initAccount)).thenReturn(expecAccount);
-        Accounts result = accountsServiceImpl.updateAccountInformation(initAccount);
+        Account result = accountsServiceImpl.updateAccountInformation(initAccount);
         verify(initAccount).setFullName(initAccount.getFullName());
         verify(initAccount).setAvatar(initAccount.getAvatar());
         verify(initAccount).setUsername(initAccount.getUsername());
@@ -156,7 +156,7 @@ public class AccountsServiceImplTest {
 
     @Test
     void testUpdateAccountRole_WhenRoleValueLargeThan2_ShouldThrowRuntimeexception() {
-        Accounts account = new Accounts("0123456", "adsasds", "null", "null", role, status);
+        Account account = new Account("0123456", "adsasds", "null", "null", role, status);
         int roleValue = 3;
         RuntimeException expected = Assertions.assertThrows(RuntimeException.class,
                 () -> accountsServiceImpl.updateAccountRole(account, roleValue));
@@ -165,7 +165,7 @@ public class AccountsServiceImplTest {
 
     @Test
     void testUpdateAccountRole_WhenRoleValueSmallerThan1_ShouldThrowRuntimeexception() {
-        Accounts account = new Accounts("0123456", "adsasds", "null", "null", role, status);
+        Account account = new Account("0123456", "adsasds", "null", "null", role, status);
         int roleValue = 0;
         RuntimeException expected = Assertions.assertThrows(RuntimeException.class,
                 () -> accountsServiceImpl.updateAccountRole(account, roleValue));
@@ -174,7 +174,7 @@ public class AccountsServiceImplTest {
 
     @Test
     void testUpdateAccountRole_WhenRoleAccountNull_ShouldThrowRuntimeexception() {
-        Accounts account = new Accounts("0123456", "adsasds", "null", "null", role, status);
+        Account account = new Account("0123456", "adsasds", "null", "null", role, status);
         int roleValue = 1;
         when(accountRepositories.findByPhoneNumber("0123456")).thenReturn(null);
         RuntimeException expected = Assertions.assertThrows(RuntimeException.class,
@@ -184,36 +184,36 @@ public class AccountsServiceImplTest {
 
     @Test
     void testUpdateAccountRole_WhenDataValid_ShouldReturnAccountWithRoleAdmin() {
-        Roles adminRole = new Roles(RoleEnum.ROLE_USER.name());
+        Role adminRole = new Role(RoleEnum.ROLE_USER.name());
         when(rolesRepositories.findByRole(RoleEnum.ROLE_ADMIN.name())).thenReturn(adminRole);
-        Accounts initAccount = mock(Accounts.class);
-        Accounts expecAccount = new Accounts("0123456", "null", "null", "null", adminRole, status);
+        Account initAccount = mock(Account.class);
+        Account expecAccount = new Account("0123456", "null", "null", "null", adminRole, status);
         int roleValue = 1;
         when(accountRepositories.findByPhoneNumber(initAccount.getPhoneNumber())).thenReturn(initAccount);
         when(accountRepositories.save(initAccount)).thenReturn(expecAccount);
-        Accounts result = accountsServiceImpl.updateAccountRole(initAccount, roleValue);
+        Account result = accountsServiceImpl.updateAccountRole(initAccount, roleValue);
         verify(initAccount).setRole(adminRole);
         Assertions.assertEquals(result.getRole().getRole(), adminRole.getRole());
     }
 
     @Test
     void testUpdateAccountRole_WhenDataValid_ShouldReturnAccountWithRoleUser() {
-        Roles userRoles = new Roles(RoleEnum.ROLE_USER.name());
-        Roles adminRole = new Roles(RoleEnum.ROLE_USER.name());
+        Role userRoles = new Role(RoleEnum.ROLE_USER.name());
+        Role adminRole = new Role(RoleEnum.ROLE_USER.name());
         when(rolesRepositories.findByRole(RoleEnum.ROLE_USER.name())).thenReturn(userRoles);
-        Accounts initAccount = mock(Accounts.class);
-        Accounts expecAccount = new Accounts("0123456", "null", "null", "null", adminRole, status);
+        Account initAccount = mock(Account.class);
+        Account expecAccount = new Account("0123456", "null", "null", "null", adminRole, status);
         int roleValue = 2;
         when(accountRepositories.findByPhoneNumber(initAccount.getPhoneNumber())).thenReturn(initAccount);
         when(accountRepositories.save(initAccount)).thenReturn(expecAccount);
-        Accounts result = accountsServiceImpl.updateAccountRole(initAccount, roleValue);
+        Account result = accountsServiceImpl.updateAccountRole(initAccount, roleValue);
         verify(initAccount).setRole(userRoles);
         Assertions.assertEquals(result.getRole().getRole(), userRoles.getRole());
     }
 
     @Test
     void testUpdateAccountRole_WhenStatusValueLargeThan2_ShouldThrowRuntimeexception() {
-        Accounts account = new Accounts("0123456", "adsasds", "null", "null", role, status);
+        Account account = new Account("0123456", "adsasds", "null", "null", role, status);
         int statusValue = 3;
         RuntimeException expected = Assertions.assertThrows(RuntimeException.class,
                 () -> accountsServiceImpl.updateAccountStatus(account, statusValue));
@@ -222,7 +222,7 @@ public class AccountsServiceImplTest {
 
     @Test
     void testUpdateAccountStatus_WhenStatusValueSmallerThan1_ShouldThrowRuntimeexception() {
-        Accounts account = new Accounts("0123456", "adsasds", "null", "null", role, status);
+        Account account = new Account("0123456", "adsasds", "null", "null", role, status);
         int statusValue = 0;
         RuntimeException expected = Assertions.assertThrows(RuntimeException.class,
                 () -> accountsServiceImpl.updateAccountStatus(account, statusValue));
@@ -231,7 +231,7 @@ public class AccountsServiceImplTest {
 
     @Test
     void testUpdateAccountStatus_WhenAccountNull_ShouldThrowRuntimeexception() {
-        Accounts account = new Accounts("0123456", "adsasds", "null", "null", role, status);
+        Account account = new Account("0123456", "adsasds", "null", "null", role, status);
         int statusValue = 1;
         when(accountRepositories.findByPhoneNumber("0123456")).thenReturn(null);
         RuntimeException expected = Assertions.assertThrows(RuntimeException.class,
@@ -241,15 +241,14 @@ public class AccountsServiceImplTest {
 
     @Test
     void testUpdateAccountStatus_WhenDataValid_ShouldReturnAccountWithStatusActive() {
-        Status activeStatus = new Status(StatusEnum.Active.name());
+        StatusEnum activeStatus = StatusEnum.Active ;
 
-        when(statusRepositories.findByStatus(StatusEnum.Active.name())).thenReturn(activeStatus);
-        Accounts initAccount = mock(Accounts.class);
-        Accounts expecAccount = new Accounts("0123456", "null", "null", "null", role, activeStatus);
+        Account initAccount = mock(Account.class);
+        Account expecAccount = new Account("0123456", "null", "null", "null", role, activeStatus);
         int statusValue = 1;
         when(accountRepositories.findByPhoneNumber(initAccount.getPhoneNumber())).thenReturn(initAccount);
         when(accountRepositories.save(initAccount)).thenReturn(expecAccount);
-        Accounts result = accountsServiceImpl.updateAccountStatus(initAccount, statusValue);
+        Account result = accountsServiceImpl.updateAccountStatus(initAccount, statusValue);
         verify(initAccount).setStatus(activeStatus);
         ;
         Assertions.assertEquals(result.getStatus(), activeStatus);
@@ -257,15 +256,14 @@ public class AccountsServiceImplTest {
 
     @Test
     void testUpdateAccountStatus_WhenDataValid_ShouldReturnAccountWithStatusDeactive() {
-        Status deactive = new Status(StatusEnum.Deactivate.name());
+        StatusEnum deactive = StatusEnum.Deactivate;
 
-        when(statusRepositories.findByStatus(StatusEnum.Deactivate.name())).thenReturn(deactive);
-        Accounts initAccount = mock(Accounts.class);
-        Accounts expecAccount = new Accounts("0123456", "null", "null", "null", role, deactive);
+        Account initAccount = mock(Account.class);
+        Account expecAccount = new Account("0123456", "null", "null", "null", role, deactive);
         int statusValue = 2;
         when(accountRepositories.findByPhoneNumber(initAccount.getPhoneNumber())).thenReturn(initAccount);
         when(accountRepositories.save(initAccount)).thenReturn(expecAccount);
-        Accounts result = accountsServiceImpl.updateAccountStatus(initAccount, statusValue);
+        Account result = accountsServiceImpl.updateAccountStatus(initAccount, statusValue);
         verify(initAccount).setStatus(deactive);
         ;
         Assertions.assertEquals(result.getStatus(), deactive);

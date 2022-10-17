@@ -1,4 +1,4 @@
-package com.nash.assignment.constant_variable;
+package com.nash.assignment.constant;
 
 public enum RoleEnum {
     ROLE_ADMIN,

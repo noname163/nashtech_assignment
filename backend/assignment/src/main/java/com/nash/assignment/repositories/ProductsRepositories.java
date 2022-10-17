@@ -3,12 +3,12 @@ package com.nash.assignment.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.nash.assignment.modal.Categories;
-import com.nash.assignment.modal.Products;
+import com.nash.assignment.modal.Category;
+import com.nash.assignment.modal.Product;
 
 @Repository
-public interface ProductsRepositories extends JpaRepository<Products, Long> {
-    Products findByName(String name);
+public interface ProductsRepositories extends JpaRepository<Product, Long> {
+    Product findByName(String name);
 
-    Iterable<Products> findByCategories(Categories categories);
+    Iterable<Product> findByCategories(Category categories);
 }

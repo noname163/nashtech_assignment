@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityReference;
 @Entity
 @Table
 @JsonIdentityReference
-public class Roles {
+public class Role {
     @Id
     @SequenceGenerator(name = "role_sequence", sequenceName = "role_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "role_sequence")
@@ -32,12 +32,12 @@ public class Roles {
 
     @JsonBackReference
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "role", cascade = CascadeType.REFRESH)
-    private Set<Accounts> accounts = new HashSet<>();
+    private Set<Account> accounts = new HashSet<>();
 
-    public Roles() {
+    public Role() {
     }
 
-    public Roles(String role) {
+    public Role(String role) {
         this.role = role;
     }
 
@@ -57,11 +57,11 @@ public class Roles {
         this.role = role;
     }
 
-    public Set<Accounts> getAccounts() {
+    public Set<Account> getAccounts() {
         return accounts;
     }
 
-    public void setAccounts(Set<Accounts> accounts) {
+    public void setAccounts(Set<Account> accounts) {
         this.accounts = accounts;
     }
 

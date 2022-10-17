@@ -1,4 +1,4 @@
-package com.nash.assignment.service;
+package com.nash.assignment.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

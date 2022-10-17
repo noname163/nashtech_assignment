@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Table
 @Entity
-public class Products {
+public class Product {
     @Id
     @SequenceGenerator(name = "product_sequence", sequenceName = "product_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "product_sequence")
@@ -30,8 +30,6 @@ public class Products {
 
     @Column(nullable = true, unique = false, length = 300)
     private String name;
-    @Column(nullable = true, unique = false, length = 300)
-    private String image;
     @Column(nullable = true, unique = false, length = 300)
     private String price;
 
@@ -43,22 +41,26 @@ public class Products {
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "categories_id")
-    private Categories categories;
+    private Category categories;
 
     @JsonBackReference
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "product", cascade = CascadeType.REFRESH)
-    private Set<RateProducts> rate = new HashSet<>();
+    private Set<RateProduct> rate = new HashSet<>();
+    @JsonBackReference
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "product", cascade = CascadeType.ALL)
+    private Set<Image> images = new HashSet<>();
 
-    public Products() {
+    public Product() {
     }
 
-    public Products(String name, String image, String price, Status status, Categories categories) {
+
+    public Product(String name, String price, Status status, Category categories) {
         this.name = name;
-        this.image = image;
         this.price = price;
         this.status = status;
         this.categories = categories;
     }
+
 
     public long getId() {
         return id;
@@ -75,13 +77,14 @@ public class Products {
     public void setName(String name) {
         this.name = name;
     }
+    
 
-    public String getImage() {
-        return image;
+    public Set<Image> getImages() {
+        return images;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setImages(Set<Image> images) {
+        this.images = images;
     }
 
     public Status getStatus() {
@@ -92,11 +95,11 @@ public class Products {
         this.status = status;
     }
 
-    public Categories getCategories() {
+    public Category getCategories() {
         return categories;
     }
 
-    public void setCategories(Categories categories) {
+    public void setCategories(Category categories) {
         this.categories = categories;
     }
 

@@ -27,13 +27,13 @@ public class Status {
     @Column(nullable = false, unique = false, length = 50)
     private String status;
 
-    @JsonBackReference
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "status", cascade = CascadeType.PERSIST)
-    private Set<Accounts> accounts = new HashSet<>();
+    // @JsonBackReference
+    // @OneToMany(fetch = FetchType.EAGER, mappedBy = "status", cascade = CascadeType.PERSIST)
+    // private Set<Account> accounts = new HashSet<>();
 
     @JsonBackReference
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "status", cascade = CascadeType.PERSIST)
-    private Set<Products> products = new HashSet<>();
+    private Set<Product> products = new HashSet<>();
 
     public Status() {
     }
@@ -58,19 +58,19 @@ public class Status {
         this.status = status;
     }
 
-    public Set<Accounts> getAccounts() {
-        return accounts;
-    }
+    // public Set<Account> getAccounts() {
+    //     return accounts;
+    // }
 
-    public void setAccounts(Set<Accounts> accounts) {
-        this.accounts = accounts;
-    }
+    // public void setAccounts(Set<Account> accounts) {
+    //     this.accounts = accounts;
+    // }
 
-    public Set<Products> getProducts() {
+    public Set<Product> getProducts() {
         return products;
     }
 
-    public void setProducts(Set<Products> products) {
+    public void setProducts(Set<Product> products) {
         this.products = products;
     }
 

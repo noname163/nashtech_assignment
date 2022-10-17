@@ -1,9 +1,9 @@
-package com.nash.assignment.service;
+package com.nash.assignment.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.nash.assignment.modal.Roles;
+import com.nash.assignment.modal.Role;
 import com.nash.assignment.repositories.RolesRepositories;
 
 @Service
@@ -13,14 +13,14 @@ public class RolesServicesImpl implements RolesService {
     RolesRepositories rolesRepositories;
 
     @Override
-    public Roles insertRole(Roles role) {
-        Roles insert = rolesRepositories.save(role);
+    public Role insertRole(Role role) {
+        Role insert = rolesRepositories.save(role);
         return insert;
     }
 
     @Override
-    public Iterable<Roles> getAllRoles() {
-        Iterable<Roles> list = rolesRepositories.findAll();
+    public Iterable<Role> getAllRoles() {
+        Iterable<Role> list = rolesRepositories.findAll();
         return list;
     }
 

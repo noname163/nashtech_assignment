@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table
-public class OrderDetails {
+public class OrderDetail {
     @Id
     @SequenceGenerator(name = "orderDetail_sequence", sequenceName = "orderDetail_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "orderDetail_sequence")
@@ -29,7 +29,7 @@ public class OrderDetails {
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "product_id")
-    private Products product;
+    private Product product;
 
     // @JsonManagedReference
     // @ManyToOne(fetch = FetchType.EAGER, optional = true, cascade =
@@ -40,20 +40,20 @@ public class OrderDetails {
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "categoriy_id")
-    private Categories categories;
+    private Category categories;
 
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "order_id")
-    private Orders order;
+    private Order order;
 
     @Column(nullable = true, unique = false, length = 300)
     private int total;
 
-    public OrderDetails() {
+    public OrderDetail() {
     }
 
-    public OrderDetails(int quantity, Products product, Categories categories, Orders order, int total) {
+    public OrderDetail(int quantity, Product product, Category categories, Order order, int total) {
         this.quantity = quantity;
         this.product = product;
         this.categories = categories;
@@ -65,11 +65,11 @@ public class OrderDetails {
         return id;
     }
 
-    public Orders getOrder() {
+    public Order getOrder() {
         return order;
     }
 
-    public void setOrder(Orders order) {
+    public void setOrder(Order order) {
         this.order = order;
     }
 
@@ -81,11 +81,11 @@ public class OrderDetails {
         this.quantity = quantity;
     }
 
-    public Products getProduct() {
+    public Product getProduct() {
         return product;
     }
 
-    public void setProduct(Products product) {
+    public void setProduct(Product product) {
         this.product = product;
     }
 
@@ -97,11 +97,11 @@ public class OrderDetails {
     // this.price = price;
     // }
 
-    public Categories getCategories() {
+    public Category getCategories() {
         return categories;
     }
 
-    public void setCategories(Categories categories) {
+    public void setCategories(Category categories) {
         this.categories = categories;
     }
 
