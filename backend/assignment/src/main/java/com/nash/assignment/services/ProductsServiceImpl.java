@@ -10,6 +10,7 @@ import com.nash.assignment.modal.Status;
 import com.nash.assignment.repositories.CategoriesRepositories;
 import com.nash.assignment.repositories.ProductsRepositories;
 import com.nash.assignment.repositories.StatusRepositories;
+import com.nash.assignment.services.interfaces.ProductsService;
 
 @Service
 public class ProductsServiceImpl implements ProductsService {
@@ -32,9 +33,9 @@ public class ProductsServiceImpl implements ProductsService {
         if (productsRepositories.findByName(products.getName()) != null) {
             throw new RuntimeException("Product Name Exists.");
         }
-        Status status = statusRepositories.findByStatus(StatusEnum.Active.name());
+        Status status = statusRepositories.findByStatus(StatusEnum.ACTIVE.name());
         if (status == null) {
-            throw new RuntimeException("Cannot Find Status Name: " + StatusEnum.Active.name());
+            throw new RuntimeException("Cannot Find Status Name: " + StatusEnum.ACTIVE.name());
         }
         Category categories = categoriesRepositories.findByName(categoriesValue);
         if (categories == null) {

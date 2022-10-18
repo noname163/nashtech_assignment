@@ -17,28 +17,47 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.nash.assignment.constant.StatusEnum;
 import com.nash.assignment.modal.Order;
 import com.nash.assignment.modal.RateProduct;
 import com.nash.assignment.modal.Role;
 
+import lombok.Builder;
+import lombok.Data;
 
+
+@Data
 public class AccountDto {
-
     private long id;
+    @JsonProperty("avatar")
     private String avatar;
+    @NotBlank(message = "Phone Number Cannot Empty")
+    @Pattern(regexp = "^(0|84)(2(0[3-9]|1[0-6|8|9]|2[0-2|5-9]|3[2-9]|4[0-9]|5[1|2|4-9]|6[0-3|9]|7[0-7]|8[0-9]|9[0-4|6|7|9])|3[2-9]|5[5|6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])([0-9]{7})$")
+    @JsonProperty("phoneNumber")
     private String phoneNumber;
+    @NotBlank(message = "Full Name  Cannot Empty")
+    @JsonProperty("fullName")
     private String fullName;
+    @NotBlank(message = "Username Cannot Empty")
+    @JsonProperty("username")
     private String username;
+    @NotBlank(message = "Password Cannot Empty")
+    @JsonProperty("password")
     private String password;
+    
 
-    @JsonManagedReference
+    private String test;
+
     private Role role;
 
 
-    private Enum status;
+    private StatusEnum status;
 
 
     public String getUsername() {
@@ -48,12 +67,19 @@ public class AccountDto {
     public void setUsername(String username) {
         this.username = username;
     }
+    public String getTest() {
+        return test;
+    }
 
-    public Enum getStatus() {
+    public void setTest(String test) {
+        this.test = test;
+    }
+
+    public StatusEnum getStatus() {
         return status;
     }
 
-    public void setStatus(Enum status) {
+    public void setStatus(StatusEnum status) {
         this.status = status;
     }
 

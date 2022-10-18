@@ -17,6 +17,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -32,12 +33,12 @@ public class Order {
     @Column(nullable = true, unique = false, length = 300)
     private String deliveryDate;
 
-    @JsonManagedReference
+
     @ManyToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "account_id")
     private Account account;
 
-    @JsonBackReference
+    @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "order", cascade = CascadeType.PERSIST)
     private Set<OrderDetail> orderDetails = new HashSet<>();
 

@@ -11,6 +11,11 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 @SpringBootApplication
 public class AssignmentApplication {
 
+	@Bean
+	public ModelMapper modelMapper() {
+		return new ModelMapper();
+	}
+
 	public static void main(String[] args) {
 		SpringApplication.run(AssignmentApplication.class, args);
 	}
@@ -25,9 +30,6 @@ public class AssignmentApplication {
 		return new BCryptPasswordEncoder();
 	}
 
-	@Bean
-	public ModelMapper modelMapper() {
-		return new ModelMapper();
-	}
+	
 
 }

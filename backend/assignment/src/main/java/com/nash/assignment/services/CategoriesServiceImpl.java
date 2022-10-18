@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.nash.assignment.modal.Category;
 import com.nash.assignment.repositories.CategoriesRepositories;
+import com.nash.assignment.services.interfaces.CategoriesService;
 
 @Service
 public class CategoriesServiceImpl implements CategoriesService {

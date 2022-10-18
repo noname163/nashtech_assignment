@@ -46,22 +46,22 @@ public class Database {
         return new CommandLineRunner() {
             @Override
             public void run(String... args) throws Exception {
-                Role adminRole = new Role(RoleEnum.ROLE_ADMIN.name());
-                Role userRole = new Role(RoleEnum.ROLE_USER.name());
+                Role adminRole = new Role(RoleEnum.ROLE_ADMIN);
+                Role userRole = new Role(RoleEnum.ROLE_USER);
                 System.out.println("Role: " + RoleEnum.ROLE_ADMIN.name());
                 logger.info("Insert Roles ", rolesServicesImpl.insertRole(adminRole));
                 logger.info("Insert Roles ", rolesServicesImpl.insertRole(userRole));
 
-                Status activeStatus = new Status(StatusEnum.Active.name());
-                Status unactiveStatus = new Status(StatusEnum.Deactivate.name());
+                Status activeStatus = new Status(StatusEnum.ACTIVE.name());
+                Status unactiveStatus = new Status(StatusEnum.DEACTIVE.name());
 
                 logger.info("Insert Status ", statusServiceImpl.insertStatus(activeStatus));
                 logger.info("Insert Status ", statusServiceImpl.insertStatus(unactiveStatus));
 
                 Account adminAccount = new Account("0345323543", "Admin", "Admin User", "admin", adminRole,
-                        StatusEnum.Active);
+                        StatusEnum.ACTIVE);
                 Account userAccount = new Account("0345323542", "User", "Customer User", "user", userRole,
-                        StatusEnum.Deactivate);
+                        StatusEnum.DEACTIVE);
 
                 logger.info("Insert Account ", accountsServiceImpl.insertAccounts(modelMapper.map(adminAccount, AccountDto.class)));
                 logger.info("Insert Account ", accountsServiceImpl.insertAccounts(modelMapper.map(userAccount, AccountDto.class)));

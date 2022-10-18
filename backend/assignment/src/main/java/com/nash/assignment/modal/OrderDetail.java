@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -26,7 +27,7 @@ public class OrderDetail {
     @Column(unique = false, nullable = true, length = 300)
     private int quantity;
 
-    @JsonManagedReference
+
     @ManyToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "product_id")
     private Product product;
@@ -37,12 +38,12 @@ public class OrderDetail {
     // @JoinColumn(name = "price_id")
     // private Prices price;
 
-    @JsonManagedReference
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "categoriy_id")
     private Category categories;
 
-    @JsonManagedReference
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "order_id")
     private Order order;

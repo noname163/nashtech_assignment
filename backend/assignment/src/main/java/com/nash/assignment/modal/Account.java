@@ -19,6 +19,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.nash.assignment.constant.StatusEnum;
 
@@ -41,7 +42,7 @@ public class Account {
     @Column(nullable = true, unique = false, length = 100)
     private String password;
 
-    @JsonManagedReference
+
     @ManyToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "role_id")
     private Role role;
@@ -50,10 +51,11 @@ public class Account {
     @Enumerated(EnumType.STRING)
     private StatusEnum status;
 
-    @JsonBackReference
+    @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "account", cascade = CascadeType.REFRESH)
     private Set<Order> order = new HashSet<>();
-    @JsonBackReference
+
+    @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "account", cascade = CascadeType.REFRESH)
     private Set<RateProduct> rate = new HashSet<>();
 

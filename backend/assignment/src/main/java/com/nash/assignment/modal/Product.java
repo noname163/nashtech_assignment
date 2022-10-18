@@ -17,6 +17,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Table
@@ -33,20 +34,21 @@ public class Product {
     @Column(nullable = true, unique = false, length = 300)
     private String price;
 
-    @JsonManagedReference
+
     @ManyToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "status_id")
     private Status status;
 
-    @JsonManagedReference
+
     @ManyToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "categories_id")
     private Category categories;
 
-    @JsonBackReference
+    @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "product", cascade = CascadeType.REFRESH)
     private Set<RateProduct> rate = new HashSet<>();
-    @JsonBackReference
+
+    @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "product", cascade = CascadeType.ALL)
     private Set<Image> images = new HashSet<>();
 

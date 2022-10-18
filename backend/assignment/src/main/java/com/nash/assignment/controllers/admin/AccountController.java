@@ -47,29 +47,27 @@ public class AccountController {
 
         @PatchMapping(value = "/active/{id}")
         public ResponseEntity<AccountDto> acctiveAccount(@PathVariable long id) {
-                Account accountValue = accountsServiceImpl.getAccountById(id);
+                AccountDto accountValue = accountsServiceImpl.getAccountById(id);
                 final int activeStatus = 1;
-                Account account = accountsServiceImpl.updateAccountStatus(accountValue, activeStatus);
+                AccountDto account = accountsServiceImpl.updateAccountStatus(accountValue, activeStatus);
                 return ResponseEntity.status(HttpStatus.OK).body(
-                                modelMapper.map(account, AccountDto.class));
+                                account);
         }
 
         @DeleteMapping(value = "/{id}")
         public ResponseEntity<AccountDto> deleteAccount(@PathVariable long id) {
-                Account accountValue = accountsServiceImpl.getAccountById(id);
+                AccountDto accountValue = accountsServiceImpl.getAccountById(id);
                 final int deactiveStatus = 2;
-                Account account = accountsServiceImpl.updateAccountStatus(accountValue, deactiveStatus);
+                AccountDto account = accountsServiceImpl.updateAccountStatus(accountValue, deactiveStatus);
                 return ResponseEntity.status(HttpStatus.OK).body(
-                        modelMapper.map(account, AccountDto.class)
-                );
+                                account);
         }
 
         @PatchMapping(value = "/update-role/{id}/{role}")
         public ResponseEntity<AccountDto> updateRole(@PathVariable long id, @PathVariable int role) {
-                Account accountValue = accountsServiceImpl.getAccountById(id);
-                Account account = accountsServiceImpl.updateAccountRole(accountValue, role);
+                AccountDto accountValue = accountsServiceImpl.getAccountById(id);
+                AccountDto account = accountsServiceImpl.updateAccountRole(accountValue, role);
                 return ResponseEntity.status(HttpStatus.OK).body(
-                        modelMapper.map(account, AccountDto.class)
-                );
+                                account);
         }
 }

@@ -6,6 +6,8 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,6 +18,8 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.nash.assignment.constant.RoleEnum;
 
 @Entity
 @Table
@@ -28,16 +32,17 @@ public class Role {
     private int id;
 
     @Column(nullable = true, unique = false, length = 30)
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private RoleEnum role;
 
-    @JsonBackReference
+    @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "role", cascade = CascadeType.REFRESH)
     private Set<Account> accounts = new HashSet<>();
 
     public Role() {
     }
 
-    public Role(String role) {
+    public Role(RoleEnum role) {
         this.role = role;
     }
 
@@ -49,11 +54,11 @@ public class Role {
         this.id = id;
     }
 
-    public String getRole() {
+    public RoleEnum getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(RoleEnum role) {
         this.role = role;
     }
 

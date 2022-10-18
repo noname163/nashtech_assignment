@@ -26,7 +26,7 @@ public class Image {
     @Column(nullable = true, unique = false, length = 200)
     private String url;
 
-    @JsonManagedReference
+
     @ManyToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "product_id")
     private Product product;

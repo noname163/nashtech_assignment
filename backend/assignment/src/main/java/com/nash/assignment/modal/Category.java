@@ -15,6 +15,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Table
 @Entity
@@ -27,7 +28,7 @@ public class Category {
     @Column(unique = false, nullable = true, length = 300)
     private String name;
 
-    @JsonBackReference
+    @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "categories", cascade = CascadeType.REFRESH)
     private Set<Product> product_id = new HashSet<>();
 

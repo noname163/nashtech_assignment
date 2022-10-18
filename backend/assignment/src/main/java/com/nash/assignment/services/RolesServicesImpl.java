@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.nash.assignment.modal.Role;
 import com.nash.assignment.repositories.RolesRepositories;
+import com.nash.assignment.services.interfaces.RolesService;
 
 @Service
 public class RolesServicesImpl implements RolesService {

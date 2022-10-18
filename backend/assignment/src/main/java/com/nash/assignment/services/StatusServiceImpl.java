@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.nash.assignment.modal.Status;
 import com.nash.assignment.repositories.StatusRepositories;
+import com.nash.assignment.services.interfaces.StatusService;
 
 @Service
 public class StatusServiceImpl implements StatusService {

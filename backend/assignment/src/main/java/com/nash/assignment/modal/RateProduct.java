@@ -25,12 +25,11 @@ public class RateProduct {
     @Column(nullable = true, unique = false, length = 6)
     private int rate;
 
-    @JsonManagedReference
+
     @ManyToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "account_id")
     private Account account;
 
-    @JsonManagedReference
     @ManyToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "product_id")
     private Product product;
