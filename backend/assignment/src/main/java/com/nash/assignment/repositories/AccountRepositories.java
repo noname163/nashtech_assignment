@@ -3,8 +3,8 @@ package com.nash.assignment.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import com.nash.assignment.constant.StatusEnum;
 import com.nash.assignment.modal.Account;
-import com.nash.assignment.modal.Status;
 
 @Repository
 public interface AccountRepositories extends JpaRepository<Account, Long> {
@@ -12,5 +12,5 @@ public interface AccountRepositories extends JpaRepository<Account, Long> {
 
     Account findByUsername(String Username);
 
-    Iterable<Account> findByStatus(Status status);
+    Iterable<Account> findByStatus(StatusEnum status);
 }

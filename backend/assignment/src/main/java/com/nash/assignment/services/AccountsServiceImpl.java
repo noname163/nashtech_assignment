@@ -23,12 +23,12 @@ import com.nash.assignment.constant.RoleEnum;
 import com.nash.assignment.constant.StatusEnum;
 import com.nash.assignment.database.Database;
 import com.nash.assignment.dto.AccountDto;
+import com.nash.assignment.exceptions.InformationNotValidException;
+import com.nash.assignment.exceptions.ObjectNotFoundException;
 import com.nash.assignment.modal.Account;
 import com.nash.assignment.modal.Role;
-import com.nash.assignment.modal.Status;
 import com.nash.assignment.repositories.AccountRepositories;
 import com.nash.assignment.repositories.RolesRepositories;
-import com.nash.assignment.repositories.StatusRepositories;
 import com.nash.assignment.services.interfaces.AccountService;
 
 @Service
@@ -37,7 +37,6 @@ public class AccountsServiceImpl implements AccountService, UserDetailsService {
     AccountRepositories accountRepositories;
     @Autowired
     RolesRepositories rolesRepositories;
-    @Autowired StatusRepositories statusRepositories;
     @Autowired
     ModelMapper modelMapper;
 
@@ -83,8 +82,8 @@ public class AccountsServiceImpl implements AccountService, UserDetailsService {
 
     public AccountDto getAccountById(long id) {
         Optional<Account> accountOtp = accountRepositories.findById(id);
-        if (accountOtp.empty() == null) {
-            throw new RuntimeException("Cannot Find Account With ID: " + id);
+        if (accountOtp.isEmpty() == true ) {
+            throw new ObjectNotFoundException("Cannot Find Account With ID: " + id);
         }
         Account account = accountOtp.get();
         return modelMapper.map(account, AccountDto.class);
@@ -130,25 +129,22 @@ public class AccountsServiceImpl implements AccountService, UserDetailsService {
     public AccountDto updateAccountRole(AccountDto accountValue, int roleValue) {
         Account account = accountRepositories.findByPhoneNumber(accountValue.getPhoneNumber());
         if (roleValue <= 0 || roleValue > 2) {
-            throw new RuntimeException("Role Not Valid.");
+            throw new InformationNotValidException("Role Not Valid");
         }
         if (account == null) {
-            throw new RuntimeException("Some How This Account Is Null.");
+            throw new ObjectNotFoundException("Cannot Found Account With Phone: " + accountValue.getPhoneNumber());
 
         }
-        try {
-            Role role = null;
-            if (roleValue == 1) {
-                role = rolesRepositories.findByRole(RoleEnum.ROLE_ADMIN);
-            }
-            if (roleValue == 2) {
-                role = rolesRepositories.findByRole(RoleEnum.ROLE_USER);
-            }
-            account.setRole(role);
-            account = accountRepositories.save(account);
-        } catch (Exception e) {
-            throw new RuntimeException("Error When Update Account Role", e);
+        Role role = null;
+        if (roleValue == 1) {
+            role = rolesRepositories.findByRole(RoleEnum.ROLE_ADMIN);
         }
+        if (roleValue == 2) {
+            role = rolesRepositories.findByRole(RoleEnum.ROLE_USER);
+        }
+        account.setRole(role);
+        account = accountRepositories.save(account);
+
         return modelMapper.map(account, AccountDto.class);
     }
 

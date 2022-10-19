@@ -6,6 +6,8 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,6 +21,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.nash.assignment.constant.StatusEnum;
 
 @Table
 @Entity
@@ -37,7 +40,8 @@ public class Product {
 
     @ManyToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "status_id")
-    private Status status;
+    @Enumerated(EnumType.STRING)
+    private StatusEnum status;
 
 
     @ManyToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.REFRESH)
@@ -56,7 +60,7 @@ public class Product {
     }
 
 
-    public Product(String name, String price, Status status, Category categories) {
+    public Product(String name, String price, StatusEnum status, Category categories) {
         this.name = name;
         this.price = price;
         this.status = status;
@@ -89,11 +93,11 @@ public class Product {
         this.images = images;
     }
 
-    public Status getStatus() {
+    public StatusEnum getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(StatusEnum status) {
         this.status = status;
     }
 

@@ -1,13 +1,16 @@
 package com.nash.assignment.services.interfaces;
 
+import java.util.List;
+
+import com.nash.assignment.dto.response.ProductDtoRes;
 import com.nash.assignment.modal.Product;
 
 public interface ProductsService {
-    Product insertProduct(Product products, String categories);
+    ProductDtoRes insertProduct(ProductDtoRes products, String categories);
 
-    Iterable<Product> getAllProducts();
+    List<ProductDtoRes> getAllProducts();
 
-    Product updateProductStatus(Product productValue);
+    ProductDtoRes updateProductStatus(ProductDtoRes productValue, int statusValue);
 
-    Product updateProductInformation(Product productValue);
+    ProductDtoRes updateProductInformation(ProductDtoRes productValue);
 }
