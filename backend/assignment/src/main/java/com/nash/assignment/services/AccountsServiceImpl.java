@@ -91,12 +91,14 @@ public class AccountsServiceImpl implements AccountService, UserDetailsService {
     }
 
     @Override
-    public AccountDto updateAccountStatus(AccountDto accountValue, int statusValue) {
-        Account account = null;
+    public AccountDto updateAccountStatus(long id, int statusValue) {
+        Account account = accountRepositories.findById(id).get();
         if (statusValue < 1 || statusValue > 2) {
-            throw new RuntimeException("Status Not Valid.");
+            throw new InformationNotValidException("Status Not Valid.");
         }
-        account = accountRepositories.findByPhoneNumber(accountValue.getPhoneNumber());
+        if(account==null){
+            throw new ObjectNotFoundException("Cannot Find Account With Id: "+ id);
+        }
         StatusEnum status = null;
         if (statusValue == 1) {
             status = StatusEnum.ACTIVE;
@@ -127,13 +129,13 @@ public class AccountsServiceImpl implements AccountService, UserDetailsService {
     }
 
     @Override
-    public AccountDto updateAccountRole(AccountDto accountValue, int roleValue) {
-        Account account = accountRepositories.findByPhoneNumber(accountValue.getPhoneNumber());
+    public AccountDto updateAccountRole(long id, int roleValue) {
+        Account account = accountRepositories.findById(id).get();
         if (roleValue <= 0 || roleValue > 2) {
             throw new InformationNotValidException("Role Not Valid");
         }
         if (account == null) {
-            throw new ObjectNotFoundException("Cannot Found Account With Phone: " + accountValue.getPhoneNumber());
+            throw new ObjectNotFoundException("Cannot Found Account With Id: " + id);
 
         }
         Role role = null;

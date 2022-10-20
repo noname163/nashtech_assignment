@@ -10,7 +10,7 @@ public interface ProductsService {
 
     List<ProductDto> getAllProducts();
 
-    ProductDto updateProductStatus(ProductDto productValue, int statusValue);
+    ProductDto updateProductStatus(long id, int statusValue);
 
     ProductDto updateProductInformation(ProductDto productValue);
 }

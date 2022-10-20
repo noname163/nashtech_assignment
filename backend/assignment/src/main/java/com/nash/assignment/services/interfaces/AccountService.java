@@ -10,9 +10,9 @@ public interface AccountService {
 
     List<Account> getAllAccounts();
 
-    AccountDto updateAccountStatus(AccountDto accountValue, int statusValue);
+    AccountDto updateAccountStatus(long id, int statusValue);
 
     AccountDto updateAccountInformation(AccountDto accountValue);
 
-    AccountDto updateAccountRole(AccountDto accountValue, int roleValue);
+    AccountDto updateAccountRole(long id, int roleValue);
 }

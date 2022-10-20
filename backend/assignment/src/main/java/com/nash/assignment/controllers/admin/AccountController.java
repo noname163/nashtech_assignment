@@ -47,26 +47,23 @@ public class AccountController {
 
         @PatchMapping(value = "/active/{id}")
         public ResponseEntity<AccountDto> acctiveAccount(@PathVariable long id) {
-                AccountDto accountValue = accountsServiceImpl.getAccountById(id);
                 final int activeStatus = 1;
-                AccountDto account = accountsServiceImpl.updateAccountStatus(accountValue, activeStatus);
+                AccountDto account = accountsServiceImpl.updateAccountStatus(id, activeStatus);
                 return ResponseEntity.status(HttpStatus.OK).body(
                                 account);
         }
 
         @DeleteMapping(value = "/{id}")
         public ResponseEntity<AccountDto> deleteAccount(@PathVariable long id) {
-                AccountDto accountValue = accountsServiceImpl.getAccountById(id);
                 final int deactiveStatus = 2;
-                AccountDto account = accountsServiceImpl.updateAccountStatus(accountValue, deactiveStatus);
+                AccountDto account = accountsServiceImpl.updateAccountStatus(id, deactiveStatus);
                 return ResponseEntity.status(HttpStatus.OK).body(
                                 account);
         }
 
         @PatchMapping(value = "/update-role/{id}/{role}")
         public ResponseEntity<AccountDto> updateRole(@PathVariable long id, @PathVariable int role) {
-                AccountDto accountValue = accountsServiceImpl.getAccountById(id);
-                AccountDto account = accountsServiceImpl.updateAccountRole(accountValue, role);
+                AccountDto account = accountsServiceImpl.updateAccountRole(id, role);
                 return ResponseEntity.status(HttpStatus.OK).body(
                                 account);
         }
