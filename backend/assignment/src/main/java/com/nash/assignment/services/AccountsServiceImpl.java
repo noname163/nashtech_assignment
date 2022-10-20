@@ -33,17 +33,18 @@ import com.nash.assignment.services.interfaces.AccountService;
 
 @Service
 public class AccountsServiceImpl implements AccountService, UserDetailsService {
-    @Autowired
+
     AccountRepositories accountRepositories;
-    @Autowired
+
     RolesRepositories rolesRepositories;
-    @Autowired
+  
     ModelMapper modelMapper;
 
     private final PasswordEncoder passwordEncoder;
 
     private static final Logger logger = LoggerFactory.getLogger(Database.class);
 
+    @Autowired
     public AccountsServiceImpl(AccountRepositories accountRepositories, RolesRepositories rolesRepositories,
             PasswordEncoder passwordEncoder, ModelMapper modelMapper) {
         this.accountRepositories = accountRepositories;
@@ -82,7 +83,7 @@ public class AccountsServiceImpl implements AccountService, UserDetailsService {
 
     public AccountDto getAccountById(long id) {
         Optional<Account> accountOtp = accountRepositories.findById(id);
-        if (accountOtp.isEmpty() == true ) {
+        if (accountOtp.isEmpty()) {
             throw new ObjectNotFoundException("Cannot Find Account With ID: " + id);
         }
         Account account = accountOtp.get();

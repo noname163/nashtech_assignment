@@ -9,7 +9,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.nash.assignment.constant.RoleEnum;
 import com.nash.assignment.constant.StatusEnum;
 import com.nash.assignment.dto.AccountDto;
-import com.nash.assignment.dto.response.ProductDtoRes;
 import com.nash.assignment.modal.Account;
 import com.nash.assignment.modal.Category;
 import com.nash.assignment.modal.Image;
@@ -74,18 +73,13 @@ public class Database {
 
                                 Product product1 = new Product("Product1", "12000", StatusEnum.ACTIVE, categories1);
                                 Product product2 = new Product("Product2", "14000", StatusEnum.ACTIVE, categories2);
-
                                 logger.info("Insert Product ",
-                                                productsServiceImpl.insertProduct(
-                                                                modelMapper.map(product1, ProductDtoRes.class),
-                                                                categories1.getName()));
+                                                productsServiceImpl.insertProduct1(product1));
                                 logger.info("Insert Product ",
-                                                productsServiceImpl.insertProduct(
-                                                                modelMapper.map(product2, ProductDtoRes.class),
-                                                                categories2.getName()));
+                                                productsServiceImpl.insertProduct1(product2));
 
-                                Image image1 = new Image("Test1", product1);
-                                Image image2 = new Image("Test2", product1);
+                                Image image1 = new Image("Test1",product1);
+                                Image image2 = new Image("Test2",product1);
                                 logger.info("Insert Image ", imageServiceImpl.insertImage(image1));
                                 logger.info("Insert Image ", imageServiceImpl.insertImage(image2));
                         }

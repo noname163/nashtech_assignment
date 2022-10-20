@@ -1,24 +1,30 @@
-package com.nash.assignment.dto.response;
+package com.nash.assignment.dto;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+
 import com.nash.assignment.constant.StatusEnum;
-import com.nash.assignment.modal.Category;
 import com.nash.assignment.modal.Image;
 
-public class ProductDtoRes {
-    private long id;
+import lombok.Builder;
 
+// @Builder
+public class ProductDto {
+    private long id;
+    @NotBlank(message= "Name Cannot Empty")
     private String name;
+    @Min(value = 1, message = "Price Cannot Empty")
     private String price;
 
 
 
     private StatusEnum status;
 
-
-    private Category categories;
+    @NotBlank(message = "Categories Cannot Empty")
+    private String categories;
 
 
     private Set<Image> images = new HashSet<>();
@@ -58,11 +64,11 @@ public class ProductDtoRes {
         this.status = status;
     }
 
-    public Category getCategories() {
+    public String getCategories() {
         return categories;
     }
 
-    public void setCategories(Category categories) {
+    public void setCategories(String categories) {
         this.categories = categories;
     }
 

@@ -21,19 +21,12 @@ import com.nash.assignment.repositories.AccountRepositories;
 import com.nash.assignment.repositories.RolesRepositories;
 
 public class AccountsServiceImplTest {
-    @Autowired
     AccountsServiceImpl accountsServiceImpl;
-    @Autowired
     AccountRepositories accountRepositories;
-    @Autowired
     RolesRepositories rolesRepositories;
-    @Autowired
     PasswordEncoder passwordEncoder;
-    @Autowired
     ModelMapper modelMapper;
-    @Autowired
     Role role;
-    @Autowired
     AccountDto accountDto;
 
     private StatusEnum status;
@@ -42,30 +35,35 @@ public class AccountsServiceImplTest {
     void setUpBeforeTest() {
         accountRepositories = mock(AccountRepositories.class);
         rolesRepositories = mock(RolesRepositories.class);
-        accountsServiceImpl = new AccountsServiceImpl(accountRepositories, rolesRepositories,
-                passwordEncoder, modelMapper);
         role = mock(Role.class);
         modelMapper = mock(ModelMapper.class);
+        accountsServiceImpl = new AccountsServiceImpl(accountRepositories, rolesRepositories,
+                passwordEncoder, modelMapper);
+
     }
 
     @Test
     void testGetAccountById_WhenAccountNull_ShouldThrowObjectNotFoundException() {
-        Account account = new Account("01234533", "Test", "test", "123", role, status);
-        when(accountRepositories.findById(1L)).thenReturn(null);
+        Account account = mock(Account.class);
+        when(accountRepositories.findById(account.getId())).thenReturn(Optional.empty());
+
         ObjectNotFoundException expected = Assertions.assertThrows(ObjectNotFoundException.class,
                 () -> accountsServiceImpl.getAccountById(account.getId()));
+
         Assertions.assertEquals("Cannot Find Account With ID: " + account.getId(), expected.getMessage());
 
     }
 
     @Test
-    void testGetAccountById_WhenAccountNotNull_ShouldThrowAccountObject() {
-        Account account = new Account("01234533", "Test", "test", "123", role, status);
-        AccountDto accountDto = modelMapper.map(account, AccountDto.class);
+    void testGetAccountById_WhenAccountNotNull_ShouldReturnAccountObject() {
+        Account account = mock(Account.class);
+        AccountDto accountDto = mock(AccountDto.class);
+
         when(accountRepositories.findById(0L)).thenReturn(Optional.of(account));
-        when(modelMapper.map(account,AccountDto.class)).thenReturn(accountDto);
-        AccountDto result = accountsServiceImpl.getAccountById(account.getId());
-        Assertions.assertEquals(accountDto, result);
+        when(modelMapper.map(account, AccountDto.class)).thenReturn(accountDto);
+
+        AccountDto expected = accountsServiceImpl.getAccountById(account.getId());
+        Assertions.assertEquals(accountDto, expected);
 
     }
 

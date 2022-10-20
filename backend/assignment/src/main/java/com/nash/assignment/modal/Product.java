@@ -37,9 +37,7 @@ public class Product {
     @Column(nullable = true, unique = false, length = 300)
     private String price;
 
-
-    @ManyToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.REFRESH)
-    @JoinColumn(name = "status_id")
+    @Column(nullable = true, unique = false)
     @Enumerated(EnumType.STRING)
     private StatusEnum status;
 
@@ -53,7 +51,7 @@ public class Product {
     private Set<RateProduct> rate = new HashSet<>();
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "product", cascade = CascadeType.REFRESH)
     private Set<Image> images = new HashSet<>();
 
     public Product() {
