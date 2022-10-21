@@ -35,6 +35,8 @@ public class Account {
     private String avatar;
     @Column(nullable = true, unique = false, length = 13)
     private String phoneNumber;
+    @Column
+    private String email;
     @Column(nullable = true, unique = false, length = 100)
     private String fullName;
     @Column(nullable = true, unique = false, length = 100)
@@ -85,6 +87,15 @@ public class Account {
 
     public void setId(long id) {
         this.id = id;
+    }
+    
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPhoneNumber() {

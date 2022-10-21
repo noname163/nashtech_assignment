@@ -59,11 +59,9 @@ public class Database {
                                                 StatusEnum.DEACTIVE);
 
                                 logger.info("Insert Account ",
-                                                accountsServiceImpl.insertAccounts(
-                                                                modelMapper.map(adminAccount, AccountDto.class)));
+                                                accountsServiceImpl.insert(adminAccount));
                                 logger.info("Insert Account ",
-                                                accountsServiceImpl.insertAccounts(
-                                                                modelMapper.map(userAccount, AccountDto.class)));
+                                                accountsServiceImpl.insert(userAccount));
 
                                 Category categories1 = new Category("Categories 1");
                                 Category categories2 = new Category("Categories 2");

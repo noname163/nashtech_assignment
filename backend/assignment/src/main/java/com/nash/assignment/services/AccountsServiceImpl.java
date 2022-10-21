@@ -1,11 +1,10 @@
 package com.nash.assignment.services;
 
+import java.io.ObjectInputFilter.Status;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -17,7 +16,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
 
 import com.nash.assignment.constant.RoleEnum;
 import com.nash.assignment.constant.StatusEnum;
@@ -37,7 +35,7 @@ public class AccountsServiceImpl implements AccountService, UserDetailsService {
     AccountRepositories accountRepositories;
 
     RolesRepositories rolesRepositories;
-  
+
     ModelMapper modelMapper;
 
     private final PasswordEncoder passwordEncoder;
@@ -53,21 +51,21 @@ public class AccountsServiceImpl implements AccountService, UserDetailsService {
         this.modelMapper = modelMapper;
     }
 
+    public Account insert(Account account) {
+        account.setPassword(passwordEncoder.encode(account.getPassword()));
+        return accountRepositories.save(account);
+    }
+
     @Override
     public AccountDto insertAccounts(AccountDto accountDto) {
-        Account account = accountRepositories.findByPhoneNumber(accountDto.getPhoneNumber());
-        if (account != null) {
-            throw new RuntimeException("This Phonenumber Already Exist.");
+        if (accountRepositories.findByPhoneNumber(accountDto.getPhoneNumber()) != null) {
+            throw new InformationNotValidException("This Phonenumber Already Exist.");
         }
-        if (accountDto.getRole() == null) {
-            Role role = rolesRepositories.findByRole(RoleEnum.ROLE_USER);
-            accountDto.setRole(role);
-        }
-        if (accountDto.getStatus() == null) {
-            accountDto.setStatus(StatusEnum.ACTIVE);
-        }
+        Role role = rolesRepositories.findByRole(RoleEnum.ROLE_USER);
+        accountDto.setRole(role);
+        accountDto.setStatus(StatusEnum.ACTIVE);
         accountDto.setPassword(passwordEncoder.encode(accountDto.getPassword()));
-        account = modelMapper.map(accountDto, Account.class);
+        Account account = modelMapper.map(accountDto, Account.class);
         account = accountRepositories.save(account);
 
         return modelMapper.map(account, AccountDto.class);
@@ -75,9 +73,10 @@ public class AccountsServiceImpl implements AccountService, UserDetailsService {
 
     @Override
     public List<Account> getAllAccounts() {
-        List<Account> list = null;
-        list = accountRepositories.findAll();
-
+        List<Account> list = accountRepositories.findAll();
+        if (list == null || list.isEmpty()) {
+            throw new ObjectNotFoundException("Account List Is Empty.");
+        }
         return list;
     }
 
@@ -92,13 +91,14 @@ public class AccountsServiceImpl implements AccountService, UserDetailsService {
 
     @Override
     public AccountDto updateAccountStatus(long id, int statusValue) {
-        Account account = accountRepositories.findById(id).get();
+        Optional<Account> accountOtp = accountRepositories.findById(id);
         if (statusValue < 1 || statusValue > 2) {
             throw new InformationNotValidException("Status Not Valid.");
         }
-        if(account==null){
-            throw new ObjectNotFoundException("Cannot Find Account With Id: "+ id);
+        if (accountOtp.isEmpty()) {
+            throw new ObjectNotFoundException("Cannot Find Account With Id: " + id);
         }
+        Account account = accountOtp.get();
         StatusEnum status = null;
         if (statusValue == 1) {
             status = StatusEnum.ACTIVE;
@@ -115,29 +115,27 @@ public class AccountsServiceImpl implements AccountService, UserDetailsService {
     public AccountDto updateAccountInformation(AccountDto accountValue) {
         Account account = accountRepositories.findByPhoneNumber(accountValue.getPhoneNumber());
         if (account == null) {
-            throw new RuntimeException("Some How This Account Is Null.");
+            throw new ObjectNotFoundException("Cannot Find Account With Phonenumber: " + accountValue.getPhoneNumber());
         }
-        try {
-            account.setFullName(accountValue.getFullName());
-            account.setUsername(accountValue.getUsername());
-            account.setAvatar(accountValue.getAvatar());
-            account = accountRepositories.save(account);
-        } catch (Exception e) {
-            throw new RuntimeException("Error When Update Account Information.", e);
-        }
+        account.setFullName(accountValue.getFullName());
+        account.setUsername(accountValue.getUsername());
+        account.setAvatar(accountValue.getAvatar());
+        account = accountRepositories.save(account);
+
         return modelMapper.map(account, AccountDto.class);
     }
 
     @Override
     public AccountDto updateAccountRole(long id, int roleValue) {
-        Account account = accountRepositories.findById(id).get();
+        Optional<Account> accountOtp = accountRepositories.findById(id);
         if (roleValue <= 0 || roleValue > 2) {
             throw new InformationNotValidException("Role Not Valid");
         }
-        if (account == null) {
+        if (accountOtp.isEmpty()) {
             throw new ObjectNotFoundException("Cannot Found Account With Id: " + id);
 
         }
+        Account account = accountOtp.get();
         Role role = null;
         if (roleValue == 1) {
             role = rolesRepositories.findByRole(RoleEnum.ROLE_ADMIN);

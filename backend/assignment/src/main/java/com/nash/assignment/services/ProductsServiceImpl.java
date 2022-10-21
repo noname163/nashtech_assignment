@@ -1,6 +1,7 @@
 package com.nash.assignment.services;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.nash.assignment.constant.StatusEnum;
 import com.nash.assignment.dto.ProductDto;
 import com.nash.assignment.exceptions.InformationNotValidException;
+import com.nash.assignment.exceptions.ObjectExistException;
 import com.nash.assignment.exceptions.ObjectNotFoundException;
 import com.nash.assignment.mapper.ProductMapper;
 import com.nash.assignment.modal.Category;
@@ -31,10 +33,9 @@ public class ProductsServiceImpl implements ProductsService {
 
     @Autowired
     public ProductsServiceImpl(ProductsRepositories productsRepositories, CategoriesRepositories categoriesRepositories,
-            ModelMapper modelMapper, ProductMapper productMapper) {
+            ProductMapper productMapper) {
         this.productsRepositories = productsRepositories;
         this.categoriesRepositories = categoriesRepositories;
-        this.modelMapper = modelMapper;
         this.productMapper = productMapper;
     }
 
@@ -45,7 +46,7 @@ public class ProductsServiceImpl implements ProductsService {
     @Override
     public ProductDto insertProduct(ProductDto productDto) {
         if (productsRepositories.findByName(productDto.getName()) != null) {
-            throw new RuntimeException("Product Name Exists.");
+            throw new ObjectExistException("Product Name Exists.");
         }
         Category categories = categoriesRepositories.findByName(productDto.getCategories());
         if (categories == null) {
@@ -60,18 +61,19 @@ public class ProductsServiceImpl implements ProductsService {
     @Override
     public List<ProductDto> getAllProducts() {
         return productsRepositories.findAll().stream()
-                .map(product -> modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
+                .map(product -> productMapper.mapEntityToDto(product)).collect(Collectors.toList());
     }
 
     @Override
     public ProductDto updateProductStatus(long id, int statusVale) {
-        Product productDataBase = productsRepositories.findById(id).get();
-        if (productDataBase == null) {
-            throw new ObjectNotFoundException("Cannot Find Product With Id: " + productDataBase.getId());
+        Optional<Product> productotp = productsRepositories.findById(id);
+        if (productotp.isEmpty()) {
+            throw new ObjectNotFoundException("Cannot Find Product With Id: " + id);
         }
         if (statusVale < 1 || statusVale > 2) {
             throw new InformationNotValidException("Status Not Valid.");
         }
+        Product productDataBase = productotp.get();
         StatusEnum statusEnum = statusVale == 1 ? StatusEnum.ACTIVE : StatusEnum.DEACTIVE;
         productDataBase.setStatus(statusEnum);
         Product product = productsRepositories.save(productDataBase);
@@ -81,24 +83,20 @@ public class ProductsServiceImpl implements ProductsService {
 
     @Override
     public ProductDto updateProductInformation(ProductDto productValue) {
-        Product productDatabase = productsRepositories.findById(productValue.getId()).get();
+        Optional<Product> productOtp = productsRepositories.findById(productValue.getId());
         Category category = categoriesRepositories.findByName(productValue.getCategories());
+        if (productOtp.isEmpty()) {
+            throw new ObjectNotFoundException("Cannot Find Product With Id: " + productValue.getId());
+        }
         if (category == null) {
             throw new ObjectNotFoundException("Cannot Found Category Name: " + productValue.getCategories());
         }
+        Product productDatabase = productOtp.get();
         productDatabase.setName(productValue.getName());
         productDatabase.setPrice(productValue.getPrice());
         productDatabase.setCategories(category);
         productDatabase.setImages(productValue.getImages());
         return productMapper.mapEntityToDto(productDatabase);
-    }
-
-    public ProductDto getProductDtoById(long id) {
-        ProductDto product = productMapper.mapEntityToDto(productsRepositories.findById(id).get());
-        if (product == null) {
-            throw new ObjectNotFoundException("Cannot Find Product With Id: " + id);
-        }
-        return product;
     }
 
 }

@@ -35,7 +35,9 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
         if (request.getServletPath().equals("/login")
                 || request.getServletPath().equals("")
                 || request.getServletPath().equals("/")
-                || request.getServletPath().equals("/register")) {
+                || request.getServletPath().equals("/register")
+                || request.getServletPath().equals("/swagger-ui.html")
+                || request.getServletPath().equals("/swagger-ui/**")) {
             filterChain.doFilter(request, response);
         } else {
             String authorrizationHeader = request.getHeader(AUTHORIZATION);
@@ -62,12 +64,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     response.setContentType(APPLICATION_JSON_VALUE);
                     new ObjectMapper().writeValue(response.getOutputStream(), error);
                 }
-            } else if (authorrizationHeader == null || !authorrizationHeader.startsWith("Bearer ")) {
-                logger.error("Token Not Valid");
-                Map<String, String> error = new HashMap<>();
-                error.put("erros_message", "Token Not Valid");
-                new ObjectMapper().writeValue(response.getOutputStream(), error);
-            } else {
+            }  else {
                 filterChain.doFilter(request, response);
             }
         }

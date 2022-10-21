@@ -41,6 +41,9 @@ public class AccountDto {
     @Pattern(regexp = "^(0|84)(2(0[3-9]|1[0-6|8|9]|2[0-2|5-9]|3[2-9]|4[0-9]|5[1|2|4-9]|6[0-3|9]|7[0-7]|8[0-9]|9[0-4|6|7|9])|3[2-9]|5[5|6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])([0-9]{7})$")
     @JsonProperty("phoneNumber")
     private String phoneNumber;
+    @NotBlank(message = "Email Cannot Empty")
+    @Pattern(regexp = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+\\.[Aa-zA-Z0]{2,6}$", message = "Email Must Match example@example.com'")
+    private String email;
     @NotBlank(message = "Full Name  Cannot Empty")
     @JsonProperty("fullName")
     private String fullName;
@@ -91,6 +94,13 @@ public class AccountDto {
         this.id = id;
     }
 
+    public void setEmail(String email){
+        this.email = email;
+    }
+    public String getEmail(){
+        return email;
+    }
+
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -106,6 +116,7 @@ public class AccountDto {
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
+
 
     public String getPassword() {
         return password;

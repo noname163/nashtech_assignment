@@ -21,15 +21,13 @@ public class AssignmentApplication {
 	}
 
 	public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/login").setViewName("login");
+		registry.addViewController("/login").setViewName("login");
 		registry.addViewController("/register").setViewName("register");
-    }
-
-	@Bean
-	PasswordEncoder passwordEncoder(){
-		return new BCryptPasswordEncoder();
 	}
 
-	
+	@Bean
+	PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
 }
