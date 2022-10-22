@@ -83,7 +83,7 @@ public class ProductsServiceImpl implements ProductsService {
 
     @Override
     public ProductDto updateProductInformation(ProductDto productValue) {
-        Optional<Product> productOtp = productsRepositories.findById(productValue.getId());
+        Optional<Product> productOtp = Optional.of(productsRepositories.findByName(productValue.getName()));
         Category category = categoriesRepositories.findByName(productValue.getCategories());
         if (productOtp.isEmpty()) {
             throw new ObjectNotFoundException("Cannot Find Product With Id: " + productValue.getId());

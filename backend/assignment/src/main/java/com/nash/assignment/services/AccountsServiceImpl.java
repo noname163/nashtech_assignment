@@ -88,6 +88,14 @@ public class AccountsServiceImpl implements AccountService, UserDetailsService {
         Account account = accountOtp.get();
         return modelMapper.map(account, AccountDto.class);
     }
+    public AccountDto getAccountByPhonenumber(String phone) {
+        Optional<Account> accountOtp = Optional.of(accountRepositories.findByPhoneNumber(phone));
+        if (accountOtp.isEmpty()) {
+            throw new ObjectNotFoundException("Cannot Find Account With Phone: " + phone);
+        }
+        Account account = accountOtp.get();
+        return modelMapper.map(account, AccountDto.class);
+    }
 
     @Override
     public AccountDto updateAccountStatus(long id, int statusValue) {
@@ -102,7 +110,8 @@ public class AccountsServiceImpl implements AccountService, UserDetailsService {
         StatusEnum status = null;
         if (statusValue == 1) {
             status = StatusEnum.ACTIVE;
-        } else if (statusValue == 2) {
+        }
+        if (statusValue == 2) {
             status = StatusEnum.DEACTIVE;
         }
         account.setStatus(status);

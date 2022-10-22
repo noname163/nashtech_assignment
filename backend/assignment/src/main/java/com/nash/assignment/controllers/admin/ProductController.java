@@ -1,5 +1,9 @@
 package com.nash.assignment.controllers.admin;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Set;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +17,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.nash.assignment.dto.ProductDto;
+import com.nash.assignment.modal.Image;
+import com.nash.assignment.services.FileServiceImpl;
+import com.nash.assignment.services.ImageServiceImpl;
 import com.nash.assignment.services.ProductsServiceImpl;
 
 @Controller
@@ -22,10 +30,22 @@ import com.nash.assignment.services.ProductsServiceImpl;
 public class ProductController {
     @Autowired
     ProductsServiceImpl productsServiceImpl;
+    @Autowired
+    FileServiceImpl fileServiceImpl;
+    @Autowired
+    ImageServiceImpl imageServiceImpl;
 
     @PostMapping()
-    public ResponseEntity<ProductDto> insertProduct(@Valid @RequestBody ProductDto productDto) {
-        ProductDto product = productsServiceImpl.insertProduct(productDto);
+    public ResponseEntity<ProductDto> insertProduct(@Valid ProductDto productDto, MultipartFile[] productimages)
+            throws IOException {
+
+        ResponseEntity<List<String>> saveImage = fileServiceImpl.saveMultipleFile("product/" + productDto.getName(),
+                productimages);
+        productsServiceImpl.insertProduct(productDto);
+        List<String> urls = saveImage.getBody();
+        Set<Image> images = imageServiceImpl.insertMultipeImages(urls, productDto);
+        productDto.setImages(images);
+        ProductDto product = productsServiceImpl.updateProductInformation(productDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 product);
     }

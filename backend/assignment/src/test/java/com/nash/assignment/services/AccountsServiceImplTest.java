@@ -127,6 +127,15 @@ public class AccountsServiceImplTest {
     }
 
     @Test
+    void GetAllAccounts_WhenDataValid_ShouldReturnListOfAccount(){
+        List<Account> expected = new ArrayList<>();
+        expected.add(account);
+        when(accountRepositories.findAll()).thenReturn(expected);
+        List<Account> actual = accountsServiceImpl.getAllAccounts();
+        assertThat(expected, is(actual));
+    }
+
+    @Test
     void UpdateAccountInformation_WhenAccountNull_ShouldThrowNewObjectNotFoundException() {
         when(accountRepositories.findByPhoneNumber(accountDto.getPhoneNumber())).thenReturn(null);
         ObjectNotFoundException actual = Assertions.assertThrows(ObjectNotFoundException.class,
@@ -151,11 +160,21 @@ public class AccountsServiceImplTest {
     }
 
     @Test
-    void UpdateAccountRole_WhenRoleValueNotValid_ShouldThrowInfomationNotValidException() {
+    void UpdateAccountRole_WhenRoleValue_0_ShouldThrowInfomationNotValidException() {
         when(accountRepositories.findById(account.getId())).thenReturn(Optional.of(account));
 
         InformationNotValidException actual = Assertions.assertThrows(InformationNotValidException.class, 
                 ()->accountsServiceImpl.updateAccountRole(account.getId(), 0));
+        
+        assertThat("Role Not Valid", is(actual.getMessage()));
+
+    }
+    @Test
+    void UpdateAccountRole_WhenRoleValue_3_ShouldThrowInfomationNotValidException() {
+        when(accountRepositories.findById(account.getId())).thenReturn(Optional.of(account));
+
+        InformationNotValidException actual = Assertions.assertThrows(InformationNotValidException.class, 
+                ()->accountsServiceImpl.updateAccountRole(account.getId(), 3));
         
         assertThat("Role Not Valid", is(actual.getMessage()));
 
@@ -203,7 +222,14 @@ public class AccountsServiceImplTest {
     }
 
     @Test
-    void UpdateAccountStatus_WhenStatusNotValid_ShouldThrowInformationNotValid(){
+    void UpdateAccountStatus_WhenStatusValue_0_ShouldThrowInformationNotValid(){
+        when(accountRepositories.findById(accountDto.getId())).thenReturn(Optional.of(account));
+        InformationNotValidException actual = Assertions.assertThrows(InformationNotValidException.class, 
+                ()-> accountsServiceImpl.updateAccountStatus(accountDto.getId(), 0));
+        assertThat("Status Not Valid.", is(actual.getMessage()));
+    }
+    @Test
+    void UpdateAccountStatus_WhenStatusValue_3_ShouldThrowInformationNotValid(){
         when(accountRepositories.findById(accountDto.getId())).thenReturn(Optional.of(account));
         InformationNotValidException actual = Assertions.assertThrows(InformationNotValidException.class, 
                 ()-> accountsServiceImpl.updateAccountStatus(accountDto.getId(), 0));
