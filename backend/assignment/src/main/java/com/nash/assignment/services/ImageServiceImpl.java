@@ -8,10 +8,15 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.nash.assignment.dto.AccountDto;
 import com.nash.assignment.dto.ProductDto;
+import com.nash.assignment.dto.response.ImageAccountDto;
+import com.nash.assignment.mapper.ImageMapper;
 import com.nash.assignment.mapper.ProductMapper;
+import com.nash.assignment.modal.Account;
 import com.nash.assignment.modal.Image;
 import com.nash.assignment.modal.Product;
+import com.nash.assignment.repositories.AccountRepositories;
 import com.nash.assignment.repositories.ImagesRepositories;
 import com.nash.assignment.repositories.ProductsRepositories;
 import com.nash.assignment.services.interfaces.ImageService;
@@ -25,6 +30,10 @@ public class ImageServiceImpl implements ImageService {
     ProductMapper productMapper;
     @Autowired
     ProductsRepositories productsRepositories;
+    @Autowired
+    AccountRepositories accountRepositories;
+    @Autowired
+    ImageMapper imageMapper;
 
     @Override
     public Image insertImage(Image imageValue) {
@@ -45,6 +54,16 @@ public class ImageServiceImpl implements ImageService {
         }
 
         return result;
+    }
+
+    public Image insertAvatar(String imageValue, AccountDto accountDto){
+        if (imageValue == null || imageValue.equals("")) {
+            return null;
+        }
+        Account account = accountRepositories.findByPhoneNumber(accountDto.getPhoneNumber());
+        Image image = new Image(imageValue, account);
+        imagesRepositories.save(image);
+        return image;
     }
 
 }

@@ -18,24 +18,18 @@ import com.nimbusds.oauth2.sdk.ErrorResponse;
 @ControllerAdvice
 public class DataNotValidHander extends ResponseEntityExceptionHandler {
 
-    
-
-   
-
-
-
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
             HttpHeaders headers, HttpStatus status, WebRequest request) {
         Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error)->{
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
             String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();
-			errors.put(fieldName, errorMessage);
+            errors.put(fieldName, errorMessage);
         });
         ExceptionResponseDto exception = new ExceptionResponseDto("400", "BAD_REQUEST", errors);
-        
+
         return new ResponseEntity<Object>(exception, HttpStatus.BAD_REQUEST);
     }
-    
+
 }

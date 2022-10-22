@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.nash.assignment.dto.ProductDto;
+import com.nash.assignment.mapper.ImageMapper;
 import com.nash.assignment.modal.Image;
 import com.nash.assignment.services.FileServiceImpl;
 import com.nash.assignment.services.ImageServiceImpl;
@@ -34,6 +35,8 @@ public class ProductController {
     FileServiceImpl fileServiceImpl;
     @Autowired
     ImageServiceImpl imageServiceImpl;
+    @Autowired
+    ImageMapper imageMapper;
 
     @PostMapping()
     public ResponseEntity<ProductDto> insertProduct(@Valid ProductDto productDto, MultipartFile[] productimages)
@@ -44,7 +47,7 @@ public class ProductController {
         productsServiceImpl.insertProduct(productDto);
         List<String> urls = saveImage.getBody();
         Set<Image> images = imageServiceImpl.insertMultipeImages(urls, productDto);
-        productDto.setImages(images);
+        productDto.setImages(imageMapper.mapEntityToImageProductDto(images));
         ProductDto product = productsServiceImpl.updateProductInformation(productDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 product);

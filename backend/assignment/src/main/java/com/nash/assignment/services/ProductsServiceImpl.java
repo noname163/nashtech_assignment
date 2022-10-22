@@ -13,6 +13,7 @@ import com.nash.assignment.dto.ProductDto;
 import com.nash.assignment.exceptions.InformationNotValidException;
 import com.nash.assignment.exceptions.ObjectExistException;
 import com.nash.assignment.exceptions.ObjectNotFoundException;
+import com.nash.assignment.mapper.ImageMapper;
 import com.nash.assignment.mapper.ProductMapper;
 import com.nash.assignment.modal.Category;
 import com.nash.assignment.modal.Product;
@@ -27,16 +28,19 @@ public class ProductsServiceImpl implements ProductsService {
 
     CategoriesRepositories categoriesRepositories;
 
-    ModelMapper modelMapper;
-
     ProductMapper productMapper;
+
+    ImageMapper imageMapper;
+
+
 
     @Autowired
     public ProductsServiceImpl(ProductsRepositories productsRepositories, CategoriesRepositories categoriesRepositories,
-            ProductMapper productMapper) {
+            ProductMapper productMapper, ImageMapper imageMapper) {
         this.productsRepositories = productsRepositories;
         this.categoriesRepositories = categoriesRepositories;
         this.productMapper = productMapper;
+        this.imageMapper = imageMapper;
     }
 
     public Product insertProduct1(Product product) {
@@ -83,19 +87,18 @@ public class ProductsServiceImpl implements ProductsService {
 
     @Override
     public ProductDto updateProductInformation(ProductDto productValue) {
-        Optional<Product> productOtp = Optional.of(productsRepositories.findByName(productValue.getName()));
+        Product productDatabase = productsRepositories.findByName(productValue.getName());
         Category category = categoriesRepositories.findByName(productValue.getCategories());
-        if (productOtp.isEmpty()) {
+        if (productDatabase==null) {
             throw new ObjectNotFoundException("Cannot Find Product With Id: " + productValue.getId());
         }
         if (category == null) {
             throw new ObjectNotFoundException("Cannot Found Category Name: " + productValue.getCategories());
         }
-        Product productDatabase = productOtp.get();
         productDatabase.setName(productValue.getName());
         productDatabase.setPrice(productValue.getPrice());
         productDatabase.setCategories(category);
-        productDatabase.setImages(productValue.getImages());
+        productDatabase.setImages(imageMapper.mapImageProductDtoToEntity(productValue.getImages()));
         return productMapper.mapEntityToDto(productDatabase);
     }
 

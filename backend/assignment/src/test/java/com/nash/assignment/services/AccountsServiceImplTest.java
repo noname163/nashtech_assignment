@@ -127,7 +127,7 @@ public class AccountsServiceImplTest {
     }
 
     @Test
-    void GetAllAccounts_WhenDataValid_ShouldReturnListOfAccount(){
+    void GetAllAccounts_WhenDataValid_ShouldReturnListOfAccount() {
         List<Account> expected = new ArrayList<>();
         expected.add(account);
         when(accountRepositories.findAll()).thenReturn(expected);
@@ -154,7 +154,7 @@ public class AccountsServiceImplTest {
 
         verify(account).setFullName(accountDto.getFullName());
         verify(account).setUsername(accountDto.getUsername());
-        verify(account).setAvatar(accountDto.getAvatar());
+        verify(account).setImage(accountDto.getImage());
 
         assertThat(accountDto, is(actual));
     }
@@ -169,6 +169,7 @@ public class AccountsServiceImplTest {
         assertThat("Role Not Valid", is(actual.getMessage()));
 
     }
+
     @Test
     void UpdateAccountRole_WhenRoleValue_3_ShouldThrowInfomationNotValidException() {
         when(accountRepositories.findById(account.getId())).thenReturn(Optional.of(account));
@@ -228,6 +229,7 @@ public class AccountsServiceImplTest {
                 ()-> accountsServiceImpl.updateAccountStatus(accountDto.getId(), 0));
         assertThat("Status Not Valid.", is(actual.getMessage()));
     }
+
     @Test
     void UpdateAccountStatus_WhenStatusValue_3_ShouldThrowInformationNotValid(){
         when(accountRepositories.findById(accountDto.getId())).thenReturn(Optional.of(account));

@@ -9,9 +9,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -26,10 +28,21 @@ public class Image {
     @Column(nullable = true, unique = false, length = 200)
     private String url;
 
-
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "product_id")
     private Product product;
+
+    @JsonIgnore
+    @OneToOne(cascade = CascadeType.ALL)
+    private Account avatar;
+
+    
+
+    public Image(String url, Account avatar) {
+        this.url = url;
+        this.avatar = avatar;
+    }
 
     public Image(String url, Product product) {
         this.url = url;
@@ -65,6 +78,14 @@ public class Image {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    public Account getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(Account avatar) {
+        this.avatar = avatar;
     }
 
 }

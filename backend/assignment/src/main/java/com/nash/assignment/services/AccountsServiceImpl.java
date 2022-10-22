@@ -128,7 +128,7 @@ public class AccountsServiceImpl implements AccountService, UserDetailsService {
         }
         account.setFullName(accountValue.getFullName());
         account.setUsername(accountValue.getUsername());
-        account.setAvatar(accountValue.getAvatar());
+        account.setImage(accountValue.getImage());
         account = accountRepositories.save(account);
 
         return modelMapper.map(account, AccountDto.class);
@@ -161,6 +161,9 @@ public class AccountsServiceImpl implements AccountService, UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Account account = accountRepositories.findByUsername(username);
+        if(account.getStatus().equals(StatusEnum.DEACTIVE)){
+            throw new RuntimeException("This Account Have Been Ban.");
+        }
         if (account == null) {
             logger.error("Username Not Found");
             throw new UsernameNotFoundException("Username Not found");

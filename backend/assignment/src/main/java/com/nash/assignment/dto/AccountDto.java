@@ -1,42 +1,18 @@
 package com.nash.assignment.dto;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.nash.assignment.constant.StatusEnum;
-import com.nash.assignment.modal.Order;
-import com.nash.assignment.modal.RateProduct;
+import com.nash.assignment.modal.Image;
 import com.nash.assignment.modal.Role;
 
-import lombok.Builder;
 import lombok.Data;
-
 
 @Data
 public class AccountDto {
     private long id;
-    @JsonProperty("avatar")
-    private String avatar;
     @NotBlank(message = "Phone Number Cannot Empty")
     @Pattern(regexp = "^(0|84)(2(0[3-9]|1[0-6|8|9]|2[0-2|5-9]|3[2-9]|4[0-9]|5[1|2|4-9]|6[0-3|9]|7[0-7]|8[0-9]|9[0-4|6|7|9])|3[2-9]|5[5|6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])([0-9]{7})$")
     @JsonProperty("phoneNumber")
@@ -53,15 +29,14 @@ public class AccountDto {
     @NotBlank(message = "Password Cannot Empty")
     @JsonProperty("password")
     private String password;
-    
+
+    private Image image;
 
     private String test;
 
     private Role role;
 
-
     private StatusEnum status;
-
 
     public String getUsername() {
         return username;
@@ -70,6 +45,7 @@ public class AccountDto {
     public void setUsername(String username) {
         this.username = username;
     }
+
     public String getTest() {
         return test;
     }
@@ -94,10 +70,11 @@ public class AccountDto {
         this.id = id;
     }
 
-    public void setEmail(String email){
+    public void setEmail(String email) {
         this.email = email;
     }
-    public String getEmail(){
+
+    public String getEmail() {
         return email;
     }
 
@@ -117,7 +94,6 @@ public class AccountDto {
         this.fullName = fullName;
     }
 
-
     public String getPassword() {
         return password;
     }
@@ -135,13 +111,12 @@ public class AccountDto {
         this.role = role;
     }
 
-    public String getAvatar() {
-        return avatar;
+    public Image getImage() {
+        return image;
     }
 
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
+    public void setImage(Image image) {
+        this.image = image;
     }
-
 
 }

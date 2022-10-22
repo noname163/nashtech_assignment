@@ -1,34 +1,26 @@
-package com.nash.assignment.dto;
+package com.nash.assignment.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nash.assignment.modal.Product;
 
-public class ImageDto {
-    private long id;
+public class ImageProductDto {
 
 
     private String url;
 
-
+    
     private Product product;
 
-    public ImageDto(String url, Product product) {
+    public ImageProductDto(String url, Product product) {
         this.url = url;
         this.product = product;
     }
 
-    public ImageDto(String url) {
+    public ImageProductDto(String url) {
         this.url = url;
     }
 
-    public ImageDto() {
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
+    public ImageProductDto() {
     }
 
     public String getUrl() {
@@ -39,6 +31,7 @@ public class ImageDto {
         this.url = url;
     }
 
+    @JsonIgnore
     public Product getProduct() {
         return product;
     }

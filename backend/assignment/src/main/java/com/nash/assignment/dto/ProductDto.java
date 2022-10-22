@@ -7,9 +7,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
 import com.nash.assignment.constant.StatusEnum;
-import com.nash.assignment.modal.Image;
-
-import lombok.Builder;
+import com.nash.assignment.dto.response.ImageProductDto;
 
 // @Builder
 public class ProductDto {
@@ -27,7 +25,7 @@ public class ProductDto {
     private String categories;
 
 
-    private Set<Image> images = new HashSet<>();
+    private Set<ImageProductDto> images = new HashSet<>();
 
 
 
@@ -48,11 +46,11 @@ public class ProductDto {
     }
     
 
-    public Set<Image> getImages() {
+    public Set<ImageProductDto> getImages() {
         return images;
     }
 
-    public void setImages(Set<Image> images) {
+    public void setImages(Set<ImageProductDto> images) {
         this.images = images;
     }
 

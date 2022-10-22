@@ -19,6 +19,7 @@ import com.nash.assignment.dto.ProductDto;
 import com.nash.assignment.exceptions.InformationNotValidException;
 import com.nash.assignment.exceptions.ObjectExistException;
 import com.nash.assignment.exceptions.ObjectNotFoundException;
+import com.nash.assignment.mapper.ImageMapper;
 import com.nash.assignment.mapper.ProductMapper;
 import com.nash.assignment.modal.Category;
 import com.nash.assignment.modal.Product;
@@ -41,15 +42,18 @@ public class ProductsServiceImplTest {
 
     Product product;
 
+    ImageMapper imageMapper;
+
     @BeforeEach
     void setUpObject() {
         productMapper = mock(ProductMapper.class);
+        imageMapper= mock(ImageMapper.class);
         category = mock(Category.class);
         productsRepositories = mock(ProductsRepositories.class);
         productDtoResp = mock(ProductDto.class);
         product = mock(Product.class);
         categoriesRepositories = mock(CategoriesRepositories.class);
-        productsServiceImpl = new ProductsServiceImpl(productsRepositories, categoriesRepositories, productMapper);
+        productsServiceImpl = new ProductsServiceImpl(productsRepositories, categoriesRepositories, productMapper, imageMapper);
     }
 
     @Test
@@ -98,7 +102,7 @@ public class ProductsServiceImplTest {
     @Test
     void UpdateProductInformation_WhenDataValid_ShouldReturnProductResp() {
 
-        when(productsRepositories.findById(productDtoResp.getId())).thenReturn(Optional.of(product));
+        when(productsRepositories.findByName(productDtoResp.getName())).thenReturn(product);
         when(categoriesRepositories.findByName(productDtoResp.getCategories())).thenReturn(category);
         when(productMapper.mapEntityToDto(product)).thenReturn(productDtoResp);
 
@@ -106,14 +110,14 @@ public class ProductsServiceImplTest {
         verify(product).setName(productDtoResp.getName());
         verify(product).setPrice(productDtoResp.getPrice());
         verify(product).setCategories(category);
-        verify(product).setImages(productDtoResp.getImages());
+        verify(product).setImages(imageMapper.mapImageProductDtoToEntity(productDtoResp.getImages()));
 
         assertThat(productDtoResp, is(actual));
     }
 
     @Test
     void UpdateProductInformation_WhenCategoryNull_ShouldThrowObjectNotFoundException(){
-        when(productsRepositories.findById(productDtoResp.getId())).thenReturn(Optional.of(product));
+        when(productsRepositories.findByName(productDtoResp.getName())).thenReturn(product);
         when(categoriesRepositories.findByName(productDtoResp.getCategories())).thenReturn(null);
         ObjectNotFoundException acutal = Assertions.assertThrows(ObjectNotFoundException.class, ()-> productsServiceImpl.updateProductInformation(productDtoResp));
         assertThat("Cannot Found Category Name: " + productDtoResp.getCategories(), is(acutal.getMessage()));
@@ -121,7 +125,7 @@ public class ProductsServiceImplTest {
 
     @Test
     void UpdateProductInformation_WhenProductNull_ShouldThrowObjectNotFoundException(){
-        when(productsRepositories.findById(productDtoResp.getId())).thenReturn(Optional.empty());
+        when(productsRepositories.findByName(productDtoResp.getName())).thenReturn(null);
         ObjectNotFoundException acutal = Assertions.assertThrows(ObjectNotFoundException.class, ()-> productsServiceImpl.updateProductInformation(productDtoResp));
         assertThat("Cannot Find Product With Id: " + productDtoResp.getId(), is(acutal.getMessage()));
     }

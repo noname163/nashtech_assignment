@@ -15,12 +15,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.nash.assignment.constant.StatusEnum;
 
 @Entity
@@ -31,8 +30,6 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "account_sequence")
 
     private long id;
-    @Column(nullable = true, unique = false, length = 20)
-    private String avatar;
     @Column(nullable = true, unique = false, length = 13)
     private String phoneNumber;
     @Column
@@ -43,7 +40,6 @@ public class Account {
     private String username;
     @Column(nullable = true, unique = false, length = 100)
     private String password;
-
 
     @ManyToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "role_id")
@@ -61,10 +57,15 @@ public class Account {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "account", cascade = CascadeType.REFRESH)
     private Set<RateProduct> rate = new HashSet<>();
 
+    @JsonIgnore
+    @OneToOne(cascade = CascadeType.ALL)
+    private Image image;
+
     public Account() {
     }
 
-    public Account(String phoneNumber, String fullName, String userName, String password, Role role, StatusEnum status) {
+    public Account(String phoneNumber, String fullName, String userName, String password, Role role,
+            StatusEnum status) {
         this.phoneNumber = phoneNumber;
         this.fullName = fullName;
         this.username = userName;
@@ -88,7 +89,6 @@ public class Account {
     public void setId(long id) {
         this.id = id;
     }
-    
 
     public String getEmail() {
         return email;
@@ -131,14 +131,6 @@ public class Account {
         this.role = role;
     }
 
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
     public Set<Order> getOrder() {
         return order;
     }
@@ -147,9 +139,13 @@ public class Account {
         this.order = order;
     }
 
-    
+    public Image getImage() {
+        return image;
+    }
 
-    
+    public void setImage(Image image) {
+        this.image = image;
+    }
 
     public StatusEnum getStatus() {
         return status;

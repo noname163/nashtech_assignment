@@ -21,6 +21,9 @@ public class FileServiceImpl {
     public ResponseEntity<String> saveFile(String uploadDir, String fileName,
             MultipartFile multipartFile) throws IOException {
 
+        if (multipartFile == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
         String extension = getExtentionName(multipartFile);
         String result = fileName + "." + extension;
         String directory = preDir + uploadDir;
@@ -40,29 +43,28 @@ public class FileServiceImpl {
             MultipartFile[] multipartFile) throws IOException {
 
         List<String> result = new ArrayList<>();
-        if(multipartFile == null){
+        if (multipartFile == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
-            int count = 0;
-            String name = "";
-            for (MultipartFile image : multipartFile) {
+        int count = 0;
+        String name = "";
+        for (MultipartFile image : multipartFile) {
 
-                String extension = getExtentionName(image);
-                name = ++count + "." + extension;
-                result.add(name);
+            String extension = getExtentionName(image);
+            name = ++count + "." + extension;
+            result.add(name);
 
-                String directory = preDir + uploadDir;
-                Path uploadPath = Paths.get(directory);
+            String directory = preDir + uploadDir;
+            Path uploadPath = Paths.get(directory);
 
-                if (!Files.exists(uploadPath)) {
-                    Files.createDirectories(uploadPath);
-                }
-
-                InputStream inputStream = image.getInputStream();
-                Path filePath = uploadPath.resolve(name);
-                Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
             }
-        
+
+            InputStream inputStream = image.getInputStream();
+            Path filePath = uploadPath.resolve(name);
+            Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+        }
 
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
