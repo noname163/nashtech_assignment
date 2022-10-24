@@ -1,16 +1,11 @@
 package com.nash.assignment.mapper;
 
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import javax.annotation.Generated;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.nash.assignment.dto.ProductDto;
-import com.nash.assignment.dto.response.ImageProductDto;
-import com.nash.assignment.modal.Image;
 import com.nash.assignment.modal.Product;
 import com.nash.assignment.repositories.CategoriesRepositories;
 

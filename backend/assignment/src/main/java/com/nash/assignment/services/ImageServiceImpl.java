@@ -24,16 +24,26 @@ import com.nash.assignment.services.interfaces.ImageService;
 @Service
 public class ImageServiceImpl implements ImageService {
 
-    @Autowired
     ImagesRepositories imagesRepositories;
-    @Autowired
+
     ProductMapper productMapper;
-    @Autowired
+
     ProductsRepositories productsRepositories;
-    @Autowired
+
     AccountRepositories accountRepositories;
-    @Autowired
+
     ImageMapper imageMapper;
+
+    @Autowired
+    public ImageServiceImpl(ImagesRepositories imagesRepositories, ProductMapper productMapper,
+            ProductsRepositories productsRepositories, AccountRepositories accountRepositories,
+            ImageMapper imageMapper) {
+        this.imagesRepositories = imagesRepositories;
+        this.productMapper = productMapper;
+        this.productsRepositories = productsRepositories;
+        this.accountRepositories = accountRepositories;
+        this.imageMapper = imageMapper;
+    }
 
     @Override
     public Image insertImage(Image imageValue) {
@@ -56,12 +66,14 @@ public class ImageServiceImpl implements ImageService {
         return result;
     }
 
-    public Image insertAvatar(String imageValue, AccountDto accountDto){
+    public Image insertAvatar(String imageValue, AccountDto accountDto) {
         if (imageValue == null || imageValue.equals("")) {
             return null;
         }
         Account account = accountRepositories.findByPhoneNumber(accountDto.getPhoneNumber());
-        Image image = new Image(imageValue, account);
+        Image image = new Image();
+        image.setUrl(imageValue);
+        image.setAvatar(account);
         imagesRepositories.save(image);
         return image;
     }

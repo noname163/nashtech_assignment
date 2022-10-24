@@ -90,7 +90,7 @@ public class ProductsServiceImpl implements ProductsService {
         Product productDatabase = productsRepositories.findByName(productValue.getName());
         Category category = categoriesRepositories.findByName(productValue.getCategories());
         if (productDatabase==null) {
-            throw new ObjectNotFoundException("Cannot Find Product With Id: " + productValue.getId());
+            throw new ObjectNotFoundException("Cannot Find Product With Name: " + productValue.getName());
         }
         if (category == null) {
             throw new ObjectNotFoundException("Cannot Found Category Name: " + productValue.getCategories());

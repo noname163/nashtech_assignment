@@ -10,8 +10,8 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,7 +24,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nash.assignment.dto.AccountDto;
 import com.nash.assignment.services.AccountsServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
@@ -43,12 +42,16 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         @Override
         public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
                         throws AuthenticationException {
+
                 String username = request.getParameter("username");
                 String password = request.getParameter("password");
+                String email = request.getParameter("email");
+                HttpSession session = request.getSession();
+                session.setAttribute("email", email);
                 log.info("Username is: {}", username);
                 log.info("Password is: {}", password);
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                                username,
+                                email,
                                 password);
                 return authenticationManager.authenticate(authenticationToken);
         }
@@ -59,7 +62,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                         Authentication authResult) throws IOException, ServletException {
                 User user = (User) authResult.getPrincipal();
                 Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
-                
+
                 String access_token = JWT.create().withSubject(user.getUsername())
                                 .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
                                 .withIssuer(request.getRequestURL().toString())

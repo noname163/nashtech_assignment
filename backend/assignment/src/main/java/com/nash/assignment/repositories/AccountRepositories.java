@@ -13,4 +13,6 @@ public interface AccountRepositories extends JpaRepository<Account, Long> {
     Account findByUsername(String Username);
 
     Iterable<Account> findByStatus(StatusEnum status);
+
+    Account findByEmail(String email);
 }

@@ -13,7 +13,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table
@@ -27,21 +26,9 @@ public class OrderDetail {
     @Column(unique = false, nullable = true, length = 300)
     private int quantity;
 
-
     @ManyToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "product_id")
     private Product product;
-
-    // @JsonManagedReference
-    // @ManyToOne(fetch = FetchType.EAGER, optional = true, cascade =
-    // CascadeType.REFRESH)
-    // @JoinColumn(name = "price_id")
-    // private Prices price;
-
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.REFRESH)
-    @JoinColumn(name = "categoriy_id")
-    private Category categories;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.REFRESH)
@@ -54,10 +41,9 @@ public class OrderDetail {
     public OrderDetail() {
     }
 
-    public OrderDetail(int quantity, Product product, Category categories, Order order, int total) {
+    public OrderDetail(int quantity, Product product, Order order, int total) {
         this.quantity = quantity;
         this.product = product;
-        this.categories = categories;
         this.order = order;
         this.total = total;
     }
@@ -90,22 +76,6 @@ public class OrderDetail {
         this.product = product;
     }
 
-    // public Prices getPrice() {
-    // return price;
-    // }
-
-    // public void setPrice(Prices price) {
-    // this.price = price;
-    // }
-
-    public Category getCategories() {
-        return categories;
-    }
-
-    public void setCategories(Category categories) {
-        this.categories = categories;
-    }
-
     public int getTotal() {
         return total;
     }
@@ -114,10 +84,4 @@ public class OrderDetail {
         this.total = total;
     }
 
-    @Override
-    public String toString() {
-        return "OrderDetail [id= " + id + ", order= " + order + ", categories= " + categories
-                + ", product= " + product
-                + ", quantity= " + quantity + ", total= " + total + "]";
-    }
 }

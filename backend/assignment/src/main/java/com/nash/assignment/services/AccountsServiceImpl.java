@@ -1,6 +1,5 @@
 package com.nash.assignment.services;
 
-import java.io.ObjectInputFilter.Status;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -88,6 +87,7 @@ public class AccountsServiceImpl implements AccountService, UserDetailsService {
         Account account = accountOtp.get();
         return modelMapper.map(account, AccountDto.class);
     }
+
     public AccountDto getAccountByPhonenumber(String phone) {
         Optional<Account> accountOtp = Optional.of(accountRepositories.findByPhoneNumber(phone));
         if (accountOtp.isEmpty()) {
@@ -160,8 +160,8 @@ public class AccountsServiceImpl implements AccountService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Account account = accountRepositories.findByUsername(username);
-        if(account.getStatus().equals(StatusEnum.DEACTIVE)){
+        Account account = accountRepositories.findByEmail(username);
+        if (account.getStatus().equals(StatusEnum.DEACTIVE)) {
             throw new RuntimeException("This Account Have Been Ban.");
         }
         if (account == null) {
