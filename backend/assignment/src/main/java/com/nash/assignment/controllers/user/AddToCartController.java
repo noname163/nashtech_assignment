@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.nash.assignment.dto.request.OrderDetailDto;
 import com.nash.assignment.dto.request.OrderDto;
@@ -19,7 +20,7 @@ import com.nash.assignment.mapper.OrderMapper;
 import com.nash.assignment.services.OrderDetailServiceImpl;
 import com.nash.assignment.services.OrderServiceImpl;
 
-@Controller
+@RestController
 @PreAuthorize("hasAuthority('ROLE_USER')")
 @RequestMapping("/add-to-cart")
 public class AddToCartController {

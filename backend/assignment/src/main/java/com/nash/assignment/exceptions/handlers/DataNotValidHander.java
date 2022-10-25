@@ -9,14 +9,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.nash.assignment.dto.response.ExceptionResponseDto;
+import com.nash.assignment.exceptions.InformationNotValidException;
 import com.nimbusds.oauth2.sdk.ErrorResponse;
 
 @ControllerAdvice
 public class DataNotValidHander extends ResponseEntityExceptionHandler {
+
+    @ExceptionHandler({ InformationNotValidException.class })
+	protected ResponseEntity<ExceptionResponseDto> handleIllegalArgumentException(RuntimeException exception,
+			WebRequest request) {
+                ExceptionResponseDto error = new ExceptionResponseDto("400", "BAD_REQUEST",exception.getMessage());
+		return new ResponseEntity<ExceptionResponseDto>(error, HttpStatus.BAD_REQUEST);
+	}
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,

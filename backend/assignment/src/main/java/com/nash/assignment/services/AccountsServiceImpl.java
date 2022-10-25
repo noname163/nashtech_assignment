@@ -162,7 +162,7 @@ public class AccountsServiceImpl implements AccountService, UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Account account = accountRepositories.findByEmail(username);
         if (account.getStatus().equals(StatusEnum.DEACTIVE)) {
-            throw new RuntimeException("This Account Have Been Ban.");
+            throw new RuntimeException("This Account Have Been Block.");
         }
         if (account == null) {
             logger.error("Username Not Found");

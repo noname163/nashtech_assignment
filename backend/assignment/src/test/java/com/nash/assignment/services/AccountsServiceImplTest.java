@@ -100,6 +100,7 @@ public class AccountsServiceImplTest {
         when(modelMapper.map(initAccount, Account.class)).thenReturn(expecAccount);
         when(accountRepositories.save(expecAccount)).thenReturn(expecAccount);
         when(modelMapper.map(expecAccount, AccountDto.class)).thenReturn(initAccount);
+        
         AccountDto actual = accountsServiceImpl.insertAccounts(initAccount);
 
         verify(initAccount).setRole(role);

@@ -35,6 +35,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
         if (request.getServletPath().equals("/login")
                 || request.getServletPath().equals("")
                 || request.getServletPath().equals("/")
+                || request.getServletPath().equals("/products")
                 || request.getServletPath().equals("/register")
                 || request.getServletPath().equals("/swagger-ui.html")
                 || request.getServletPath().equals("/swagger-ui/**")) {
@@ -64,7 +65,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     response.setContentType(APPLICATION_JSON_VALUE);
                     new ObjectMapper().writeValue(response.getOutputStream(), error);
                 }
-            }  else {
+            } else {
                 filterChain.doFilter(request, response);
             }
         }

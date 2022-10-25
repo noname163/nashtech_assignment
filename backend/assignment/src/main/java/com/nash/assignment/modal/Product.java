@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -36,6 +37,10 @@ public class Product {
     private String name;
     @Column(nullable = true, unique = false, length = 300)
     private String price;
+
+    @Column(unique = false)
+    @Lob
+    private String description;
 
     @Column(nullable = true, unique = false)
     @Enumerated(EnumType.STRING)
@@ -114,5 +119,17 @@ public class Product {
     public void setPrice(String price) {
         this.price = price;
     }
+
+
+    public String getDescription() {
+        return description;
+    }
+
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    
 
 }

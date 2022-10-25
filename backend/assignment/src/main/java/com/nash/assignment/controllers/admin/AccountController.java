@@ -14,12 +14,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.nash.assignment.dto.AccountDto;
 import com.nash.assignment.modal.Account;
 import com.nash.assignment.services.AccountsServiceImpl;
 
-@Controller
+@RestController
 @RequestMapping("/admin/accounts")
 @PreAuthorize("hasAuthority('ROLE_ADMIN')")
 public class AccountController {

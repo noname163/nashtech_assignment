@@ -127,7 +127,7 @@ public class ProductsServiceImplTest {
     void UpdateProductInformation_WhenProductNull_ShouldThrowObjectNotFoundException(){
         when(productsRepositories.findByName(productDtoResp.getName())).thenReturn(null);
         ObjectNotFoundException acutal = Assertions.assertThrows(ObjectNotFoundException.class, ()-> productsServiceImpl.updateProductInformation(productDtoResp));
-        assertThat("Cannot Find Product With Id: " + productDtoResp.getId(), is(acutal.getMessage()));
+        assertThat("Cannot Find Product With Name: " + productDtoResp.getName(), is(acutal.getMessage()));
     }
 
     @Test

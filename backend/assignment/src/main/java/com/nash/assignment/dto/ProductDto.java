@@ -12,22 +12,19 @@ import com.nash.assignment.dto.response.ImageProductDto;
 // @Builder
 public class ProductDto {
     private long id;
-    @NotBlank(message= "Name Cannot Empty")
+    @NotBlank(message = "Name Cannot Empty")
     private String name;
     @Min(value = 1, message = "Price Cannot Empty")
     private String price;
 
-
-
     private StatusEnum status;
+
+    private String description;
 
     @NotBlank(message = "Categories Cannot Empty")
     private String categories;
 
-
     private Set<ImageProductDto> images = new HashSet<>();
-
-
 
     public long getId() {
         return id;
@@ -44,7 +41,6 @@ public class ProductDto {
     public void setName(String name) {
         this.name = name;
     }
-    
 
     public Set<ImageProductDto> getImages() {
         return images;
@@ -77,4 +73,14 @@ public class ProductDto {
     public void setPrice(String price) {
         this.price = price;
     }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    
 }
