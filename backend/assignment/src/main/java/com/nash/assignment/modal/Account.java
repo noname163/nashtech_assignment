@@ -1,6 +1,8 @@
 package com.nash.assignment.modal;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -56,6 +58,10 @@ public class Account {
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "account", cascade = CascadeType.REFRESH)
     private Set<RateProduct> rate = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "account", cascade = CascadeType.REFRESH)
+    private List<OrderDetail> orderDetails = new ArrayList<>();
 
     @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)

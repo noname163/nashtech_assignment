@@ -4,8 +4,11 @@ import App from './JS/App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.css'
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import LoginForm from './components/loginForm';
+import logService from "./service/logService"
 
+
+
+logService.init();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

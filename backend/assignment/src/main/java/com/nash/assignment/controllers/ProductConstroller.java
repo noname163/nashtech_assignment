@@ -6,10 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nash.assignment.dto.ProductDto;
+import com.nash.assignment.dto.response.ProductDtoForUser;
 import com.nash.assignment.services.ProductsServiceImpl;
 
 @RestController
@@ -17,8 +20,15 @@ import com.nash.assignment.services.ProductsServiceImpl;
 public class ProductConstroller {
     @Autowired ProductsServiceImpl productsServiceImpl;
     @GetMapping()
-    public ResponseEntity<List<ProductDto>> displayProduct(){
-        List<ProductDto> productDto = productsServiceImpl.getAllProducts();
+    public ResponseEntity<List<ProductDtoForUser>> displayProduct(){
+        List<ProductDtoForUser> productDto = productsServiceImpl.getAllProducts();
+        return ResponseEntity.status(HttpStatus.OK).body(
+            productDto
+        );
+    }
+    @PostMapping(value = "/by-categories/{category}")
+    public ResponseEntity<List<ProductDtoForUser>> displayProductByCategories(@PathVariable String category){
+        List<ProductDtoForUser> productDto = productsServiceImpl.getProductByCategories(category);
         return ResponseEntity.status(HttpStatus.OK).body(
             productDto
         );

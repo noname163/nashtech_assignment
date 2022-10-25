@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -27,6 +28,10 @@ public class Category {
     private long id;
     @Column(unique = false, nullable = true, length = 300)
     private String name;
+
+    @Column(unique = false)
+    @Lob
+    private String description;
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "categories", cascade = CascadeType.REFRESH)
@@ -54,5 +59,15 @@ public class Category {
     public void setProduct_id(Set<Product> product_id) {
         this.product_id = product_id;
     }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    
 
 }

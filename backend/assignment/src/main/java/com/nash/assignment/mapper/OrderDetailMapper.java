@@ -7,12 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.nash.assignment.dto.request.OrderDetailDto;
-import com.nash.assignment.dto.request.OrderDto;
-import com.nash.assignment.modal.Account;
-import com.nash.assignment.modal.Order;
 import com.nash.assignment.modal.OrderDetail;
 import com.nash.assignment.modal.Product;
-import com.nash.assignment.repositories.AccountRepositories;
 import com.nash.assignment.repositories.ProductsRepositories;
 
 @Component

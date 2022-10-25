@@ -2,15 +2,16 @@ package com.nash.assignment.services.interfaces;
 
 import java.util.List;
 
-import com.nash.assignment.dto.ProductDto;
+import com.nash.assignment.dto.ProductDtoForAdmin;
+import com.nash.assignment.dto.response.ProductDtoForUser;
 import com.nash.assignment.modal.Product;
 
 public interface ProductsService {
-    ProductDto insertProduct(ProductDto products);
+    ProductDtoForAdmin insertProduct(ProductDtoForAdmin products);
 
-    List<ProductDto> getAllProducts();
+    List<ProductDtoForUser> getAllProducts();
 
-    ProductDto updateProductStatus(long id, int statusValue);
+    ProductDtoForAdmin updateProductStatus(long id, int statusValue);
 
-    ProductDto updateProductInformation(ProductDto productValue);
+    ProductDtoForAdmin updateProductInformation(ProductDtoForAdmin productValue);
 }

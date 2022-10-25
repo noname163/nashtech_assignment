@@ -19,7 +19,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 import com.nash.assignment.dto.AccountDto;
-import com.nash.assignment.dto.ProductDto;
+import com.nash.assignment.dto.ProductDtoForAdmin;
+import com.nash.assignment.dto.response.ProductDtoForUser;
 import com.nash.assignment.mapper.ImageMapper;
 import com.nash.assignment.mapper.ProductMapper;
 import com.nash.assignment.modal.Account;
@@ -90,7 +91,7 @@ public class ImageServiceImplTest {
     @Test
     void InsertMultipeImages_WhenImageNull_ShouldReturnNull() {
         List<String> imageName = null;
-        ProductDto productDto = mock(ProductDto.class);
+        ProductDtoForAdmin productDto = mock(ProductDtoForAdmin.class);
         Set<Image> expected = new HashSet<>();
         Set<Image> actual = imageServiceImpl.insertMultipeImages(imageName, productDto);
         assertThat(actual, is(expected));
@@ -98,7 +99,7 @@ public class ImageServiceImplTest {
     @Test
     void InsertMultipeImages_WhenDataValid_ShouldReturnSetImage() {
         List<String> imageName = new ArrayList<>();
-        ProductDto productDto = new ProductDto();
+        ProductDtoForAdmin productDto = new ProductDtoForAdmin();
         imageName.add("test");
         Set<Image> expected = new HashSet<>();
         Product product = mock(Product.class);

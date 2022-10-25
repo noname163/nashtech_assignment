@@ -15,12 +15,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.nash.assignment.constant.StatusEnum;
-import com.nash.assignment.dto.ProductDto;
+import com.nash.assignment.dto.ProductDtoForAdmin;
+import com.nash.assignment.dto.response.ProductDtoForUser;
 import com.nash.assignment.exceptions.InformationNotValidException;
 import com.nash.assignment.exceptions.ObjectExistException;
 import com.nash.assignment.exceptions.ObjectNotFoundException;
 import com.nash.assignment.mapper.ImageMapper;
 import com.nash.assignment.mapper.ProductMapper;
+import com.nash.assignment.mapper.ProductMapperForAdmin;
 import com.nash.assignment.modal.Category;
 import com.nash.assignment.modal.Product;
 import com.nash.assignment.repositories.CategoriesRepositories;
@@ -38,7 +40,11 @@ public class ProductsServiceImplTest {
 
     Category category;
 
-    ProductDto productDtoResp;
+    ProductDtoForUser productDtoResp;
+
+    ProductDtoForAdmin productDtoForAdmin;
+
+    ProductMapperForAdmin productMapperForAdmin;
 
     Product product;
 
@@ -47,108 +53,110 @@ public class ProductsServiceImplTest {
     @BeforeEach
     void setUpObject() {
         productMapper = mock(ProductMapper.class);
+        productMapperForAdmin = mock(ProductMapperForAdmin.class);
         imageMapper= mock(ImageMapper.class);
         category = mock(Category.class);
         productsRepositories = mock(ProductsRepositories.class);
-        productDtoResp = mock(ProductDto.class);
+        productDtoResp = mock(ProductDtoForUser.class);
+        productDtoForAdmin = mock(ProductDtoForAdmin.class);
         product = mock(Product.class);
         categoriesRepositories = mock(CategoriesRepositories.class);
-        productsServiceImpl = new ProductsServiceImpl(productsRepositories, categoriesRepositories, productMapper, imageMapper);
+        productsServiceImpl = new ProductsServiceImpl(productsRepositories, categoriesRepositories, productMapper, imageMapper, productMapperForAdmin);
     }
 
     @Test
     void GetAllProducts_ShouldReturnListProductDto() {
-        List<ProductDto> expectedList = new ArrayList<>();
+        List<ProductDtoForUser> expectedList = new ArrayList<>();
         List<Product> productList = new ArrayList<>();
         productList.add(product);
         when(productsRepositories.findAll()).thenReturn(productList);
         when(productMapper.mapEntityToDto(product)).thenReturn(productDtoResp);
         expectedList.add(productDtoResp);
 
-        List<ProductDto> actual = productsServiceImpl.getAllProducts();
+        List<ProductDtoForUser> actual = productsServiceImpl.getAllProducts();
         assertThat(expectedList, is(actual));
 
     }
 
     @Test
-    void InsertProduct_WhenDataValid_ShouldReturnProductDto() {
-        ProductDto expected = mock(ProductDto.class);
-        when(categoriesRepositories.findByName(productDtoResp.getCategories())).thenReturn(category);
-        when(productMapper.mapDtoToEntity(expected)).thenReturn(product);
+    void insertProduct_WhenDataValid_ShouldReturnProductDtoForAdmin() {
+        ProductDtoForAdmin expected = mock(ProductDtoForAdmin.class);
+        when(categoriesRepositories.findByName(productDtoForAdmin.getCategories())).thenReturn(category);
+        when(productMapperForAdmin.mapDtoToEntity(expected)).thenReturn(product);
         when(productsRepositories.save(product)).thenReturn(product);
-        when(productMapper.mapEntityToDto(product)).thenReturn(expected);
-        ProductDto actual = productsServiceImpl.insertProduct(expected);
+        when(productMapperForAdmin.mapEntityToDto(product)).thenReturn(expected);
+        ProductDtoForAdmin actual = productsServiceImpl.insertProduct(expected);
         verify(expected).setStatus(StatusEnum.ACTIVE);
         assertThat(expected, is(actual));
     }
 
     @Test
     void InsertProduct_WhenProductExist_ShouldThrowObjectNotFoundException() {
-        when(productsRepositories.findByName(productDtoResp.getName())).thenReturn(product);
+        when(productsRepositories.findByName(productDtoForAdmin.getName())).thenReturn(product);
         ObjectExistException actual = Assertions.assertThrows(ObjectExistException.class, 
-                () -> productsServiceImpl.insertProduct(productDtoResp));
+                () -> productsServiceImpl.insertProduct(productDtoForAdmin));
         assertThat("Product Name Exists.", is(actual.getMessage()));
     }
 
     @Test
     void InsertProduct_WhenCategoriesNull_ShouldReturnProductDto() {
-        when(productsRepositories.findByName(productDtoResp.getName())).thenReturn(null);
-        when(categoriesRepositories.findByName(productDtoResp.getCategories())).thenReturn(null);
+        when(productsRepositories.findByName(productDtoForAdmin.getName())).thenReturn(null);
+        when(categoriesRepositories.findByName(productDtoForAdmin.getCategories())).thenReturn(null);
         ObjectNotFoundException actual = Assertions.assertThrows(ObjectNotFoundException.class, 
-                () -> productsServiceImpl.insertProduct(productDtoResp));
-        assertThat("Cannot Find Category Name: " + productDtoResp.getCategories(), is(actual.getMessage()));
+                () -> productsServiceImpl.insertProduct(productDtoForAdmin));
+        assertThat("Cannot Find Category Name: " + productDtoForAdmin.getCategories(), is(actual.getMessage()));
     }
 
     @Test
     void UpdateProductInformation_WhenDataValid_ShouldReturnProductResp() {
 
-        when(productsRepositories.findByName(productDtoResp.getName())).thenReturn(product);
-        when(categoriesRepositories.findByName(productDtoResp.getCategories())).thenReturn(category);
-        when(productMapper.mapEntityToDto(product)).thenReturn(productDtoResp);
+        when(productsRepositories.findByName(productDtoForAdmin.getName())).thenReturn(product);
+        when(categoriesRepositories.findByName(productDtoForAdmin.getCategories())).thenReturn(category);
+        when(productMapperForAdmin.mapEntityToDto(product)).thenReturn(productDtoForAdmin);
 
-        ProductDto actual = productsServiceImpl.updateProductInformation(productDtoResp);
-        verify(product).setName(productDtoResp.getName());
-        verify(product).setPrice(productDtoResp.getPrice());
+        ProductDtoForAdmin actual = productsServiceImpl.updateProductInformation(productDtoForAdmin);
+        verify(product).setName(productDtoForAdmin.getName());
+        verify(product).setPrice(productDtoForAdmin.getPrice());
         verify(product).setCategories(category);
-        verify(product).setImages(imageMapper.mapImageProductDtoToEntity(productDtoResp.getImages()));
+        verify(product).setImages(imageMapper.mapImageProductDtoToEntity(productDtoForAdmin.getImages()));
 
-        assertThat(productDtoResp, is(actual));
+        assertThat(productDtoForAdmin, is(actual));
     }
 
     @Test
     void UpdateProductInformation_WhenCategoryNull_ShouldThrowObjectNotFoundException(){
-        when(productsRepositories.findByName(productDtoResp.getName())).thenReturn(product);
-        when(categoriesRepositories.findByName(productDtoResp.getCategories())).thenReturn(null);
-        ObjectNotFoundException acutal = Assertions.assertThrows(ObjectNotFoundException.class, ()-> productsServiceImpl.updateProductInformation(productDtoResp));
-        assertThat("Cannot Found Category Name: " + productDtoResp.getCategories(), is(acutal.getMessage()));
+        when(productsRepositories.findByName(productDtoForAdmin.getName())).thenReturn(product);
+        when(categoriesRepositories.findByName(productDtoForAdmin.getCategories())).thenReturn(null);
+        ObjectNotFoundException acutal = Assertions.assertThrows(ObjectNotFoundException.class, ()-> productsServiceImpl.updateProductInformation(productDtoForAdmin));
+        assertThat("Cannot Found Category Name: " + productDtoForAdmin.getCategories(), is(acutal.getMessage()));
     }
 
     @Test
     void UpdateProductInformation_WhenProductNull_ShouldThrowObjectNotFoundException(){
-        when(productsRepositories.findByName(productDtoResp.getName())).thenReturn(null);
-        ObjectNotFoundException acutal = Assertions.assertThrows(ObjectNotFoundException.class, ()-> productsServiceImpl.updateProductInformation(productDtoResp));
-        assertThat("Cannot Find Product With Name: " + productDtoResp.getName(), is(acutal.getMessage()));
+        when(productsRepositories.findByName(productDtoForAdmin.getName())).thenReturn(null);
+        ObjectNotFoundException acutal = Assertions.assertThrows(ObjectNotFoundException.class, ()-> productsServiceImpl.updateProductInformation(productDtoForAdmin));
+        assertThat("Cannot Find Product With Name: " + productDtoForAdmin.getName(), is(acutal.getMessage()));
     }
 
     @Test
     void UpdateProductStatus_WhenStatusData1_ShouldReturnProductDtoWithStatusActive() {
-        when(productsRepositories.findById(productDtoResp.getId())).thenReturn(Optional.of(product));
+        when(productsRepositories.findById(productDtoForAdmin.getId())).thenReturn(Optional.of(product));
         when(productsRepositories.save(product)).thenReturn(product);
-        when(productMapper.mapEntityToDto(product)).thenReturn(productDtoResp);
-        ProductDto actual = productsServiceImpl.updateProductStatus(productDtoResp.getId(), 1);
+        when(productMapperForAdmin.mapEntityToDto(product)).thenReturn(productDtoForAdmin);
+        ProductDtoForAdmin actual = productsServiceImpl.updateProductStatus(productDtoForAdmin.getId(), 1);
         verify(product).setStatus(StatusEnum.ACTIVE);
-        assertThat(productDtoResp.getStatus(), is(actual.getStatus()));
+        assertThat(productDtoForAdmin.getStatus(), is(actual.getStatus()));
 
     }
 
     @Test
     void UpdateProductStatus_WhenStatusData2_ShouldReturnProductDtoWithStatusDeactive() {
-        when(productsRepositories.findById(productDtoResp.getId())).thenReturn(Optional.of(product));
+        when(productsRepositories.findById(productDtoForAdmin.getId())).thenReturn(Optional.of(product));
         when(productsRepositories.save(product)).thenReturn(product);
-        when(productMapper.mapEntityToDto(product)).thenReturn(productDtoResp);
-        ProductDto actual = productsServiceImpl.updateProductStatus(productDtoResp.getId(), 2);
+        when(productMapperForAdmin.mapEntityToDto(product)).thenReturn(productDtoForAdmin);
+        ProductDtoForAdmin actual = productsServiceImpl.updateProductStatus(productDtoForAdmin.getId(), 2);
         verify(product).setStatus(StatusEnum.DEACTIVE);
-        assertThat(productDtoResp.getStatus(), is(actual.getStatus()));
+        assertThat(productDtoForAdmin.getStatus(), is(actual.getStatus()));
     }
 
     @Test

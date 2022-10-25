@@ -13,6 +13,7 @@ import com.nash.assignment.dto.request.OrderDetailDto;
 import com.nash.assignment.dto.request.OrderDto;
 import com.nash.assignment.exceptions.ObjectNotFoundException;
 import com.nash.assignment.mapper.OrderDetailMapper;
+import com.nash.assignment.modal.Account;
 import com.nash.assignment.modal.Order;
 import com.nash.assignment.modal.OrderDetail;
 import com.nash.assignment.repositories.OrderDetailRepositories;
@@ -50,6 +51,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
         List<OrderDetail> orderDetails = orderDetailMapper.mapDtoToEntity(orderDetailDtos);
         for (OrderDetail orderDetail : orderDetails) {
             orderDetail.setOrder(order);
+            orderDetail.setAccount(order.getAccount());
             orderDetailRepositories.save(orderDetail);
         }
         return orderDetailDtos;

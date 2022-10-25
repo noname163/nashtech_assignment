@@ -12,8 +12,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 @Entity
 @Table
 public class RateProduct {
@@ -25,7 +23,6 @@ public class RateProduct {
     @Column(nullable = true, unique = false, length = 6)
     private int rate;
 
-
     @ManyToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "account_id")
     private Account account;
@@ -35,10 +32,8 @@ public class RateProduct {
     private Product product;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.REFRESH)
-    @JoinColumn(name = "order_id")
-    private Order order;
-
-
+    @JoinColumn(name = "OrderDetail_id")
+    private OrderDetail orderDetail;
 
     public RateProduct() {
     }
@@ -81,14 +76,12 @@ public class RateProduct {
         this.product = product;
     }
 
-    public Order getOrder() {
-        return order;
+    public OrderDetail getOrderDetail() {
+        return orderDetail;
     }
 
-    public void setOrder(Order order) {
-        this.order = order;
+    public void setOrderDetail(OrderDetail orderDetail) {
+        this.orderDetail = orderDetail;
     }
-
-    
 
 }

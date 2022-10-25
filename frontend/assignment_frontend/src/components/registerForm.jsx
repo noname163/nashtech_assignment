@@ -1,0 +1,122 @@
+import React, { Component } from 'react';
+import '../CSS/login.module.css'
+
+class RegisterForm extends Component {
+    render() {
+        return (
+            <React.Fragment>
+                <section class="h-100 gradient-form" style={ { backgroundColor: '#eee' } }>
+                    <div class="container py-5 h-100">
+                        <div class="row d-flex justify-content-center align-items-center h-100">
+                            <div class="col-xl-10">
+
+                                <div class="card rounded-3 text-black">
+                                    <form action="http://localhost:8080/register" method="post" >
+                                        <div class="row g-0">
+
+                                            <div class="col-lg-6">
+                                                <div class="card-body p-md-5 mx-md-4">
+
+                                                    <div class="text-center">
+                                                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
+                                                            style={ { width: '185px' } } alt="logo" />
+                                                        <h4 class="mt-1 mb-5 pb-1">We are The Lotus Team</h4>
+                                                    </div>
+
+
+                                                    {/* <div  class="alert alert-danger">
+                                                            Invalid username and password.
+                                                        </div>
+                                                        <div  class="alert alert-success">
+                                                            You have been logged out.
+
+                                                        </div>
+                                                        <div  class="alert alert-success">
+                                                            Created Account success
+                                                        </div>
+                                                        <p>Please login to your account</p>
+                                                        <p text="${successMess}"></p> */}
+
+                                                    <div class="form-outline mb-4">
+                                                        <input type="text" id="form2Example11" name="phoneNumber"
+                                                            class="form-control" placeholder="Phone number" />
+                                                    </div>
+                                                    <div class="form-outline mb-4">
+                                                        <input type="text" id="form2Example11" name="fullName" class="form-control"
+                                                            placeholder="Full Name" />
+                                                    </div>
+                                                    <div class="form-outline mb-4">
+                                                        <input type="text" id="form2Example11" name="username" class="form-control"
+                                                            placeholder="Username" />
+                                                    </div>
+
+                                                    <div class="form-outline mb-4">
+                                                        <input type="password" id="password" name="password" class="form-control"
+                                                            placeholder="Password" />
+                                                    </div>
+                                                    <div class="form-outline mb-4">
+                                                        <input type="password" id="confirm_password" name="confirm_password"
+                                                            class="form-control" placeholder="ReEnter-Password" />
+                                                        <span id='message' style={ {} }></span>
+                                                    </div>
+
+                                                    <div class="text-center pt-1 mb-5 pb-1">
+                                                        <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3"
+                                                            type="submit" id="submitBtn" name="submit" disabled>Register</button>
+                                                        <div style={ { display: 'block' } }>
+                                                            <input style={ { float: 'left' } } type="checkbox" name="remember-me" id="remember-me" />
+                                                            <p style={ { float: 'left' } }>Remember me?</p>
+                                                        </div>
+                                                        <a class="text-muted" href="#!">Forgot password?</a>
+                                                    </div>
+
+                                                    <div class="d-flex align-items-center justify-content-center pb-4">
+                                                        <p class="mb-0 me-2">Already Have Account?</p>
+                                                        <a type="button" href="/login" class="btn btn-outline-danger">Login</a>
+                                                    </div>
+
+
+
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 d-flex align-items-center gradient-custom-2">
+                                                <div class="text-white px-3 py-4 p-md-5 mx-md-4">
+                                                    <div class="col col-md-10">
+                                                        <figure class="snip1336">
+                                                            <figcaption>
+                                                                <div>
+                                                                    <img src="/images/banner1 (1).jpg" alt="profile-sample4"
+                                                                        class="profile img-fluid" id="thumbnail" />
+                                                                </div><br />
+                                                                <div class="custom-file mt-3">
+                                                                    <input name="image" type="file" class="custom-file-input"
+                                                                        id="fileImage" accept=".png,.jpg" />
+                                                                    <label class="custom-file-label" for="customFile">Choose
+                                                                        file</label>
+                                                                </div>
+                                                            </figcaption>
+                                                        </figure>
+                                                    </div>
+                                                    <h4 class="mb-4">We are more than just a company</h4>
+                                                    <p class="small mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
+                                                        do eiusmod
+                                                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                                        quis nostrud
+                                                        exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                {/* <p>Loginform</p> */ }
+            </React.Fragment>
+        );
+    }
+}
+
+export default RegisterForm;

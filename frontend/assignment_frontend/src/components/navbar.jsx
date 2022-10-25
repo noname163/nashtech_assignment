@@ -24,7 +24,7 @@ class Navbar extends Component {
                                 <Link class="nav-link" to="/login">Login <span class="sr-only">(current)</span></Link>
                             </li>
                             <li class="nav-item active" >
-                                <a class="nav-link" href="/register">Register <span class="sr-only">(current)</span></a>
+                                <Link class="nav-link" to="/register">Register <span class="sr-only">(current)</span></Link>
                             </li>
 
                             <li class="nav-item dropdown" >

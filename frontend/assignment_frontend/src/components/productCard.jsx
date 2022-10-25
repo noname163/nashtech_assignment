@@ -1,41 +1,42 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-// import '../CSS/index.css';
 import Pagination from './pagination';
 import { paginate, previousAndNextBtn } from '../JS/paginate';
+import config from "../config.json";
+import http from "../service/httpService";
+import {ToastContainer} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"
 
 class ProductCard extends Component {
 
     state = {
         posts: [],
         pageSize: 6,
-        currentPage:1
+        currentPage: 1
     };
     async componentDidMount() {
-        const { data: posts } = await axios.get('https://jsonplaceholder.typicode.com/posts');
-        // const { data: posts } = await axios.get('http://localhost:8080/products/ProductAPI');
+        const { data: posts } = await http.get(config.apiEndpoint);
         this.setState({ posts });
-        
-        // this.setState({posts:productData});
 
     }
-    handlePageChange= page=>{
-        this.setState({currentPage:page})
+    handlePageChange = page => {
+        this.setState({ currentPage: page })
     }
-    handleBtn = st=>{
-        this.setState({currentPage:previousAndNextBtn(this.state.posts.length,this.state.pageSize,this.state.currentPage,st)});
-        
+    handleBtn = st => {
+        this.setState({ currentPage: previousAndNextBtn(this.state.posts.length, this.state.pageSize, this.state.currentPage, st) });
+
     }
     render() {
         const productData = paginate(this.state.posts, this.state.currentPage, this.state.pageSize);
-        
+
         return (
             <React.Fragment>
+                <ToastContainer/>
                 <section style={ { backgroundColor: '' } }>
                     <div >
                         <div class="row">
-                            { productData.map(item => 
+                            { productData.map(item =>
                                 <div class="col-md-12 col-lg-4 mb-4 mb-lg-0 mt-4">
                                     <div id='card-items' class="card">
                                         <Link to="/productDetail">
@@ -52,12 +53,12 @@ class ProductCard extends Component {
                                             <div class="card-body">
                                                 <div class="d-flex justify-content-between">
                                                     <p class="small"><a href="#!" class="text-muted">1</a></p>
-                                                    <p class="small text-danger"><s>$1099</s></p>
+                                                    {/* <p class="small text-danger"><s>${item.price}</s></p> */ }
                                                 </div>
 
                                                 <div class="d-flex justify-content-between mb-3">
-                                                    <h5 class="mb-0">{item.title}</h5>
-                                                    <h5 class="text-dark mb-0">$999</h5>
+                                                    <h5 class="mb-0">{ item.name }</h5>
+                                                    <h5 class="text-dark mb-0">${ item.price }</h5>
                                                 </div>
 
                                                 <div class="d-flex justify-content-between mb-2">
@@ -81,12 +82,12 @@ class ProductCard extends Component {
                         </div>
                     </div>
                 </section>
-                <Pagination itemsCount={this.state.posts.length} 
-                pageSize = {this.state.pageSize}
-                currentPage={this.state.currentPage}
-                onPageChange={this.handlePageChange}
-                btn={this.handleBtn}
-                 />
+                <Pagination itemsCount={ this.state.posts.length }
+                    pageSize={ this.state.pageSize }
+                    currentPage={ this.state.currentPage }
+                    onPageChange={ this.handlePageChange }
+                    btn={ this.handleBtn }
+                />
             </React.Fragment>
         );
     }

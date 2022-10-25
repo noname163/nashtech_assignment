@@ -48,9 +48,7 @@ public class Order {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "order", cascade = CascadeType.REFRESH)
     private List<OrderDetail> orderDetails = new ArrayList<>();
 
-    @JsonIgnore
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "order", cascade = CascadeType.REFRESH)
-    private Set<RateProduct> rateProduct = new HashSet<>();
+    
 
     public Order() {
     }

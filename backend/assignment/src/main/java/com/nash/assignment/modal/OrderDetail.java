@@ -1,5 +1,8 @@
 package com.nash.assignment.modal;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -35,6 +39,16 @@ public class OrderDetail {
     @JoinColumn(name = "order_id")
     private Order order;
 
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "account_id")
+    private Account account;
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "orderDetail", cascade = CascadeType.REFRESH)
+    private List<RateProduct> rateProduct = new ArrayList<>();
+
+    
     @Column(nullable = true, unique = false, length = 300)
     private int total;
 
@@ -83,5 +97,15 @@ public class OrderDetail {
     public void setTotal(int total) {
         this.total = total;
     }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+
+    
 
 }

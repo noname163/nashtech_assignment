@@ -9,8 +9,7 @@ import javax.validation.constraints.NotBlank;
 import com.nash.assignment.constant.StatusEnum;
 import com.nash.assignment.dto.response.ImageProductDto;
 
-// @Builder
-public class ProductDto {
+public class ProductDtoForAdmin {
     private long id;
     @NotBlank(message = "Name Cannot Empty")
     private String name;
@@ -20,6 +19,10 @@ public class ProductDto {
     private StatusEnum status;
 
     private String description;
+
+    private String createdDate;
+
+    private String updateDate;
 
     @NotBlank(message = "Categories Cannot Empty")
     private String categories;
@@ -80,6 +83,22 @@ public class ProductDto {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(String updateDate) {
+        this.updateDate = updateDate;
     }
 
     

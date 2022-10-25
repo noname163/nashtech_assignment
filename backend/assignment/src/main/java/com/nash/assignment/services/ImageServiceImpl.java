@@ -9,8 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nash.assignment.dto.AccountDto;
-import com.nash.assignment.dto.ProductDto;
+import com.nash.assignment.dto.ProductDtoForAdmin;
 import com.nash.assignment.dto.response.ImageAccountDto;
+import com.nash.assignment.dto.response.ProductDtoForUser;
 import com.nash.assignment.mapper.ImageMapper;
 import com.nash.assignment.mapper.ProductMapper;
 import com.nash.assignment.modal.Account;
@@ -51,7 +52,7 @@ public class ImageServiceImpl implements ImageService {
         return image;
     }
 
-    public Set<Image> insertMultipeImages(List<String> imageName, ProductDto productDto) {
+    public Set<Image> insertMultipeImages(List<String> imageName, ProductDtoForAdmin productDto) {
         Set<Image> result = new HashSet<>();
         if (imageName == null) {
             return result;

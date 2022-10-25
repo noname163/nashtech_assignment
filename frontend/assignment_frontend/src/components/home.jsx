@@ -1,14 +1,13 @@
 
-import Header from '../components/header';
-import Footer from '../components/footer';
-import ProductCard from '../components/productCard';
-import { BrowserRouter, Link, Route, Router, Routes } from 'react-router-dom'
-import Navbar from '../components/navbar';
 import React, { Component } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import Footer from '../components/footer';
+import Header from '../components/header';
 import LoginForm from '../components/loginForm';
+import Navbar from '../components/navbar';
+import ProductCard from '../components/productCard';
 import ProductDetail from '../components/productDetail';
-import axios from 'axios';
-import Pagination from '../components/pagination';
+import RegisterForm from './registerForm';
 
 
 
@@ -26,9 +25,11 @@ class Home extends Component {
                     <Routes>
                         <Route path='/login' element={ <LoginForm /> } />
                         <Route path='/productDetail' element={ <ProductDetail /> } />
+                        <Route path='/register' element={<RegisterForm/>} />
                         <Route path='/' element={ <ProductCard/> } />
                     </Routes>
                 </div>
+                
                 <hr />
                 
                 <Footer />

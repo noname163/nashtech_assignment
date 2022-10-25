@@ -1,20 +1,22 @@
 package com.nash.assignment.services;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nash.assignment.constant.StatusEnum;
-import com.nash.assignment.dto.ProductDto;
+import com.nash.assignment.dto.ProductDtoForAdmin;
+import com.nash.assignment.dto.response.ProductDtoForUser;
 import com.nash.assignment.exceptions.InformationNotValidException;
 import com.nash.assignment.exceptions.ObjectExistException;
 import com.nash.assignment.exceptions.ObjectNotFoundException;
 import com.nash.assignment.mapper.ImageMapper;
 import com.nash.assignment.mapper.ProductMapper;
+import com.nash.assignment.mapper.ProductMapperForAdmin;
 import com.nash.assignment.modal.Category;
 import com.nash.assignment.modal.Product;
 import com.nash.assignment.repositories.CategoriesRepositories;
@@ -32,15 +34,18 @@ public class ProductsServiceImpl implements ProductsService {
 
     ImageMapper imageMapper;
 
+    ProductMapperForAdmin productMapperForAdmin;
+
 
 
     @Autowired
     public ProductsServiceImpl(ProductsRepositories productsRepositories, CategoriesRepositories categoriesRepositories,
-            ProductMapper productMapper, ImageMapper imageMapper) {
+            ProductMapper productMapper, ImageMapper imageMapper, ProductMapperForAdmin productMapperForAdmin) {
         this.productsRepositories = productsRepositories;
         this.categoriesRepositories = categoriesRepositories;
         this.productMapper = productMapper;
         this.imageMapper = imageMapper;
+        this.productMapperForAdmin = productMapperForAdmin;
     }
 
     public Product insertProduct1(Product product) {
@@ -48,7 +53,7 @@ public class ProductsServiceImpl implements ProductsService {
     }
 
     @Override
-    public ProductDto insertProduct(ProductDto productDto) {
+    public ProductDtoForAdmin insertProduct(ProductDtoForAdmin productDto) {
         if (productsRepositories.findByName(productDto.getName()) != null) {
             throw new ObjectExistException("Product Name Exists.");
         }
@@ -57,19 +62,21 @@ public class ProductsServiceImpl implements ProductsService {
             throw new ObjectNotFoundException("Cannot Find Category Name: " + categories);
         }
         productDto.setStatus(StatusEnum.ACTIVE);
-        Product product = productMapper.mapDtoToEntity(productDto);
+        Product product = productMapperForAdmin.mapDtoToEntity(productDto);
+        LocalDate date = LocalDate.now();
+        product.setCreatedDate(date.toString());
         product = productsRepositories.save(product);
-        return productMapper.mapEntityToDto(product);
+        return productMapperForAdmin.mapEntityToDto(product);
     }
 
     @Override
-    public List<ProductDto> getAllProducts() {
+    public List<ProductDtoForUser> getAllProducts() {
         return productsRepositories.findAll().stream()
                 .map(product -> productMapper.mapEntityToDto(product)).collect(Collectors.toList());
     }
 
     @Override
-    public ProductDto updateProductStatus(long id, int statusVale) {
+    public ProductDtoForAdmin updateProductStatus(long id, int statusVale) {
         Optional<Product> productotp = productsRepositories.findById(id);
         if (productotp.isEmpty()) {
             throw new ObjectNotFoundException("Cannot Find Product With Id: " + id);
@@ -79,14 +86,16 @@ public class ProductsServiceImpl implements ProductsService {
         }
         Product productDataBase = productotp.get();
         StatusEnum statusEnum = statusVale == 1 ? StatusEnum.ACTIVE : StatusEnum.DEACTIVE;
+        LocalDate date = LocalDate.now();
         productDataBase.setStatus(statusEnum);
+        productDataBase.setUpdateDate(date.toString());
         Product product = productsRepositories.save(productDataBase);
 
-        return productMapper.mapEntityToDto(product);
+        return productMapperForAdmin.mapEntityToDto(product);
     }
 
     @Override
-    public ProductDto updateProductInformation(ProductDto productValue) {
+    public ProductDtoForAdmin updateProductInformation(ProductDtoForAdmin productValue) {
         Product productDatabase = productsRepositories.findByName(productValue.getName());
         Category category = categoriesRepositories.findByName(productValue.getCategories());
         if (productDatabase==null) {
@@ -95,11 +104,22 @@ public class ProductsServiceImpl implements ProductsService {
         if (category == null) {
             throw new ObjectNotFoundException("Cannot Found Category Name: " + productValue.getCategories());
         }
+        LocalDate date = LocalDate.now();
+        productDatabase.setUpdateDate(date.toString());
         productDatabase.setName(productValue.getName());
         productDatabase.setPrice(productValue.getPrice());
         productDatabase.setCategories(category);
         productDatabase.setImages(imageMapper.mapImageProductDtoToEntity(productValue.getImages()));
-        return productMapper.mapEntityToDto(productDatabase);
+        return productMapperForAdmin.mapEntityToDto(productDatabase);
+    }
+
+    public List<ProductDtoForUser> getProductByCategories(String categoriesName){
+        Category category = categoriesRepositories.findByName(categoriesName);
+        if(category == null){
+            throw new ObjectNotFoundException("Cannot Find Category Name: "+ categoriesName);
+        }
+        List<Product> products = productsRepositories.findByCategories(category);
+        return productMapper.mapEntityToDto(products);
     }
 
 }

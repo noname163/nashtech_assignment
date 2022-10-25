@@ -42,6 +42,11 @@ public class Product {
     @Lob
     private String description;
 
+    @Column(unique = false)
+    private String createdDate;
+    @Column(unique = false)
+    private String updateDate;
+
     @Column(nullable = true, unique = false)
     @Enumerated(EnumType.STRING)
     private StatusEnum status;
@@ -129,6 +134,28 @@ public class Product {
     public void setDescription(String description) {
         this.description = description;
     }
+
+
+    public String getCreatedDate() {
+        return createdDate;
+    }
+
+
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
+    }
+
+
+    public String getUpdateDate() {
+        return updateDate;
+    }
+
+
+    public void setUpdateDate(String updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    
 
     
 
