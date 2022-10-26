@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.nash.assignment.dto.ProductDtoForAdmin;
 import com.nash.assignment.mapper.ImageMapper;
 import com.nash.assignment.modal.Image;
+import com.nash.assignment.services.CloudinaryServiceImpl;
 import com.nash.assignment.services.FileServiceImpl;
 import com.nash.assignment.services.ImageServiceImpl;
 import com.nash.assignment.services.ProductsServiceImpl;
@@ -39,17 +40,18 @@ public class ProductController {
         ImageServiceImpl imageServiceImpl;
         @Autowired
         ImageMapper imageMapper;
+        @Autowired CloudinaryServiceImpl cloudinaryServiceImpl;
 
         @PostMapping()
         public ResponseEntity<ProductDtoForAdmin> insertProduct(@Valid ProductDtoForAdmin productDto,
                         MultipartFile[] productimages)
                         throws IOException {
-
-                ResponseEntity<List<String>> saveImage = fileServiceImpl.saveMultipleFile(
-                                "product/" + productDto.getName(),
-                                productimages);
+                List<String> urls =  cloudinaryServiceImpl.uploadImages(productimages);
+                // ResponseEntity<List<String>> saveImage = fileServiceImpl.saveMultipleFile(
+                //                 "product/" + productDto.getName(),
+                //                 productimages);
                 productsServiceImpl.insertProduct(productDto);
-                List<String> urls = saveImage.getBody();
+                // List<String> urls = saveImage.getBody();
                 Set<Image> images = imageServiceImpl.insertMultipeImages(urls, productDto);
                 productDto.setImages(imageMapper.mapEntityToImageProductDto(images));
                 ProductDtoForAdmin product = productsServiceImpl.updateProductInformation(productDto);

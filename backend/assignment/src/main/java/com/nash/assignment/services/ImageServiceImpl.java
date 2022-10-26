@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.nash.assignment.dto.AccountDto;
 import com.nash.assignment.dto.ProductDtoForAdmin;
 import com.nash.assignment.dto.response.ImageAccountDto;
+import com.nash.assignment.dto.response.ImageProductDto;
 import com.nash.assignment.dto.response.ProductDtoForUser;
 import com.nash.assignment.mapper.ImageMapper;
 import com.nash.assignment.mapper.ProductMapper;
@@ -78,5 +79,12 @@ public class ImageServiceImpl implements ImageService {
         imagesRepositories.save(image);
         return image;
     }
+
+    // public Set<ImageProductDto> getProductImage(String productName){
+    //     Product product = productsRepositories.findByName(productName);
+    //     Set<Image> images = imagesRepositories.findByProduct(product);
+    //     Set<ImageProductDto> imagesDto = imageMapper.mapEntityToImageProductDto(images);
+    //     return imagesDto;
+    // }
 
 }

@@ -17,6 +17,7 @@ import com.nash.assignment.dto.AccountDto;
 import com.nash.assignment.mapper.ImageMapper;
 import com.nash.assignment.modal.Image;
 import com.nash.assignment.services.AccountsServiceImpl;
+import com.nash.assignment.services.CloudinaryServiceImpl;
 import com.nash.assignment.services.FileServiceImpl;
 import com.nash.assignment.services.ImageServiceImpl;
 
@@ -31,12 +32,13 @@ public class RegisterController {
     ImageMapper imageMapper;
     @Autowired
     ImageServiceImpl imageServiceImpl;
+    @Autowired CloudinaryServiceImpl cloudinaryServiceImpl;
 
     @PostMapping
     public ResponseEntity<AccountDto> insertAccount(@Valid AccountDto accountDto, MultipartFile avatar)
             throws IOException {
-        ResponseEntity<String> imageName = fileServiceImpl.saveFile("avatar", accountDto.getPhoneNumber(), avatar);
-        Image image = imageServiceImpl.insertAvatar(imageName.getBody(), accountDto);
+        String url = cloudinaryServiceImpl.uploadImage(avatar);
+        Image image = imageServiceImpl.insertAvatar(url, accountDto);
         AccountDto account = accountsServiceImpl.insertAccounts(accountDto);
         account.setImage(image);
         account = accountsServiceImpl.updateAccountInformation(account);
