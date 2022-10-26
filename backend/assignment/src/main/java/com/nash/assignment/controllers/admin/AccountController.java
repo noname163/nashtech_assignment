@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nash.assignment.constant.RoleEnum;
+import com.nash.assignment.constant.StatusEnum;
 import com.nash.assignment.dto.AccountDto;
 import com.nash.assignment.modal.Account;
 import com.nash.assignment.services.AccountsServiceImpl;
@@ -40,23 +42,21 @@ public class AccountController {
 
         @PatchMapping(value = "/active/{id}")
         public ResponseEntity<AccountDto> acctiveAccount(@PathVariable long id) {
-                final int activeStatus = 1;
-                AccountDto account = accountsServiceImpl.updateAccountStatus(id, activeStatus);
+                AccountDto account = accountsServiceImpl.updateAccountStatus(id, StatusEnum.ACTIVE);
                 return ResponseEntity.status(HttpStatus.OK).body(
                                 account);
         }
 
         @DeleteMapping(value = "/{id}")
         public ResponseEntity<AccountDto> deleteAccount(@PathVariable long id) {
-                final int deactiveStatus = 2;
-                AccountDto account = accountsServiceImpl.updateAccountStatus(id, deactiveStatus);
+                AccountDto account = accountsServiceImpl.updateAccountStatus(id, StatusEnum.DEACTIVE);
                 return ResponseEntity.status(HttpStatus.OK).body(
                                 account);
         }
 
-        @PatchMapping(value = "/update-role/{id}/{role}")
-        public ResponseEntity<AccountDto> updateRole(@PathVariable long id, @PathVariable int role) {
-                AccountDto account = accountsServiceImpl.updateAccountRole(id, role);
+        @PatchMapping(value = "/update-role/{id}")
+        public ResponseEntity<AccountDto> updateRole(@PathVariable long id) {
+                AccountDto account = accountsServiceImpl.updateAccountRole(id);
                 return ResponseEntity.status(HttpStatus.OK).body(
                                 account);
         }

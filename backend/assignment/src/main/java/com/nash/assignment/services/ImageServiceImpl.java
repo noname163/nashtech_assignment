@@ -53,17 +53,17 @@ public class ImageServiceImpl implements ImageService {
         return image;
     }
 
-    public Set<Image> insertMultipeImages(List<String> imageName, ProductDtoForAdmin productDto) {
-        Set<Image> result = new HashSet<>();
+    public List<Image> insertMultipeImages(List<String> imageName, ProductDtoForAdmin productDto) {
+        List<Image> result = new ArrayList<>();
         if (imageName == null) {
             return result;
         }
         Product product = productsRepositories.findByName(productDto.getName());
         for (String url : imageName) {
             Image image = new Image(url, product);
-            imagesRepositories.save(image);
             result.add(image);
         }
+        imagesRepositories.saveAll(result);
 
         return result;
     }

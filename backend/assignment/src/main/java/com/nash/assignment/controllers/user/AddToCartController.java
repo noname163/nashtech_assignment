@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +21,7 @@ import com.nash.assignment.mapper.OrderDetailMapper;
 import com.nash.assignment.mapper.OrderMapper;
 import com.nash.assignment.services.OrderDetailServiceImpl;
 import com.nash.assignment.services.OrderServiceImpl;
+import com.nash.assignment.services.RateProductServiceImpl;
 
 @RestController
 @PreAuthorize("hasAuthority('ROLE_USER')")
@@ -32,6 +35,7 @@ public class AddToCartController {
     OrderDetailMapper orderDetailMapper;
     @Autowired
     OrderMapper orderMapper;
+    @Autowired RateProductServiceImpl rateProductServiceImpl;
 
     @PostMapping()
     public ResponseEntity<OrderDto> addToCart(@RequestBody OrderDto orderDto) {
@@ -41,6 +45,24 @@ public class AddToCartController {
         order.setOrderDetails(orderDetailMapper.mapDtoToEntity(orderDetail));
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 order);
+    }
+    // @PostMapping()
+    // public ResponseEntity<OrderDto> addToCart2(@RequestBody List<OrderDetailDto> orderDetailDtos) {
+    //     OrderDto order = orderServiceImpl.insertOrder();
+    //     List<OrderDetailDto> orderDetail = orderDetailServiceImpl
+    //             .insertOrderDetail(orderDetailDtos, order);
+    //     order.setOrderDetails(orderDetailMapper.mapDtoToEntity(orderDetail));
+    //     return ResponseEntity.status(HttpStatus.CREATED).body(
+    //             order);
+    // }
+
+    @PatchMapping(value="/confirm-order/{id}")
+    public ResponseEntity<OrderDto> confirmOrder(@PathVariable int id){
+        OrderDto order = orderServiceImpl.confirmOrder(id);
+        rateProductServiceImpl.insertRate(order);
+        return ResponseEntity.status(HttpStatus.OK).body(
+            order
+        );
     }
 
     @GetMapping(value = "/get-order")

@@ -48,7 +48,7 @@ class ProductCard extends Component {
                                                     <p class="text-white mb-0 small">x4</p>
                                                 </div>
                                             </div>
-                                            <img src="/images/test.jpg"
+                                            <img src="https://res.cloudinary.com/dyvrvbcxx/image/upload/v1666778917/jj5oisv6qqf2cllezrc3.png"
                                                 class="card-img-top" alt="Laptop" />
                                             <div class="card-body">
                                                 <div class="d-flex justify-content-between">

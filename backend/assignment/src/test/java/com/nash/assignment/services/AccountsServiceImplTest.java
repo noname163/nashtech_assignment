@@ -160,25 +160,16 @@ public class AccountsServiceImplTest {
         assertThat(accountDto, is(actual));
     }
 
-    @Test
-    void UpdateAccountRole_WhenRoleValue_0_ShouldThrowInfomationNotValidException() {
-        when(accountRepositories.findById(account.getId())).thenReturn(Optional.of(account));
-
-        InformationNotValidException actual = Assertions.assertThrows(InformationNotValidException.class, 
-                ()->accountsServiceImpl.updateAccountRole(account.getId(), 0));
-        
-        assertThat("Role Not Valid", is(actual.getMessage()));
-
-    }
 
     @Test
-    void UpdateAccountRole_WhenRoleValue_3_ShouldThrowInfomationNotValidException() {
+    void UpdateAccountRole_WhenRoleNull_ShouldThrowInfomationNotValidException() {
         when(accountRepositories.findById(account.getId())).thenReturn(Optional.of(account));
+        when(rolesRepositories.findByRole(RoleEnum.ROLE_ADMIN)).thenReturn(null);
 
-        InformationNotValidException actual = Assertions.assertThrows(InformationNotValidException.class, 
-                ()->accountsServiceImpl.updateAccountRole(account.getId(), 3));
+        ObjectNotFoundException actual = Assertions.assertThrows(ObjectNotFoundException.class, 
+                ()->accountsServiceImpl.updateAccountRole(account.getId()));
         
-        assertThat("Role Not Valid", is(actual.getMessage()));
+        assertThat("Cannot Found Role: " + RoleEnum.ROLE_ADMIN.toString(), is(actual.getMessage()));
 
     }
 
@@ -187,89 +178,78 @@ public class AccountsServiceImplTest {
         when(accountRepositories.findById(account.getId())).thenReturn(Optional.empty());
 
         ObjectNotFoundException actual = Assertions.assertThrows(ObjectNotFoundException.class, 
-                ()->accountsServiceImpl.updateAccountRole(account.getId(), 1));
+                ()->accountsServiceImpl.updateAccountRole(account.getId()));
         
         assertThat("Cannot Found Account With Id: " + account.getId(), is(actual.getMessage()));
 
     }
 
-    @Test
-    void UpdateAccountRole_WhenDataValid_ShouldReturnAccountDtoWithRoleUser() {
-        
-        when(accountRepositories.findById(account.getId())).thenReturn(Optional.of(account));
-        when(rolesRepositories.findByRole(RoleEnum.ROLE_USER)).thenReturn(role);
-        when(accountRepositories.save(account)).thenReturn(account);
-        when(modelMapper.map(account, AccountDto.class)).thenReturn(accountDto);
-        ArgumentCaptor<Role> roleInsert = ArgumentCaptor.forClass(Role.class);
 
-        AccountDto actual = accountsServiceImpl.updateAccountRole(account.getId(), 1);
-        verify(account).setRole(roleInsert.capture());
-        assertThat(accountDto.getRole(), is(actual.getRole()));
-
-    }
 
     @Test
     void UpdateAccountRole_WhenDataValid_ShouldReturnAccountDtoWithRoleAdmin() {
-        
-        when(accountRepositories.findById(account.getId())).thenReturn(Optional.of(account));
-        when(rolesRepositories.findByRole(RoleEnum.ROLE_ADMIN)).thenReturn(role);
-        when(accountRepositories.save(account)).thenReturn(account);
-        when(modelMapper.map(account, AccountDto.class)).thenReturn(accountDto);
-        ArgumentCaptor<Role> roleInsert = ArgumentCaptor.forClass(Role.class);
+        Role adminRole = new Role();
+        adminRole.setRole(RoleEnum.ROLE_ADMIN);
+        Role userRole = new Role();
+        userRole.setRole(RoleEnum.ROLE_USER);
+        Account accountinit = new Account();
+        AccountDto accountExpect = new AccountDto();
+        accountinit.setId(1);
+        accountinit.setRole(userRole);
+        accountExpect.setId(1);
+        accountExpect.setRole(adminRole);
 
-        AccountDto actual = accountsServiceImpl.updateAccountRole(account.getId(), 2);
-        verify(account).setRole(roleInsert.capture());
-        assertThat(accountDto.getRole(), is(actual.getRole()));
+        when(accountRepositories.findById(1l)).thenReturn(Optional.of(accountinit));
+        when(rolesRepositories.findByRole(RoleEnum.ROLE_ADMIN)).thenReturn(adminRole);
+        when(modelMapper.map(accountinit, AccountDto.class)).thenReturn(accountExpect);
+
+        AccountDto actual = accountsServiceImpl.updateAccountRole(1l);
+        verify(accountRepositories).save(accountinit);
+        assertThat(actual.getRole().getRole(), is(RoleEnum.ROLE_ADMIN));
 
     }
 
-    @Test
-    void UpdateAccountStatus_WhenStatusValue_0_ShouldThrowInformationNotValid(){
-        when(accountRepositories.findById(accountDto.getId())).thenReturn(Optional.of(account));
-        InformationNotValidException actual = Assertions.assertThrows(InformationNotValidException.class, 
-                ()-> accountsServiceImpl.updateAccountStatus(accountDto.getId(), 0));
-        assertThat("Status Not Valid.", is(actual.getMessage()));
-    }
-
-    @Test
-    void UpdateAccountStatus_WhenStatusValue_3_ShouldThrowInformationNotValid(){
-        when(accountRepositories.findById(accountDto.getId())).thenReturn(Optional.of(account));
-        InformationNotValidException actual = Assertions.assertThrows(InformationNotValidException.class, 
-                ()-> accountsServiceImpl.updateAccountStatus(accountDto.getId(), 0));
-        assertThat("Status Not Valid.", is(actual.getMessage()));
-    }
 
     @Test
     void UpdateAccountStatus_WhenAccountNull_ShouldThrowObjectNotFound(){
         when(accountRepositories.findById(accountDto.getId())).thenReturn(Optional.empty());
         ObjectNotFoundException actual = Assertions.assertThrows(ObjectNotFoundException.class, 
-                ()-> accountsServiceImpl.updateAccountStatus(accountDto.getId(), 1));
+                ()-> accountsServiceImpl.updateAccountStatus(accountDto.getId(), StatusEnum.ACTIVE));
         assertThat("Cannot Find Account With Id: " + accountDto.getId(), is(actual.getMessage()));
     }
 
     @Test
     void UpdateAccountStatus_WhenDataValid_ShouldReturnActiveStatus() {
-        when(accountRepositories.findById(account.getId())).thenReturn(Optional.of(account));
-        when(accountRepositories.save(account)).thenReturn(account);
-        when(modelMapper.map(account, AccountDto.class)).thenReturn(accountDto);
-        ArgumentCaptor<StatusEnum> status = ArgumentCaptor.forClass(StatusEnum.class);
-        AccountDto actual = accountsServiceImpl.updateAccountStatus(account.getId(), 1);
+        Account accountinit = new Account();
+        AccountDto accountExpect = new AccountDto();
+        accountinit.setId(1);
+        accountinit.setStatus(StatusEnum.DEACTIVE);
+        accountExpect.setId(1);
+        accountExpect.setStatus(StatusEnum.ACTIVE);
 
-        verify(account).setStatus(status.capture());
-        assertThat(accountDto.getStatus(), is(actual.getStatus()));
+        when(accountRepositories.findById(1l)).thenReturn(Optional.of(accountinit));
+        when(modelMapper.map(accountinit, AccountDto.class)).thenReturn(accountExpect);
+        AccountDto actual = accountsServiceImpl.updateAccountStatus(accountinit.getId(), StatusEnum.ACTIVE);
+
+        verify(accountRepositories).save(accountinit);
+        assertThat(actual.getStatus(), is(StatusEnum.ACTIVE ));
     }
 
     @Test
     void UpdateAccountStatus_WhenDataValid_ShouldReturnDeActiveStatus() {
+        Account accountinit = new Account();
+        AccountDto accountExpect = new AccountDto();
+        accountinit.setId(1);
+        accountinit.setStatus(StatusEnum.ACTIVE);
+        accountExpect.setId(1);
+        accountExpect.setStatus(StatusEnum.DEACTIVE);
+
+        when(accountRepositories.findById(1l)).thenReturn(Optional.of(accountinit));
+        when(modelMapper.map(accountinit, AccountDto.class)).thenReturn(accountExpect);
+
+        AccountDto actual = accountsServiceImpl.updateAccountStatus(1l, StatusEnum.DEACTIVE);
+        verify(accountRepositories).save(accountinit);
         
-        when(accountRepositories.findById(account.getId())).thenReturn(Optional.of(account));
-        when(accountRepositories.save(account)).thenReturn(account);
-        when(modelMapper.map(account, AccountDto.class)).thenReturn(accountDto);
-
-        ArgumentCaptor<StatusEnum> status = ArgumentCaptor.forClass(StatusEnum.class);
-        AccountDto actual = accountsServiceImpl.updateAccountStatus(account.getId(), 2);
-
-        verify(account).setStatus(status.capture());
-        assertThat(accountDto.getStatus(), is(actual.getStatus()));
+        assertThat(actual.getStatus(),is(StatusEnum.DEACTIVE));
     }
 }

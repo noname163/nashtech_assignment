@@ -52,8 +52,8 @@ public class OrderDetailServiceImpl implements OrderDetailService {
         for (OrderDetail orderDetail : orderDetails) {
             orderDetail.setOrder(order);
             orderDetail.setAccount(order.getAccount());
-            orderDetailRepositories.save(orderDetail);
         }
+        orderDetailRepositories.saveAll(orderDetails);
         return orderDetailDtos;
     }
 

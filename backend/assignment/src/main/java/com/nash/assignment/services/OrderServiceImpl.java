@@ -51,21 +51,25 @@ public class OrderServiceImpl implements OrderService {
         return orderMapper.mapOrderEntityToDto(order);
     }
 
+    public OrderDto insertOrder2() {
+        OrderDto orderDto = new OrderDto();
+        HttpSession session = request.getSession();
+        String email = (String) session.getAttribute("email");
+        orderDto.setEmail(email);
+        orderDto.setStatus(StatusEnum.PENDING);
+        Order order = orderMapper.mapDtoToEntity(orderDto);
+        LocalDate date = LocalDate.now();
+        order.setOrderDate(date.toString());
+        order = orderRepositories.save(order);
+        return orderMapper.mapOrderEntityToDto(order);
+    }
+
     @Override
-    public OrderDto updateOrderStatus(int id, int status) {
+    public OrderDto updateOrderStatus(int id, StatusEnum status) {
         Optional<Order> orderOtp = orderRepositories.findById(id);
         StatusEnum statusEnum = null;
         if (orderOtp.isEmpty()) {
             throw new ObjectNotFoundException("Cannot Find Order With iD: " + id);
-        }
-        if (status < 0 || status > 2) {
-            throw new InformationNotValidException("Status Value Not Valid.");
-        }
-        if (status == 1) {
-            statusEnum = StatusEnum.ACCEPT;
-        }
-        if (status == 2) {
-            statusEnum = StatusEnum.DELIVERY;
         }
         Order order = orderOtp.get();
         order.setStatus(statusEnum);

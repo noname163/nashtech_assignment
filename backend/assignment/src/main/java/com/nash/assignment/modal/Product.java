@@ -1,6 +1,8 @@
 package com.nash.assignment.modal;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -62,7 +64,7 @@ public class Product {
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "product", cascade = CascadeType.REFRESH)
-    private Set<Image> images = new HashSet<>();
+    private List<Image> images = new ArrayList<>();
 
     public Product() {
     }
@@ -93,11 +95,11 @@ public class Product {
     }
     
 
-    public Set<Image> getImages() {
+    public List<Image> getImages() {
         return images;
     }
 
-    public void setImages(Set<Image> images) {
+    public void setImages(List<Image> images) {
         this.images = images;
     }
 

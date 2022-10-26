@@ -79,6 +79,7 @@ public class Order {
         this.deliveryDate = deliveryDate;
     }
 
+    @JsonIgnore
     public Account getAccount() {
         return account;
     }

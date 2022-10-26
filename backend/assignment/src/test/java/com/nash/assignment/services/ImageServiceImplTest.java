@@ -92,8 +92,8 @@ public class ImageServiceImplTest {
     void InsertMultipeImages_WhenImageNull_ShouldReturnNull() {
         List<String> imageName = null;
         ProductDtoForAdmin productDto = mock(ProductDtoForAdmin.class);
-        Set<Image> expected = new HashSet<>();
-        Set<Image> actual = imageServiceImpl.insertMultipeImages(imageName, productDto);
+        List<Image> expected = new ArrayList<>();
+        List<Image> actual = imageServiceImpl.insertMultipeImages(imageName, productDto);
         assertThat(actual, is(expected));
     }
     @Test
@@ -101,14 +101,15 @@ public class ImageServiceImplTest {
         List<String> imageName = new ArrayList<>();
         ProductDtoForAdmin productDto = new ProductDtoForAdmin();
         imageName.add("test");
-        Set<Image> expected = new HashSet<>();
-        Product product = mock(Product.class);
         
-    
+        Product product = mock(Product.class);
+        ArgumentCaptor<List<Image>> images = ArgumentCaptor.forClass(ArrayList.class);
+
         when(productsRepositories.findByName(productDto.getName())).thenReturn(product);
-        when(imagesRepositories.save(imageCaptor.capture())).thenReturn(imageCaptor.capture());
-        Set<Image> actual = imageServiceImpl.insertMultipeImages(imageName, productDto);
-        expected.add(imageCaptor.getValue());
+        when(imagesRepositories.saveAll(images.capture())).thenReturn(images.capture());
+        List<Image> actual = imageServiceImpl.insertMultipeImages(imageName, productDto);
+        List<Image> expected = images.getValue();
+        verify(imagesRepositories).saveAll(images.capture());
         assertThat(actual, is(expected));
 
     }

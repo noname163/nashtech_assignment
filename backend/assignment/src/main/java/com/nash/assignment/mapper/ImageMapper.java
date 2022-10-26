@@ -1,5 +1,6 @@
 package com.nash.assignment.mapper;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -26,13 +27,13 @@ public class ImageMapper {
         return result;
     }
 
-    public Set<ImageProductDto> mapEntityToImageProductDto(Set<Image> imagesValue) {
-        return imagesValue.stream().map(image -> mapEntityToImageProductDto(image)).collect(Collectors.toSet());
+    public List<ImageProductDto> mapEntityToImageProductDto(List<Image> imagesValue) {
+        return imagesValue.stream().map(image -> mapEntityToImageProductDto(image)).collect(Collectors.toList());
     }
 
-    public Set<Image> mapImageProductDtoToEntity(Set<ImageProductDto> imagesValue) {
+    public List<Image> mapImageProductDtoToEntity(List<ImageProductDto> imagesValue) {
         return imagesValue.stream().map(image -> mapImageProductDtoToEntity(image))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
 
     public ImageAccountDto mapEntityToImageAccountDto(Image image) {

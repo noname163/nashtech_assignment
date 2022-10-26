@@ -27,6 +27,7 @@ import com.nash.assignment.modal.Role;
 import com.nash.assignment.repositories.AccountRepositories;
 import com.nash.assignment.repositories.RolesRepositories;
 import com.nash.assignment.services.interfaces.AccountService;
+import org.springframework.security.core.userdetails.User;
 
 @Service
 public class AccountsServiceImpl implements AccountService, UserDetailsService {
@@ -98,25 +99,15 @@ public class AccountsServiceImpl implements AccountService, UserDetailsService {
     }
 
     @Override
-    public AccountDto updateAccountStatus(long id, int statusValue) {
+    public AccountDto updateAccountStatus(long id, StatusEnum statusValue) {
         Optional<Account> accountOtp = accountRepositories.findById(id);
-        if (statusValue < 1 || statusValue > 2) {
-            throw new InformationNotValidException("Status Not Valid.");
-        }
         if (accountOtp.isEmpty()) {
             throw new ObjectNotFoundException("Cannot Find Account With Id: " + id);
         }
         Account account = accountOtp.get();
-        StatusEnum status = null;
-        if (statusValue == 1) {
-            status = StatusEnum.ACTIVE;
-        }
-        if (statusValue == 2) {
-            status = StatusEnum.DEACTIVE;
-        }
-        account.setStatus(status);
+        account.setStatus(statusValue);
 
-        account = accountRepositories.save(account);
+        accountRepositories.save(account);
         return modelMapper.map(account, AccountDto.class);
     }
 
@@ -135,25 +126,20 @@ public class AccountsServiceImpl implements AccountService, UserDetailsService {
     }
 
     @Override
-    public AccountDto updateAccountRole(long id, int roleValue) {
+    public AccountDto updateAccountRole(long id) {
         Optional<Account> accountOtp = accountRepositories.findById(id);
-        if (roleValue <= 0 || roleValue > 2) {
-            throw new InformationNotValidException("Role Not Valid");
-        }
+
         if (accountOtp.isEmpty()) {
             throw new ObjectNotFoundException("Cannot Found Account With Id: " + id);
 
         }
         Account account = accountOtp.get();
-        Role role = null;
-        if (roleValue == 1) {
-            role = rolesRepositories.findByRole(RoleEnum.ROLE_ADMIN);
-        }
-        if (roleValue == 2) {
-            role = rolesRepositories.findByRole(RoleEnum.ROLE_USER);
+        Role role =  rolesRepositories.findByRole(RoleEnum.ROLE_ADMIN);
+        if (role == null) {
+            throw new ObjectNotFoundException("Cannot Found Role: " + RoleEnum.ROLE_ADMIN.toString());
         }
         account.setRole(role);
-        account = accountRepositories.save(account);
+        accountRepositories.save(account);
 
         return modelMapper.map(account, AccountDto.class);
     }
@@ -172,7 +158,7 @@ public class AccountsServiceImpl implements AccountService, UserDetailsService {
         }
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(account.getRole().getRole().name()));
-        return new org.springframework.security.core.userdetails.User(account.getUsername(), account.getPassword(),
+        return new User (account.getUsername(), account.getPassword(),
                 authorities);
     }
 

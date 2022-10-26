@@ -43,7 +43,7 @@ public class ProductController {
         @Autowired CloudinaryServiceImpl cloudinaryServiceImpl;
 
         @PostMapping()
-        public ResponseEntity<ProductDtoForAdmin> insertProduct(@Valid ProductDtoForAdmin productDto,
+        public ResponseEntity<ProductDtoForAdmin> insertProduct(@Valid @RequestBody ProductDtoForAdmin productDto,
                         MultipartFile[] productimages)
                         throws IOException {
                 List<String> urls =  cloudinaryServiceImpl.uploadImages(productimages);
@@ -52,7 +52,7 @@ public class ProductController {
                 //                 productimages);
                 productsServiceImpl.insertProduct(productDto);
                 // List<String> urls = saveImage.getBody();
-                Set<Image> images = imageServiceImpl.insertMultipeImages(urls, productDto);
+                List<Image> images = imageServiceImpl.insertMultipeImages(urls, productDto);
                 productDto.setImages(imageMapper.mapEntityToImageProductDto(images));
                 ProductDtoForAdmin product = productsServiceImpl.updateProductInformation(productDto);
                 return ResponseEntity.status(HttpStatus.CREATED).body(

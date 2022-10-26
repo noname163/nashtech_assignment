@@ -1,6 +1,8 @@
 package com.nash.assignment.dto;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.validation.constraints.Min;
@@ -27,7 +29,7 @@ public class ProductDtoForAdmin {
     @NotBlank(message = "Categories Cannot Empty")
     private String categories;
 
-    private Set<ImageProductDto> images = new HashSet<>();
+    private List<ImageProductDto> images = new ArrayList<>();
 
     public long getId() {
         return id;
@@ -45,11 +47,11 @@ public class ProductDtoForAdmin {
         this.name = name;
     }
 
-    public Set<ImageProductDto> getImages() {
+    public List<ImageProductDto> getImages() {
         return images;
     }
 
-    public void setImages(Set<ImageProductDto> images) {
+    public void setImages(List<ImageProductDto> images) {
         this.images = images;
     }
 
