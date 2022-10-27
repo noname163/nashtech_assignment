@@ -22,18 +22,19 @@ import com.nash.assignment.services.interfaces.OrderDetailService;
 
 @Service
 public class OrderDetailServiceImpl implements OrderDetailService {
+
     @Autowired
     OrderDetailRepositories orderDetailRepositories;
     @Autowired
     OrderDetailMapper orderDetailMapper;
-    @Autowired OrderRepositories orderRepositories;
-    
+    @Autowired
+    OrderRepositories orderRepositories;
 
-    public OrderDetail insert(OrderDetail orderDetail){
+    public OrderDetail insert(OrderDetail orderDetail) {
         return orderDetailRepositories.save(orderDetail);
     }
 
-    public List<OrderDetailDto> getAllOrderDetail(){
+    public List<OrderDetailDto> getAllOrderDetail() {
         List<OrderDetail> orderDetails = orderDetailRepositories.findAll();
         List<OrderDetailDto> orderDetailDtos = orderDetailMapper.mapEntityToDto(orderDetails);
         return orderDetailDtos;
@@ -41,11 +42,11 @@ public class OrderDetailServiceImpl implements OrderDetailService {
 
     @Override
     public List<OrderDetailDto> insertOrderDetail(List<OrderDetailDto> orderDetailDtos, OrderDto orderDto) {
-        
+
         int id = orderDto.getId();
         Optional<Order> orderOtp = orderRepositories.findById(id);
-        if(orderOtp.isEmpty()){
-            throw new ObjectNotFoundException("Cannot Find Order With Id: "+ id);
+        if (orderOtp.isEmpty()) {
+            throw new ObjectNotFoundException("Cannot Find Order With Id: " + id);
         }
         Order order = orderOtp.get();
         List<OrderDetail> orderDetails = orderDetailMapper.mapDtoToEntity(orderDetailDtos);
@@ -56,7 +57,5 @@ public class OrderDetailServiceImpl implements OrderDetailService {
         orderDetailRepositories.saveAll(orderDetails);
         return orderDetailDtos;
     }
-
-    
 
 }

@@ -7,6 +7,7 @@ import com.nash.assignment.dto.response.ProductDtoForUser;
 import com.nash.assignment.modal.Product;
 
 public interface ProductsService {
+
     ProductDtoForAdmin insertProduct(ProductDtoForAdmin products);
 
     List<ProductDtoForUser> getAllProducts();

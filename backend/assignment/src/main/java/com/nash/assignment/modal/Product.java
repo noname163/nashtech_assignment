@@ -29,6 +29,7 @@ import com.nash.assignment.constant.StatusEnum;
 @Table
 @Entity
 public class Product {
+
     @Id
     @SequenceGenerator(name = "product_sequence", sequenceName = "product_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "product_sequence")
@@ -53,7 +54,6 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private StatusEnum status;
 
-
     @ManyToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "categories_id")
     private Category categories;
@@ -69,14 +69,12 @@ public class Product {
     public Product() {
     }
 
-
     public Product(String name, String price, StatusEnum status, Category categories) {
         this.name = name;
         this.price = price;
         this.status = status;
         this.categories = categories;
     }
-
 
     public long getId() {
         return id;
@@ -93,7 +91,6 @@ public class Product {
     public void setName(String name) {
         this.name = name;
     }
-    
 
     public List<Image> getImages() {
         return images;
@@ -127,38 +124,28 @@ public class Product {
         this.price = price;
     }
 
-
     public String getDescription() {
         return description;
     }
-
 
     public void setDescription(String description) {
         this.description = description;
     }
 
-
     public String getCreatedDate() {
         return createdDate;
     }
-
 
     public void setCreatedDate(String createdDate) {
         this.createdDate = createdDate;
     }
 
-
     public String getUpdateDate() {
         return updateDate;
     }
 
-
     public void setUpdateDate(String updateDate) {
         this.updateDate = updateDate;
     }
-
-    
-
-    
 
 }

@@ -10,10 +10,15 @@ import com.nash.assignment.modal.OrderDetail;
 import com.nash.assignment.modal.Product;
 
 public interface OrderDetailRepositories extends JpaRepository<OrderDetail, Integer> {
+
     List<OrderDetail> findByOrder(Order orderValue);
+
     List<OrderDetail> findByOrderAndProduct(Order order, Product product);
+
     OrderDetail findByAccountAndProduct(Account account, Product product);
+
     OrderDetail findByAccountAndProductAndOrder(Account account, Product product, Order order);
+
     List<Product> findProductByOrder(Order order);
 
 }

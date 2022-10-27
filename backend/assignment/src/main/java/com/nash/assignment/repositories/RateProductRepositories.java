@@ -11,6 +11,8 @@ import com.nash.assignment.modal.RateProduct;
 
 @Repository
 public interface RateProductRepositories extends JpaRepository<RateProduct, Long> {
+
     List<RateProduct> findByProduct(Product product);
+
     RateProduct findByOrderDetail(OrderDetail orderDetail);
 }

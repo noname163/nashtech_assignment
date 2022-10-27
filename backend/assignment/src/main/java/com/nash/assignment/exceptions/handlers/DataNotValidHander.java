@@ -20,12 +20,12 @@ import com.nimbusds.oauth2.sdk.ErrorResponse;
 @ControllerAdvice
 public class DataNotValidHander extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler({ InformationNotValidException.class })
-	protected ResponseEntity<ExceptionResponseDto> handleIllegalArgumentException(RuntimeException exception,
-			WebRequest request) {
-                ExceptionResponseDto error = new ExceptionResponseDto("400", "BAD_REQUEST",exception.getMessage());
-		return new ResponseEntity<ExceptionResponseDto>(error, HttpStatus.BAD_REQUEST);
-	}
+    @ExceptionHandler({InformationNotValidException.class})
+    protected ResponseEntity<ExceptionResponseDto> handleIllegalArgumentException(RuntimeException exception,
+            WebRequest request) {
+        ExceptionResponseDto error = new ExceptionResponseDto("400", "BAD_REQUEST", exception.getMessage());
+        return new ResponseEntity<ExceptionResponseDto>(error, HttpStatus.BAD_REQUEST);
+    }
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,

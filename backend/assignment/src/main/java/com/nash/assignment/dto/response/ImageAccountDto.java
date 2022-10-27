@@ -7,10 +7,7 @@ public class ImageAccountDto {
 
     private String url;
 
-    
     private Account avatar;
-
- 
 
     public String getUrl() {
         return url;

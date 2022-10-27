@@ -32,54 +32,56 @@ import com.nash.assignment.services.ProductsServiceImpl;
 @RequestMapping("/admin/product")
 @PreAuthorize("hasAuthority('ROLE_ADMIN')")
 public class ProductController {
-        @Autowired
-        ProductsServiceImpl productsServiceImpl;
-        @Autowired
-        FileServiceImpl fileServiceImpl;
-        @Autowired
-        ImageServiceImpl imageServiceImpl;
-        @Autowired
-        ImageMapper imageMapper;
-        @Autowired CloudinaryServiceImpl cloudinaryServiceImpl;
 
-        @PostMapping()
-        public ResponseEntity<ProductDtoForAdmin> insertProduct(@Valid @RequestBody ProductDtoForAdmin productDto,
-                        MultipartFile[] productimages)
-                        throws IOException {
-                List<String> urls =  cloudinaryServiceImpl.uploadImages(productimages);
-                // ResponseEntity<List<String>> saveImage = fileServiceImpl.saveMultipleFile(
-                //                 "product/" + productDto.getName(),
-                //                 productimages);
-                productsServiceImpl.insertProduct(productDto);
-                // List<String> urls = saveImage.getBody();
-                List<Image> images = imageServiceImpl.insertMultipeImages(urls, productDto);
-                productDto.setImages(imageMapper.mapEntityToImageProductDto(images));
-                ProductDtoForAdmin product = productsServiceImpl.updateProductInformation(productDto);
-                return ResponseEntity.status(HttpStatus.CREATED).body(
-                                product);
-        }
+    @Autowired
+    ProductsServiceImpl productsServiceImpl;
+    @Autowired
+    FileServiceImpl fileServiceImpl;
+    @Autowired
+    ImageServiceImpl imageServiceImpl;
+    @Autowired
+    ImageMapper imageMapper;
+    @Autowired
+    CloudinaryServiceImpl cloudinaryServiceImpl;
 
-        @PatchMapping(value = "/active/{id}")
-        public ResponseEntity<ProductDtoForAdmin> activeProduct(@PathVariable long id) {
-                final int status = 1;
-                ProductDtoForAdmin productDto = productsServiceImpl.updateProductStatus(id, status);
-                return ResponseEntity.status(HttpStatus.OK).body(
-                                productDto);
-        }
+    @PostMapping()
+    public ResponseEntity<ProductDtoForAdmin> insertProduct(@Valid ProductDtoForAdmin productDto,
+            MultipartFile[] productimages)
+            throws IOException {
+        List<String> urls = cloudinaryServiceImpl.uploadImages(productimages);
+        // ResponseEntity<List<String>> saveImage = fileServiceImpl.saveMultipleFile(
+        //                 "product/" + productDto.getName(),
+        //                 productimages);
+        productsServiceImpl.insertProduct(productDto);
+        // List<String> urls = saveImage.getBody();
+        List<Image> images = imageServiceImpl.insertMultipeImages(urls, productDto);
+        productDto.setImages(imageMapper.mapEntityToImageProductDto(images));
+        ProductDtoForAdmin product = productsServiceImpl.updateProductInformation(productDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                product);
+    }
 
-        @PutMapping(value = "/update")
-        public ResponseEntity<ProductDtoForAdmin> updateProduct(@RequestBody ProductDtoForAdmin productDto) {
-                ProductDtoForAdmin product = productsServiceImpl.updateProductInformation(productDto);
-                return ResponseEntity.status(HttpStatus.OK).body(
-                                product);
-        }
+    @PatchMapping(value = "/active/{id}")
+    public ResponseEntity<ProductDtoForAdmin> activeProduct(@PathVariable long id) {
+        final int status = 1;
+        ProductDtoForAdmin productDto = productsServiceImpl.updateProductStatus(id, status);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                productDto);
+    }
 
-        @DeleteMapping(value = "/{id}")
-        public ResponseEntity<ProductDtoForAdmin> deleteProduct(@PathVariable long id) {
-                final int status = 2;
-                ProductDtoForAdmin productDto = productsServiceImpl.updateProductStatus(id, status);
-                return ResponseEntity.status(HttpStatus.OK).body(
-                                productDto);
-        }
+    @PutMapping(value = "/update")
+    public ResponseEntity<ProductDtoForAdmin> updateProduct(@RequestBody ProductDtoForAdmin productDto) {
+        ProductDtoForAdmin product = productsServiceImpl.updateProductInformation(productDto);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                product);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<ProductDtoForAdmin> deleteProduct(@PathVariable long id) {
+        final int status = 2;
+        ProductDtoForAdmin productDto = productsServiceImpl.updateProductStatus(id, status);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                productDto);
+    }
 
 }

@@ -29,6 +29,7 @@ import com.nash.assignment.services.interfaces.RateProductService;
 
 @Service
 public class RateProductServiceImpl implements RateProductService {
+
     private AccountRepositories accountRepositories;
     private RateProductRepositories rateProductRepositories;
     private ProductsRepositories productsRepositories;
@@ -82,7 +83,7 @@ public class RateProductServiceImpl implements RateProductService {
         return rateProductMapper.mapEntityToDto(rate);
     }
 
-    public List<RateProductDto> getRate(){
+    public List<RateProductDto> getRate() {
         return rateProductMapper.mapEntityToDto(rateProductRepositories.findAll());
     }
 }

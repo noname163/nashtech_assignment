@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table
 @Entity
 public class Category {
+
     @Id
     @SequenceGenerator(name = "categories_sequence", sequenceName = "categories_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "categories_sequence")
@@ -67,7 +68,5 @@ public class Category {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    
 
 }

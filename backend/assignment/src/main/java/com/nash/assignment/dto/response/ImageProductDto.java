@@ -5,10 +5,8 @@ import com.nash.assignment.modal.Product;
 
 public class ImageProductDto {
 
-
     private String url;
 
-    
     private Product product;
 
     public ImageProductDto(String url, Product product) {

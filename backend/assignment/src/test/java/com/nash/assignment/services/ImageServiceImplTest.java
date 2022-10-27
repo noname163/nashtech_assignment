@@ -31,6 +31,7 @@ import com.nash.assignment.repositories.ImagesRepositories;
 import com.nash.assignment.repositories.ProductsRepositories;
 
 public class ImageServiceImplTest {
+
     private ImageServiceImpl imageServiceImpl;
     private ImagesRepositories imagesRepositories;
     private ImageMapper imageMapper;
@@ -41,6 +42,7 @@ public class ImageServiceImplTest {
     ArgumentCaptor<Image> imageCaptor = ArgumentCaptor.forClass(Image.class);
     @Captor
     ArgumentCaptor<Set<Image>> imagesCaptor = ArgumentCaptor.forClass(HashSet.class);
+
     @BeforeEach
     void setUpBeforeTest() {
         imagesRepositories = mock(ImagesRepositories.class);
@@ -48,29 +50,31 @@ public class ImageServiceImplTest {
         accountRepositories = mock(AccountRepositories.class);
         productsRepositories = mock(ProductsRepositories.class);
         productMapper = mock(ProductMapper.class);
-        
+
         imageServiceImpl = new ImageServiceImpl(imagesRepositories, productMapper, productsRepositories,
                 accountRepositories, imageMapper);
     }
 
     @Test
-    void InsertAvatar_WhenImageValueNull_ShouldReturnNull() {
+    void insertAvatar_WhenImageValueNull_ShouldReturnNull() {
         AccountDto accountDto = mock(AccountDto.class);
         Image actual = imageServiceImpl.insertAvatar(null, accountDto);
         assertThat(null, is(actual));
     }
+
     @Test
-    void InsertAvatar_WhenImageValueEmpty_ShouldReturnNull() {
+    void insertAvatar_WhenImageValueEmpty_ShouldReturnNull() {
         AccountDto accountDto = mock(AccountDto.class);
         Image actual = imageServiceImpl.insertAvatar("", accountDto);
         assertThat(null, is(actual));
     }
+
     @Test
-    void InsertAvatar_WhenImageDataValid_ShouldReturnImage() {
+    void insertAvatar_WhenImageDataValid_ShouldReturnImage() {
         AccountDto accountDto = new AccountDto();
         Account account = mock(Account.class);
         String imageUrl = "image";
-        
+
         when(accountRepositories.findByPhoneNumber(accountDto.getPhoneNumber())).thenReturn(account);
         when(imagesRepositories.save(imageCaptor.capture())).thenReturn(imageCaptor.capture());
         Image actual = imageServiceImpl.insertAvatar(imageUrl, accountDto);
@@ -81,7 +85,7 @@ public class ImageServiceImplTest {
     }
 
     @Test
-    void InsertImage() {
+    void insertImage() {
         Image image = mock(Image.class);
         when(imagesRepositories.save(image)).thenReturn(image);
         Image actual = imageServiceImpl.insertImage(image);
@@ -89,19 +93,20 @@ public class ImageServiceImplTest {
     }
 
     @Test
-    void InsertMultipeImages_WhenImageNull_ShouldReturnNull() {
+    void insertMultipeImages_WhenImageNull_ShouldReturnNull() {
         List<String> imageName = null;
         ProductDtoForAdmin productDto = mock(ProductDtoForAdmin.class);
         List<Image> expected = new ArrayList<>();
         List<Image> actual = imageServiceImpl.insertMultipeImages(imageName, productDto);
         assertThat(actual, is(expected));
     }
+
     @Test
-    void InsertMultipeImages_WhenDataValid_ShouldReturnSetImage() {
+    void insertMultipeImages_WhenDataValid_ShouldReturnSetImage() {
         List<String> imageName = new ArrayList<>();
         ProductDtoForAdmin productDto = new ProductDtoForAdmin();
         imageName.add("test");
-        
+
         Product product = mock(Product.class);
         ArgumentCaptor<List<Image>> images = ArgumentCaptor.forClass(ArrayList.class);
 

@@ -7,5 +7,6 @@ import com.nash.assignment.modal.Category;
 
 @Repository
 public interface CategoriesRepositories extends JpaRepository<Category, Long> {
+
     Category findByName(String name);
 }

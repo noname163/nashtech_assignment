@@ -13,13 +13,14 @@ import com.nash.assignment.repositories.ProductsRepositories;
 
 @Component
 public class OrderDetailMapper {
+
     @Autowired
     ProductsRepositories productsRepositories;
 
     public OrderDetail mapDtoToEnity(OrderDetailDto orderDetailDto) {
         OrderDetail orderDetail = new OrderDetail();
         Product product = productsRepositories.findByName(orderDetailDto.getProduct());
-        if(orderDetailDto.getOrder()!=null){
+        if (orderDetailDto.getOrder() != null) {
             orderDetail.setOrder(orderDetailDto.getOrder());
         }
         orderDetail.setProduct(product);
@@ -30,7 +31,7 @@ public class OrderDetailMapper {
 
     public OrderDetailDto mapEntityToDto(OrderDetail orderDetail) {
         OrderDetailDto orderDetailDto = new OrderDetailDto();
-        if(orderDetail.getOrder()!=null){
+        if (orderDetail.getOrder() != null) {
             orderDetailDto.setOrder(orderDetail.getOrder());
         }
         orderDetailDto.setProduct(orderDetail.getProduct().getName());

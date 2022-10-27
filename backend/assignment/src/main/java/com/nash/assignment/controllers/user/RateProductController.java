@@ -23,20 +23,22 @@ import com.nash.assignment.services.RateProductServiceImpl;
 @RequestMapping("/rate-product")
 @PreAuthorize("hasAuthority('ROLE_USER')")
 public class RateProductController {
-    @Autowired RateProductServiceImpl rateProductServiceImpl;
+
+    @Autowired
+    RateProductServiceImpl rateProductServiceImpl;
 
     @PostMapping("/{start}")
-    public ResponseEntity<RateProductDto> ratingProduct(@RequestBody OrderDetailDto orderDetailDto,@PathVariable int start){
+    public ResponseEntity<RateProductDto> ratingProduct(@RequestBody OrderDetailDto orderDetailDto, @PathVariable int start) {
         RateProductDto rating = rateProductServiceImpl.updateRate(orderDetailDto, start);
         return ResponseEntity.status(HttpStatus.OK).body(
-            rating
+                rating
         );
     }
 
     @GetMapping()
-    public ResponseEntity<List<RateProductDto>> getRate(){
+    public ResponseEntity<List<RateProductDto>> getRate() {
         return ResponseEntity.status(HttpStatus.OK).body(
-            rateProductServiceImpl.getRate()
+                rateProductServiceImpl.getRate()
         );
     }
 }

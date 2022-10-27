@@ -26,38 +26,39 @@ import com.nash.assignment.services.AccountsServiceImpl;
 @RequestMapping("/admin/accounts")
 @PreAuthorize("hasAuthority('ROLE_ADMIN')")
 public class AccountController {
-        @Autowired
-        AccountsServiceImpl accountsServiceImpl;
-        @Autowired
-        ModelMapper modelMapper;
 
-        @GetMapping
-        public ResponseEntity<List<AccountDto>> displayAccount() {
-                List<Account> accountList = accountsServiceImpl.getAllAccounts();
-                return ResponseEntity.status(HttpStatus.OK).body(
-                                accountList.stream()
-                                                .map(account -> modelMapper.map(account, AccountDto.class))
-                                                .collect(Collectors.toList()));
-        }
+    @Autowired
+    AccountsServiceImpl accountsServiceImpl;
+    @Autowired
+    ModelMapper modelMapper;
 
-        @PatchMapping(value = "/active/{id}")
-        public ResponseEntity<AccountDto> acctiveAccount(@PathVariable long id) {
-                AccountDto account = accountsServiceImpl.updateAccountStatus(id, StatusEnum.ACTIVE);
-                return ResponseEntity.status(HttpStatus.OK).body(
-                                account);
-        }
+    @GetMapping
+    public ResponseEntity<List<AccountDto>> displayAccount() {
+        List<Account> accountList = accountsServiceImpl.getAllAccounts();
+        return ResponseEntity.status(HttpStatus.OK).body(
+                accountList.stream()
+                        .map(account -> modelMapper.map(account, AccountDto.class))
+                        .collect(Collectors.toList()));
+    }
 
-        @DeleteMapping(value = "/{id}")
-        public ResponseEntity<AccountDto> deleteAccount(@PathVariable long id) {
-                AccountDto account = accountsServiceImpl.updateAccountStatus(id, StatusEnum.DEACTIVE);
-                return ResponseEntity.status(HttpStatus.OK).body(
-                                account);
-        }
+    @PatchMapping(value = "/active/{id}")
+    public ResponseEntity<AccountDto> acctiveAccount(@PathVariable long id) {
+        AccountDto account = accountsServiceImpl.updateAccountStatus(id, StatusEnum.ACTIVE);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                account);
+    }
 
-        @PatchMapping(value = "/update-role/{id}")
-        public ResponseEntity<AccountDto> updateRole(@PathVariable long id) {
-                AccountDto account = accountsServiceImpl.updateAccountRole(id);
-                return ResponseEntity.status(HttpStatus.OK).body(
-                                account);
-        }
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<AccountDto> deleteAccount(@PathVariable long id) {
+        AccountDto account = accountsServiceImpl.updateAccountStatus(id, StatusEnum.DEACTIVE);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                account);
+    }
+
+    @PatchMapping(value = "/update-role/{id}")
+    public ResponseEntity<AccountDto> updateRole(@PathVariable long id) {
+        AccountDto account = accountsServiceImpl.updateAccountRole(id);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                account);
+    }
 }

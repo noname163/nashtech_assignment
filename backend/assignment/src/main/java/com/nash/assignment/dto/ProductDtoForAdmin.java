@@ -12,6 +12,7 @@ import com.nash.assignment.constant.StatusEnum;
 import com.nash.assignment.dto.response.ImageProductDto;
 
 public class ProductDtoForAdmin {
+
     private long id;
     @NotBlank(message = "Name Cannot Empty")
     private String name;
@@ -103,5 +104,4 @@ public class ProductDtoForAdmin {
         this.updateDate = updateDate;
     }
 
-    
 }

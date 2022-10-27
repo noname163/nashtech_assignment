@@ -36,8 +36,6 @@ public class ProductsServiceImpl implements ProductsService {
 
     ProductMapperForAdmin productMapperForAdmin;
 
-
-
     @Autowired
     public ProductsServiceImpl(ProductsRepositories productsRepositories, CategoriesRepositories categoriesRepositories,
             ProductMapper productMapper, ImageMapper imageMapper, ProductMapperForAdmin productMapperForAdmin) {
@@ -98,7 +96,7 @@ public class ProductsServiceImpl implements ProductsService {
     public ProductDtoForAdmin updateProductInformation(ProductDtoForAdmin productValue) {
         Product productDatabase = productsRepositories.findByName(productValue.getName());
         Category category = categoriesRepositories.findByName(productValue.getCategories());
-        if (productDatabase==null) {
+        if (productDatabase == null) {
             throw new ObjectNotFoundException("Cannot Find Product With Name: " + productValue.getName());
         }
         if (category == null) {
@@ -113,10 +111,10 @@ public class ProductsServiceImpl implements ProductsService {
         return productMapperForAdmin.mapEntityToDto(productDatabase);
     }
 
-    public List<ProductDtoForUser> getProductByCategories(String categoriesName){
+    public List<ProductDtoForUser> getProductByCategories(String categoriesName) {
         Category category = categoriesRepositories.findByName(categoriesName);
-        if(category == null){
-            throw new ObjectNotFoundException("Cannot Find Category Name: "+ categoriesName);
+        if (category == null) {
+            throw new ObjectNotFoundException("Cannot Find Category Name: " + categoriesName);
         }
         List<Product> products = productsRepositories.findByCategories(category);
         return productMapper.mapEntityToDto(products);

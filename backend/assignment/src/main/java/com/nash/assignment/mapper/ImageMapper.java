@@ -12,6 +12,7 @@ import com.nash.assignment.modal.Image;
 
 @Component
 public class ImageMapper {
+
     public ImageProductDto mapEntityToImageProductDto(Image image) {
         ImageProductDto result = new ImageProductDto();
         result.setProduct(image.getProduct());

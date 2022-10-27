@@ -26,6 +26,7 @@ import com.nash.assignment.constant.StatusEnum;
 @Entity
 @Table(name = "orders")
 public class Order {
+
     @Id
     @SequenceGenerator(name = "orders_sequence", sequenceName = "orders_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "orders_sequence")
@@ -47,8 +48,6 @@ public class Order {
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "order", cascade = CascadeType.REFRESH)
     private List<OrderDetail> orderDetails = new ArrayList<>();
-
-    
 
     public Order() {
     }

@@ -7,6 +7,7 @@ import com.nash.assignment.constant.StatusEnum;
 import com.nash.assignment.modal.OrderDetail;
 
 public class OrderDto {
+
     private int id;
     private String orderDate;
     private String deliveryDate;

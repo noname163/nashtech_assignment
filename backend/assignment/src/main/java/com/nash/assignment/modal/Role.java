@@ -25,6 +25,7 @@ import com.nash.assignment.constant.RoleEnum;
 @Table
 @JsonIdentityReference
 public class Role {
+
     @Id
     @SequenceGenerator(name = "role_sequence", sequenceName = "role_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "role_sequence")

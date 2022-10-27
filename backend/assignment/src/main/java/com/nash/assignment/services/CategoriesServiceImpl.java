@@ -12,10 +12,12 @@ import com.nash.assignment.services.interfaces.CategoriesService;
 
 @Service
 public class CategoriesServiceImpl implements CategoriesService {
+
     @Autowired
     CategoriesRepositories categoriesRepositories;
 
-    @Autowired ModelMapper modelMapper;
+    @Autowired
+    ModelMapper modelMapper;
 
     @Override
     public Category insertCategories(Category categories) {
@@ -29,8 +31,8 @@ public class CategoriesServiceImpl implements CategoriesService {
         return list;
     }
 
-    public CategoriesDto insertCategory(CategoriesDto categoriesDto){
-        if(categoriesRepositories.findByName(categoriesDto.getName())!=null){
+    public CategoriesDto insertCategory(CategoriesDto categoriesDto) {
+        if (categoriesRepositories.findByName(categoriesDto.getName()) != null) {
             throw new InformationNotValidException("Already Exitts Categories Name: " + categoriesDto.getName());
         }
         Category category = modelMapper.map(categoriesDto, Category.class);

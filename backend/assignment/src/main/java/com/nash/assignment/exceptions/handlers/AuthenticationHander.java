@@ -8,5 +8,4 @@ public class AuthenticationHander extends AuthenticationException {
         super(msg);
     }
 
-    
 }

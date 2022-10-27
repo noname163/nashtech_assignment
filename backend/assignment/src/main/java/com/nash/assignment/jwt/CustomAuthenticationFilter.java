@@ -30,57 +30,58 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-        public static final String APPLICATION_JSON_VALUE = "application/json";
-        private final AuthenticationManager authenticationManager;
-        @Autowired
-        AccountsServiceImpl accountsServiceImpl;
 
-        public CustomAuthenticationFilter(AuthenticationManager authenticationManager) {
-                this.authenticationManager = authenticationManager;
-        }
+    public static final String APPLICATION_JSON_VALUE = "application/json";
+    private final AuthenticationManager authenticationManager;
+    @Autowired
+    AccountsServiceImpl accountsServiceImpl;
 
-        @Override
-        public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
-                        throws AuthenticationException {
+    public CustomAuthenticationFilter(AuthenticationManager authenticationManager) {
+        this.authenticationManager = authenticationManager;
+    }
 
-                String username = request.getParameter("username");
-                String password = request.getParameter("password");
-                String email = request.getParameter("email");
-                HttpSession session = request.getSession();
-                session.setAttribute("email", email);
-                log.info("Username is: {}", username);
-                log.info("Password is: {}", password);
-                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                                email,
-                                password);
-                return authenticationManager.authenticate(authenticationToken);
-        }
+    @Override
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
+            throws AuthenticationException {
 
-        @Override
-        protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
-                        FilterChain chain,
-                        Authentication authResult) throws IOException, ServletException {
-                User user = (User) authResult.getPrincipal();
-                Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        String email = request.getParameter("email");
+        HttpSession session = request.getSession();
+        session.setAttribute("email", email);
+        log.info("Username is: {}", username);
+        log.info("Password is: {}", password);
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                email,
+                password);
+        return authenticationManager.authenticate(authenticationToken);
+    }
 
-                String access_token = JWT.create().withSubject(user.getUsername())
-                                .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
-                                .withIssuer(request.getRequestURL().toString())
-                                .withClaim("Roles",
-                                                user.getAuthorities().stream().map(GrantedAuthority::getAuthority)
-                                                                .collect(Collectors.toList()))
-                                .sign(algorithm);
+    @Override
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+            FilterChain chain,
+            Authentication authResult) throws IOException, ServletException {
+        User user = (User) authResult.getPrincipal();
+        Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
 
-                String refresh_token = JWT.create().withSubject(user.getUsername())
-                                .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
-                                .withIssuer(request.getRequestURL().toString())
-                                .sign(algorithm);
+        String access_token = JWT.create().withSubject(user.getUsername())
+                .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
+                .withIssuer(request.getRequestURL().toString())
+                .withClaim("Roles",
+                        user.getAuthorities().stream().map(GrantedAuthority::getAuthority)
+                                .collect(Collectors.toList()))
+                .sign(algorithm);
 
-                Map<String, String> token = new HashMap<>();
-                token.put("access_token", access_token);
-                token.put("refresh_token", refresh_token);
-                response.setContentType(APPLICATION_JSON_VALUE);
-                new ObjectMapper().writeValue(response.getOutputStream(), token);
-        }
+        String refresh_token = JWT.create().withSubject(user.getUsername())
+                .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
+                .withIssuer(request.getRequestURL().toString())
+                .sign(algorithm);
+
+        Map<String, String> token = new HashMap<>();
+        token.put("access_token", access_token);
+        token.put("refresh_token", refresh_token);
+        response.setContentType(APPLICATION_JSON_VALUE);
+        new ObjectMapper().writeValue(response.getOutputStream(), token);
+    }
 
 }

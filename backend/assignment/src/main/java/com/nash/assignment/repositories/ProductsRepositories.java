@@ -10,6 +10,7 @@ import com.nash.assignment.modal.Product;
 
 @Repository
 public interface ProductsRepositories extends JpaRepository<Product, Long> {
+
     Product findByName(String name);
 
     List<Product> findByCategories(Category categories);

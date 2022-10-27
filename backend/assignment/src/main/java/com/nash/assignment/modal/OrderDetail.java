@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table
 public class OrderDetail {
+
     @Id
     @SequenceGenerator(name = "orderDetail_sequence", sequenceName = "orderDetail_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "orderDetail_sequence")
@@ -48,7 +49,6 @@ public class OrderDetail {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "orderDetail", cascade = CascadeType.REFRESH)
     private List<RateProduct> rateProduct = new ArrayList<>();
 
-    
     @Column(nullable = true, unique = false, length = 300)
     private int total;
 
@@ -105,7 +105,5 @@ public class OrderDetail {
     public void setAccount(Account account) {
         this.account = account;
     }
-
-    
 
 }

@@ -134,7 +134,7 @@ public class AccountsServiceImpl implements AccountService, UserDetailsService {
 
         }
         Account account = accountOtp.get();
-        Role role =  rolesRepositories.findByRole(RoleEnum.ROLE_ADMIN);
+        Role role = rolesRepositories.findByRole(RoleEnum.ROLE_ADMIN);
         if (role == null) {
             throw new ObjectNotFoundException("Cannot Found Role: " + RoleEnum.ROLE_ADMIN.toString());
         }
@@ -158,7 +158,7 @@ public class AccountsServiceImpl implements AccountService, UserDetailsService {
         }
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(account.getRole().getRole().name()));
-        return new User (account.getUsername(), account.getPassword(),
+        return new User(account.getUsername(), account.getPassword(),
                 authorities);
     }
 

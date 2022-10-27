@@ -26,6 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
+
     public static final String APPLICATION_JSON_VALUE = "application/json";
     private static final String AUTHORIZATION = "Authorizations";
 

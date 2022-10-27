@@ -1,6 +1,7 @@
 package com.nash.assignment.dto.request;
 
 public class CategoriesDto {
+
     private String name;
     private String description;
 

@@ -19,6 +19,7 @@ import com.nash.assignment.constant.RatingStatus;
 @Entity
 @Table
 public class RateProduct {
+
     @Id
     @SequenceGenerator(name = "productRates_sequence", sequenceName = "productRates_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "productRates_sequence")
@@ -42,7 +43,6 @@ public class RateProduct {
     @ManyToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "OrderDetail_id")
     private OrderDetail orderDetail;
-
 
     public RateProduct() {
     }
@@ -100,7 +100,5 @@ public class RateProduct {
     public void setStatus(RatingStatus status) {
         this.status = status;
     }
-
-    
 
 }

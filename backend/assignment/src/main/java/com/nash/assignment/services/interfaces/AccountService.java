@@ -7,6 +7,7 @@ import com.nash.assignment.dto.AccountDto;
 import com.nash.assignment.modal.Account;
 
 public interface AccountService {
+
     AccountDto insertAccounts(AccountDto account);
 
     List<Account> getAllAccounts();

@@ -9,6 +9,7 @@ import com.nash.assignment.repositories.CategoriesRepositories;
 
 @Component
 public class ProductMapperForAdmin {
+
     @Autowired
     CategoriesRepositories categoriesRepositories;
     @Autowired

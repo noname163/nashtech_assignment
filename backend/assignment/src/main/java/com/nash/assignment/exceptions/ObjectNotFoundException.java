@@ -1,13 +1,16 @@
 package com.nash.assignment.exceptions;
 
 public class ObjectNotFoundException extends RuntimeException {
-    public ObjectNotFoundException(){
+
+    public ObjectNotFoundException() {
         super();
     }
-    public ObjectNotFoundException(String mess){
+
+    public ObjectNotFoundException(String mess) {
         super(mess);
     }
-    public ObjectNotFoundException(String mess, Throwable cause){
+
+    public ObjectNotFoundException(String mess, Throwable cause) {
         super(mess, cause);
-    }   
+    }
 }

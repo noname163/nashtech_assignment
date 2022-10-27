@@ -15,18 +15,21 @@ import com.cloudinary.utils.ObjectUtils;
 
 @Service
 public class CloudinaryServiceImpl {
-    @Autowired Cloudinary cloudinary;
 
-    public String uploadImage(MultipartFile multipartFile) throws IOException{
-        Map cloudinaryApi=  cloudinary.uploader().upload(multipartFile.getBytes(), ObjectUtils.asMap("resource_type","auto"));
+    @Autowired
+    Cloudinary cloudinary;
+
+    public String uploadImage(MultipartFile multipartFile) throws IOException {
+        Map cloudinaryApi = cloudinary.uploader().upload(multipartFile.getBytes(), ObjectUtils.asMap("resource_type", "auto"));
         String url = (String) cloudinaryApi.get("secure_url");
         return url;
 
     }
-    public List<String> uploadImages(MultipartFile[] multipartFile) throws IOException{
+
+    public List<String> uploadImages(MultipartFile[] multipartFile) throws IOException {
         List<String> urls = new ArrayList<>();
         for (MultipartFile image : multipartFile) {
-            Map cloudinaryApi=  cloudinary.uploader().upload(image.getBytes(), ObjectUtils.asMap("resource_type","auto"));
+            Map cloudinaryApi = cloudinary.uploader().upload(image.getBytes(), ObjectUtils.asMap("resource_type", "auto"));
             urls.add((String) cloudinaryApi.get("secure_url"));
         }
         return urls;

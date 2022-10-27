@@ -15,6 +15,7 @@ import com.nash.assignment.repositories.CategoriesRepositories;
 @Generated(value = "org.mapstruct.ap.MappingProcessor", date = "2021-03-11T19:21:44+0100", comments = "version: 1.4.2.Final, compiler: javac, environment: Java 13.0.2 (Oracle Corporation)")
 @Component
 public class ProductMapper {
+
     @Autowired
     CategoriesRepositories categoriesRepositories;
     @Autowired
@@ -48,7 +49,7 @@ public class ProductMapper {
         return productDtoForUsers.stream().map(product -> mapDtoToEntity(product)).collect(Collectors.toList());
     }
 
-    public List<ProductDtoForUser> mapEntityToDto(List<Product> products){
+    public List<ProductDtoForUser> mapEntityToDto(List<Product> products) {
         return products.stream().map(product -> mapEntityToDto(product)).collect(Collectors.toList());
     }
 }

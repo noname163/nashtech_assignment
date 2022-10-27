@@ -3,6 +3,7 @@ package com.nash.assignment.dto;
 import com.nash.assignment.constant.RatingStatus;
 
 public class RateProductDto {
+
     private int rate;
 
     private String email;
@@ -42,7 +43,5 @@ public class RateProductDto {
     public void setStatus(RatingStatus status) {
         this.status = status;
     }
-
-    
 
 }
