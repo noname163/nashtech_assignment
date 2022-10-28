@@ -70,6 +70,16 @@ public class Account {
 
     public Account() {
     }
+    
+
+    public Account(Account account) {
+        this.phoneNumber = account.phoneNumber;
+        this.fullName = account.fullName;
+        this.password = account.password;
+        this.role = account.role;
+        this.status = account.status;
+    }
+
 
     public Account(String phoneNumber, String fullName, String userName, String password, Role role,
             StatusEnum status) {

@@ -24,6 +24,7 @@ import com.nash.assignment.services.ImageServiceImpl;
 @RestController
 @RequestMapping("/register")
 public class RegisterController {
+
     @Autowired
     AccountsServiceImpl accountsServiceImpl;
     @Autowired
@@ -32,10 +33,11 @@ public class RegisterController {
     ImageMapper imageMapper;
     @Autowired
     ImageServiceImpl imageServiceImpl;
-    @Autowired CloudinaryServiceImpl cloudinaryServiceImpl;
+    @Autowired
+    CloudinaryServiceImpl cloudinaryServiceImpl;
 
     @PostMapping
-    public ResponseEntity<AccountDto> insertAccount(@Valid AccountDto accountDto, MultipartFile avatar)
+    public ResponseEntity<AccountDto> insertAccount(@Valid @RequestBody AccountDto accountDto, MultipartFile avatar)
             throws IOException {
         String url = cloudinaryServiceImpl.uploadImage(avatar);
         Image image = imageServiceImpl.insertAvatar(url, accountDto);

@@ -24,7 +24,7 @@ public class CategoryController {
     @PostMapping()
     public ResponseEntity<CategoriesDto> insertCategory(@Valid @RequestBody CategoriesDto category) {
         CategoriesDto categoriesDto = categoriesServiceImpl.insertCategory(category);
-        return ResponseEntity.status(HttpStatus.OK).body(
+        return ResponseEntity.status(HttpStatus.CREATED).body(
                 categoriesDto);
     }
 }

@@ -154,7 +154,6 @@ public class AccountsServiceImplTest {
         AccountDto actual = accountsServiceImpl.updateAccountInformation(accountDto);
 
         verify(account).setFullName(accountDto.getFullName());
-        verify(account).setUsername(accountDto.getUsername());
         verify(account).setImage(accountDto.getImage());
 
         assertThat(accountDto, is(actual));

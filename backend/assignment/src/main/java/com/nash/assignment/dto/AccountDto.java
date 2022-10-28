@@ -15,18 +15,15 @@ public class AccountDto {
 
     private long id;
     @NotBlank(message = "Phone Number Cannot Empty")
-    @Pattern(regexp = "^(0|84)(2(0[3-9]|1[0-6|8|9]|2[0-2|5-9]|3[2-9]|4[0-9]|5[1|2|4-9]|6[0-3|9]|7[0-7]|8[0-9]|9[0-4|6|7|9])|3[2-9]|5[5|6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])([0-9]{7})$")
+    @Pattern(regexp = "^(0|84)(2(0[3-9]|1[0-6|8|9]|2[0-2|5-9]|3[2-9]|4[0-9]|5[1|2|4-9]|6[0-3|9]|7[0-7]|8[0-9]|9[0-4|6|7|9])|3[2-9]|5[5|6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])([0-9]{7})$",message = "Phone Need In Format 10 Digit Number")
     @JsonProperty("phoneNumber")
     private String phoneNumber;
     @NotBlank(message = "Email Cannot Empty")
     @Pattern(regexp = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+\\.[Aa-zA-Z0]{2,6}$", message = "Email Must Match example@example.com'")
     private String email;
-    @NotBlank(message = "Full Name  Cannot Empty")
+    @NotBlank(message = "Full Name Cannot Empty")
     @JsonProperty("fullName")
     private String fullName;
-    @NotBlank(message = "Username Cannot Empty")
-    @JsonProperty("username")
-    private String username;
     @NotBlank(message = "Password Cannot Empty")
     @JsonProperty("password")
     private String password;
@@ -38,14 +35,6 @@ public class AccountDto {
     private Role role;
 
     private StatusEnum status;
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
     public String getTest() {
         return test;

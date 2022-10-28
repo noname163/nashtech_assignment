@@ -11,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,6 +30,9 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
     public static final String APPLICATION_JSON_VALUE = "application/json";
     private static final String AUTHORIZATION = "Authorizations";
+
+    @Value("${jwt.secret.key}")
+    private String secretKey;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
