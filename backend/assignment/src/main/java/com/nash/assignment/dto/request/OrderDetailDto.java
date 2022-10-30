@@ -1,5 +1,6 @@
 package com.nash.assignment.dto.request;
 
+import com.nash.assignment.dto.response.ProductDtoForUser;
 import com.nash.assignment.modal.Order;
 
 public class OrderDetailDto {
@@ -9,7 +10,7 @@ public class OrderDetailDto {
     private int quantity;
 
 
-    private String product;
+    private ProductDtoForUser product;
 
  
     private Order order;
@@ -32,11 +33,11 @@ public class OrderDetailDto {
         this.quantity = quantity;
     }
 
-    public String getProduct() {
+    public ProductDtoForUser getProduct() {
         return product;
     }
 
-    public void setProduct(String product) {
+    public void setProduct(ProductDtoForUser product) {
         this.product = product;
     }
 

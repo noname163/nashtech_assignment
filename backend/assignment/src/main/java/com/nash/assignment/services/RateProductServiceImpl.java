@@ -12,6 +12,7 @@ import com.nash.assignment.dto.RateProductDto;
 import com.nash.assignment.dto.request.OrderDetailDto;
 import com.nash.assignment.dto.request.OrderDto;
 import com.nash.assignment.exceptions.InformationNotValidException;
+import com.nash.assignment.exceptions.ObjectNotFoundException;
 import com.nash.assignment.mapper.OrderDetailMapper;
 import com.nash.assignment.mapper.OrderMapper;
 import com.nash.assignment.mapper.RateProductMapper;
@@ -59,8 +60,10 @@ public class RateProductServiceImpl implements RateProductService {
         List<RateProduct> rates = new ArrayList<>();
         Order order = orderMapper.mapDtoToEntity(orderDto);
         Account account = accountRepositories.findByEmail(orderDto.getEmail());
-        List<OrderDetail> orderDetails = orderDto.getOrderDetails();
-        // List<Product> products = orderDetailRepositories.findProductByOrder(order); 
+        List<OrderDetail> orderDetails = orderDetailRepositories.findByOrder(order);
+        if(orderDetails == null){
+            throw new ObjectNotFoundException("Cannot Find Order Id: " + order.getId());
+        }
         for (OrderDetail orderDetail : orderDetails) {
             RateProduct rate = new RateProduct();
             rate.setAccount(account);

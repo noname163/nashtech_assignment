@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.nash.assignment.constant.StatusEnum;
 import com.nash.assignment.dto.AccountDto;
 import com.nash.assignment.dto.AccountLoginDto;
+import com.nash.assignment.exceptions.InformationNotValidException;
 import com.nash.assignment.modal.Account;
 import com.nash.assignment.repositories.AccountRepositories;
 
@@ -45,12 +46,10 @@ public class LoginServiceImpl {
         String email = accountDto.getEmail();
         Account account = accountRepositories.findByEmail(email);
         if (StatusEnum.DEACTIVE.equals(account.getStatus())) {
-            result.put("Error", "Account Have Been Ban");
-            return result;
+            throw new InformationNotValidException("Your Account Have Been Block");
         }
         if (!passwordEncoder.matches(accountDto.getPassword(), account.getPassword())) {
-            result.put("Error", "Invalid Password");
-            return result;
+            throw new InformationNotValidException("Invalid Email Or Password");
         }
         session.setAttribute("email", email);
         UserDetails user = userDetailServiceImpl.loadUserByUsername(email);

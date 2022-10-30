@@ -16,6 +16,7 @@ public class OrderMapper {
 
     @Autowired
     AccountRepositories accountRepositories;
+    @Autowired OrderDetailMapper orderDetailMapper;
 
     public OrderDto mapOrderEntityToDto(Order order) {
         OrderDto orderDto = new OrderDto();
@@ -25,7 +26,7 @@ public class OrderMapper {
         orderDto.setOrderDate(order.getOrderDate());
         orderDto.setStatus(order.getStatus());
         if (order != null) {
-            orderDto.setOrderDetails(order.getOrderDetails());
+            orderDto.setOrderDetails(orderDetailMapper.mapEntityToDto(order.getOrderDetails()));
         }
         return orderDto;
     }
@@ -38,7 +39,7 @@ public class OrderMapper {
         order.setDeliveryDate(orderDto.getDeliveryDate());
         order.setOrderDate(order.getOrderDate());
         if (orderDto.getOrderDetails() != null) {
-            order.setOrderDetails(orderDto.getOrderDetails());
+            order.setOrderDetails(orderDetailMapper.mapDtoToEntity(orderDto.getOrderDetails()));
         }
         order.setStatus(orderDto.getStatus());
         return order;

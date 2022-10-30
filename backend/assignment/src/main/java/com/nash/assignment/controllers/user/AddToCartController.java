@@ -41,8 +41,8 @@ public class AddToCartController {
     public ResponseEntity<OrderDto> addToCart(@RequestBody OrderDto orderDto) {
         OrderDto order = orderServiceImpl.insertOrder(orderDto);
         List<OrderDetailDto> orderDetail = orderDetailServiceImpl
-                .insertOrderDetail(orderDetailMapper.mapEntityToDto(orderDto.getOrderDetails()), order);
-        order.setOrderDetails(orderDetailMapper.mapDtoToEntity(orderDetail));
+                .insertOrderDetail(orderDto.getOrderDetails(), order);
+        order.setOrderDetails(orderDetail);
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 order);
     }
@@ -67,14 +67,14 @@ public class AddToCartController {
 
     @GetMapping(value = "/get-order")
     public ResponseEntity<List<OrderDto>> getOrder() {
-        List<OrderDto> orders = orderServiceImpl.getAllOrder();
+        List<OrderDto> orders = orderServiceImpl.getAllOrderByAccount();
         return ResponseEntity.status(HttpStatus.OK).body(
                 orders);
     }
 
     @GetMapping(value = "/get-order-detail")
     public ResponseEntity<List<OrderDetailDto>> getOrderDetail() {
-        List<OrderDetailDto> orderDetails = orderDetailServiceImpl.getAllOrderDetail();
+        List<OrderDetailDto> orderDetails = orderDetailServiceImpl.getAllOrderDetailByAccount();
         return ResponseEntity.status(HttpStatus.OK).body(
                 orderDetails);
     }

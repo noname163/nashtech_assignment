@@ -16,7 +16,7 @@ public class OrderDto {
 
     private String email;
 
-    private List<OrderDetail> orderDetails = new ArrayList<>();
+    private List<OrderDetailDto> orderDetails = new ArrayList<>();
 
     public int getId() {
         return id;
@@ -58,11 +58,11 @@ public class OrderDto {
         this.email = email;
     }
 
-    public List<OrderDetail> getOrderDetails() {
+    public List<OrderDetailDto> getOrderDetails() {
         return orderDetails;
     }
 
-    public void setOrderDetails(List<OrderDetail> orderDetails) {
+    public void setOrderDetails(List<OrderDetailDto> orderDetails) {
         this.orderDetails = orderDetails;
     }
 

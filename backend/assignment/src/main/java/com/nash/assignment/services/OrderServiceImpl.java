@@ -15,7 +15,9 @@ import com.nash.assignment.dto.request.OrderDto;
 import com.nash.assignment.exceptions.InformationNotValidException;
 import com.nash.assignment.exceptions.ObjectNotFoundException;
 import com.nash.assignment.mapper.OrderMapper;
+import com.nash.assignment.modal.Account;
 import com.nash.assignment.modal.Order;
+import com.nash.assignment.repositories.AccountRepositories;
 import com.nash.assignment.repositories.OrderRepositories;
 import com.nash.assignment.services.interfaces.OrderService;
 
@@ -28,6 +30,8 @@ public class OrderServiceImpl implements OrderService {
     OrderMapper orderMapper;
     @Autowired
     HttpServletRequest request;
+    @Autowired
+    AccountRepositories accountRepositories;
 
     public Order insert(Order order) {
         return orderRepositories.save(order);
@@ -35,6 +39,13 @@ public class OrderServiceImpl implements OrderService {
 
     public List<OrderDto> getAllOrder() {
         List<Order> orders = orderRepositories.findAll();
+        return orderMapper.mapEntityToDto(orders);
+    }
+    public List<OrderDto> getAllOrderByAccount() {
+        HttpSession session = request.getSession();
+        String email = (String) session.getAttribute("email");
+        Account account = accountRepositories.findByEmail(email);
+        List<Order> orders = orderRepositories.findByAccount(account);
         return orderMapper.mapEntityToDto(orders);
     }
 

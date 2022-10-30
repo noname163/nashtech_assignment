@@ -16,6 +16,7 @@ import com.nash.assignment.mapper.OrderDetailMapper;
 import com.nash.assignment.modal.Account;
 import com.nash.assignment.modal.Order;
 import com.nash.assignment.modal.OrderDetail;
+import com.nash.assignment.repositories.AccountRepositories;
 import com.nash.assignment.repositories.OrderDetailRepositories;
 import com.nash.assignment.repositories.OrderRepositories;
 import com.nash.assignment.services.interfaces.OrderDetailService;
@@ -29,6 +30,8 @@ public class OrderDetailServiceImpl implements OrderDetailService {
     OrderDetailMapper orderDetailMapper;
     @Autowired
     OrderRepositories orderRepositories;
+    @Autowired HttpServletRequest request;
+    @Autowired AccountRepositories accountRepositories;
 
     public OrderDetail insert(OrderDetail orderDetail) {
         return orderDetailRepositories.save(orderDetail);
@@ -36,6 +39,14 @@ public class OrderDetailServiceImpl implements OrderDetailService {
 
     public List<OrderDetailDto> getAllOrderDetail() {
         List<OrderDetail> orderDetails = orderDetailRepositories.findAll();
+        List<OrderDetailDto> orderDetailDtos = orderDetailMapper.mapEntityToDto(orderDetails);
+        return orderDetailDtos;
+    }
+    public List<OrderDetailDto> getAllOrderDetailByAccount() {
+        HttpSession session = request.getSession();
+        String email = (String) session.getAttribute("email");
+        Account account = accountRepositories.findByEmail(email);
+        List<OrderDetail> orderDetails = orderDetailRepositories.findByAccount(account);
         List<OrderDetailDto> orderDetailDtos = orderDetailMapper.mapEntityToDto(orderDetails);
         return orderDetailDtos;
     }

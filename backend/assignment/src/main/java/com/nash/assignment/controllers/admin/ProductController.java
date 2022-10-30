@@ -49,11 +49,7 @@ public class ProductController {
             MultipartFile[] productimages)
             throws IOException {
         List<String> urls = cloudinaryServiceImpl.uploadImages(productimages);
-        // ResponseEntity<List<String>> saveImage = fileServiceImpl.saveMultipleFile(
-        //                 "product/" + productDto.getName(),
-        //                 productimages);
         productsServiceImpl.insertProduct(productDto);
-        // List<String> urls = saveImage.getBody();
         List<Image> images = imageServiceImpl.insertMultipeImages(urls, productDto);
         productDto.setImages(imageMapper.mapEntityToImageProductDto(images));
         ProductDtoForAdmin product = productsServiceImpl.updateProductInformation(productDto);

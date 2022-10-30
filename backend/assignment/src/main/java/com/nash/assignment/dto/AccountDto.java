@@ -3,6 +3,7 @@ package com.nash.assignment.dto;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.nash.assignment.constant.StatusEnum;
 import com.nash.assignment.modal.Image;
@@ -44,6 +45,7 @@ public class AccountDto {
         this.test = test;
     }
 
+    @JsonIgnore
     public StatusEnum getStatus() {
         return status;
     }
@@ -84,6 +86,7 @@ public class AccountDto {
         this.fullName = fullName;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -92,6 +95,7 @@ public class AccountDto {
 
         this.password = password;
     }
+
 
     public Role getRole() {
         return role;
