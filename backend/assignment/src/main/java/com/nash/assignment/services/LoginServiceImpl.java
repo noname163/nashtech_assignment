@@ -16,6 +16,7 @@ import com.nash.assignment.constant.StatusEnum;
 import com.nash.assignment.dto.AccountDto;
 import com.nash.assignment.dto.AccountLoginDto;
 import com.nash.assignment.exceptions.InformationNotValidException;
+import com.nash.assignment.exceptions.ObjectNotFoundException;
 import com.nash.assignment.modal.Account;
 import com.nash.assignment.repositories.AccountRepositories;
 
@@ -45,6 +46,9 @@ public class LoginServiceImpl {
         HttpSession session = request.getSession();
         String email = accountDto.getEmail();
         Account account = accountRepositories.findByEmail(email);
+        if(account == null){
+            throw new ObjectNotFoundException("Cannot Find Account With Email: " + email);
+        }
         if (StatusEnum.DEACTIVE.equals(account.getStatus())) {
             throw new InformationNotValidException("Your Account Have Been Block");
         }

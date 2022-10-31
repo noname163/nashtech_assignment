@@ -1,5 +1,7 @@
 package com.nash.assignment.services;
 
+import java.util.List;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,8 +28,8 @@ public class CategoriesServiceImpl implements CategoriesService {
     }
 
     @Override
-    public Iterable<Category> getAllCategories() {
-        Iterable<Category> list = categoriesRepositories.findAll();
+    public List<Category> getAllCategories() {
+        List<Category> list = categoriesRepositories.findAll();
         return list;
     }
 

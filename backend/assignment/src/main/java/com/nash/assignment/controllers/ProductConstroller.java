@@ -12,13 +12,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nash.assignment.dto.request.CategoriesDto;
 import com.nash.assignment.dto.response.ProductDtoForUser;
+import com.nash.assignment.modal.Category;
+import com.nash.assignment.services.CategoriesServiceImpl;
 import com.nash.assignment.services.ProductsServiceImpl;
 
 @RestController
 @RequestMapping("/products")
 public class ProductConstroller {
     @Autowired ProductsServiceImpl productsServiceImpl;
+    @Autowired CategoriesServiceImpl categoriesServiceImpl;
     @GetMapping()
     public ResponseEntity<List<ProductDtoForUser>> displayProduct(){
         List<ProductDtoForUser> productDto = productsServiceImpl.getAllProducts();
@@ -31,6 +35,13 @@ public class ProductConstroller {
         List<ProductDtoForUser> productDto = productsServiceImpl.getProductByCategories(category);
         return ResponseEntity.status(HttpStatus.OK).body(
             productDto
+        );
+    }
+
+    @GetMapping(value = "/categories")
+    public ResponseEntity<List<Category>> getAllCategories(){
+        return ResponseEntity.status(HttpStatus.OK).body(
+            categoriesServiceImpl.getAllCategories()
         );
     }
 }

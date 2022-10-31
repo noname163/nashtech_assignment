@@ -105,5 +105,6 @@ public class OrderDetail {
     public void setAccount(Account account) {
         this.account = account;
     }
+    
 
 }

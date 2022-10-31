@@ -45,7 +45,7 @@ public class ProductController {
     CloudinaryServiceImpl cloudinaryServiceImpl;
 
     @PostMapping()
-    public ResponseEntity<ProductDtoForAdmin> insertProduct(@Valid ProductDtoForAdmin productDto,
+    public ResponseEntity<ProductDtoForAdmin> insertProduct(@Valid @RequestBody ProductDtoForAdmin productDto,
             MultipartFile[] productimages)
             throws IOException {
         List<String> urls = cloudinaryServiceImpl.uploadImages(productimages);
