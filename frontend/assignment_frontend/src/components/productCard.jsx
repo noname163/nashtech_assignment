@@ -5,8 +5,9 @@ import Pagination from './pagination';
 import { paginate, previousAndNextBtn } from '../JS/paginate';
 import config from "../config.json";
 import http from "../service/httpService";
-import {ToastContainer} from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "../CSS/productCard.css";
 
 class ProductCard extends Component {
 
@@ -16,9 +17,8 @@ class ProductCard extends Component {
         currentPage: 1
     };
     async componentDidMount() {
-        const { data: posts } = await http.get(config.apiEndpoint);
+        const { data: posts } = await http.get(config.apiEndpoint + "/products");
         this.setState({ posts });
-
     }
     handlePageChange = page => {
         this.setState({ currentPage: page })
@@ -32,56 +32,36 @@ class ProductCard extends Component {
 
         return (
             <React.Fragment>
-                <ToastContainer/>
-                <section style={ { backgroundColor: '' } }>
-                    <div >
-                        <div class="row">
-                            { productData.map(item =>
-                                <div class="col-md-12 col-lg-4 mb-4 mb-lg-0 mt-4">
-                                    <div id='card-items' class="card">
-                                        <Link to="/productDetail">
-                                            <div class="d-flex justify-content-between p-3">
-                                                <p class="lead mb-0">Today's Combo Offer</p>
-                                                <div
-                                                    class="bg-info rounded-circle d-flex align-items-center justify-content-center shadow-1-strong"
-                                                    style={ { width: '35px', height: '35px' } }>
-                                                    <p class="text-white mb-0 small">x4</p>
-                                                </div>
+                <ToastContainer />
+                <div class="container mt-100" >
+                    <div class="row">
+                        { productData.map(item =>
+                            <div class="col-md-4 col-sm-6" >
+                                <div class="card mb-30" >
+                                    <a class="card-img-tiles" href="#" data-abc="true"  >
+                                        <div class="inner" >
+                                            <div class="main-img" style={ { diplay: 'block', width: '30em', height: '20em' } }>
+                                                <img src={ item.images.slice(0, 1).map(image => image.url) } alt="Category" style={ { diplay: 'block', width: 'max-width', height: '18em' } } />
                                             </div>
-                                            <img src="https://res.cloudinary.com/dyvrvbcxx/image/upload/v1666778917/jj5oisv6qqf2cllezrc3.png"
-                                                class="card-img-top" alt="Laptop" />
-                                            <div class="card-body">
-                                                <div class="d-flex justify-content-between">
-                                                    <p class="small"><a href="#!" class="text-muted">1</a></p>
-                                                    {/* <p class="small text-danger"><s>${item.price}</s></p> */ }
-                                                </div>
-
-                                                <div class="d-flex justify-content-between mb-3">
-                                                    <h5 class="mb-0">{ item.name }</h5>
-                                                    <h5 class="text-dark mb-0">${ item.price }</h5>
-                                                </div>
-
-                                                <div class="d-flex justify-content-between mb-2">
-                                                    <p class="text-muted mb-0">Available: <span class="fw-bold">6</span></p>
-                                                    <div class="ms-auto text-warning">
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                    </div>
-                                                </div>
+                                            <div class="thumblist" style={ { display: 'block', width: '8em', height: '20em' } } >
+                                                { item.images.slice(1, 3).map(image => <img src={ image.url } alt="Category" style={ { display: 'block', width: '100%', height: '50%' } } />) }
                                             </div>
+                                        </div>
+                                    </a>
+                                    <div class="card-body text-center">
+                                        <h4 class="card-title">{ item.name }</h4>
+                                        <p class="text-muted"><span>{ item.categories }</span> { item.price } VND</p>
+                                        <Link class="btn btn-outline-primary btn-sm" to={ '/productDetail' } state={ item } data-abc="true" >
+                                            View Products
                                         </Link>
                                     </div>
                                 </div>
+                            </div>
 
-                            ) }
-
-
-                        </div>
+                        ) }
                     </div>
-                </section>
+                </div>
+
                 <Pagination itemsCount={ this.state.posts.length }
                     pageSize={ this.state.pageSize }
                     currentPage={ this.state.currentPage }

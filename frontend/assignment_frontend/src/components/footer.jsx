@@ -4,113 +4,45 @@ class Footer extends Component {
     render() {
         return (
             <React.Fragment>
-                <div class="container my-4" >
-
-                    <footer class="bg-primary text-center text-lg-start text-white">
-                        <div class="container p-4">
-                            <div class="row my-4">
-                                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-
-                                    <div class="rounded-circle bg-white shadow-1-strong d-flex align-items-center justify-content-center mb-4 mx-auto" style={{width: '150px', height: '150px'}}>
-                                        <img src="https://mdbootstrap.com/img/Photos/new-templates/animal-shelter/logo.png" height="70" alt=""
-                                            loading="lazy" />
+                <footer class="w-100 py-4 flex-shrink-0">
+                    <div class="container py-4" style={{backgroundColor:'#212529'}}>
+                        <div class="row gy-4 gx-5">
+                            <div class="col-lg-4 col-md-6">
+                                <h5 class="h1 text-white">FB.</h5>
+                                <p class="small text-muted" style={{display:'block', backgroundImage:'url("https://www.pinterest.com/pin/752734525237122406/")'}}>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt.</p>
+                                <p class="small text-muted mb-0">&copy; Copyrights. All rights reserved. <a class="text-primary" href="#">Bootstrapious.com</a></p>
+                            </div>
+                            <div class="col-lg-2 col-md-6">
+                                <h5 class="text-white mb-3">Quick links</h5>
+                                <ul class="list-unstyled text-muted">
+                                    <li><a href="#">Home</a></li>
+                                    <li><a href="#">About</a></li>
+                                    <li><a href="#">Get started</a></li>
+                                    <li><a href="#">FAQ</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-2 col-md-6">
+                                <h5 class="text-white mb-3">Quick links</h5>
+                                <ul class="list-unstyled text-muted">
+                                    <li><a href="#">Home</a></li>
+                                    <li><a href="#">About</a></li>
+                                    <li><a href="#">Get started</a></li>
+                                    <li><a href="#">FAQ</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-4 col-md-6">
+                                <h5 class="text-white mb-3">Newsletter</h5>
+                                <p class="small text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt.</p>
+                                <form action="#">
+                                    <div class="input-group mb-3">
+                                        <input class="form-control" type="text" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2"/>
+                                            <button class="btn btn-primary" id="button-addon2" type="button"><i class="fas fa-paper-plane"></i></button>
                                     </div>
-
-                                    <p class="text-center">Homless animal shelter The budgetary unit of the Capital City of Warsaw</p>
-
-                                    <ul class="list-unstyled d-flex flex-row justify-content-center">
-                                        <li>
-                                            <a class="text-white px-2" href="#!">
-                                                <i class="fab fa-facebook-square"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a class="text-white px-2" href="#!">
-                                                <i class="fab fa-instagram"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a class="text-white ps-2" href="#!">
-                                                <i class="fab fa-youtube"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-
-                                </div>
-                                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                                    <h5 class="text-uppercase mb-4">Animals</h5>
-
-                                    <ul class="list-unstyled">
-                                        <li class="mb-2">
-                                            <a href="#!" class="text-white"><i class="fas fa-paw pe-3"></i>When your pet is missing</a>
-                                        </li>
-                                        <li class="mb-2">
-                                            <a href="#!" class="text-white"><i class="fas fa-paw pe-3"></i>Recently found</a>
-                                        </li>
-                                        <li class="mb-2">
-                                            <a href="#!" class="text-white"><i class="fas fa-paw pe-3"></i>How to adopt?</a>
-                                        </li>
-                                        <li class="mb-2">
-                                            <a href="#!" class="text-white"><i class="fas fa-paw pe-3"></i>Pets for adoption</a>
-                                        </li>
-                                        <li class="mb-2">
-                                            <a href="#!" class="text-white"><i class="fas fa-paw pe-3"></i>Material gifts</a>
-                                        </li>
-                                        <li class="mb-2">
-                                            <a href="#!" class="text-white"><i class="fas fa-paw pe-3"></i>Help with walks</a>
-                                        </li>
-                                        <li class="mb-2">
-                                            <a href="#!" class="text-white"><i class="fas fa-paw pe-3"></i>Volunteer activities</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                                    <h5 class="text-uppercase mb-4">Animals</h5>
-
-                                    <ul class="list-unstyled">
-                                        <li class="mb-2">
-                                            <a href="#!" class="text-white"><i class="fas fa-paw pe-3"></i>General information</a>
-                                        </li>
-                                        <li class="mb-2">
-                                            <a href="#!" class="text-white"><i class="fas fa-paw pe-3"></i>About the shelter</a>
-                                        </li>
-                                        <li class="mb-2">
-                                            <a href="#!" class="text-white"><i class="fas fa-paw pe-3"></i>Statistic data</a>
-                                        </li>
-                                        <li class="mb-2">
-                                            <a href="#!" class="text-white"><i class="fas fa-paw pe-3"></i>Job</a>
-                                        </li>
-                                        <li class="mb-2">
-                                            <a href="#!" class="text-white"><i class="fas fa-paw pe-3"></i>Tenders</a>
-                                        </li>
-                                        <li class="mb-2">
-                                            <a href="#!" class="text-white"><i class="fas fa-paw pe-3"></i>Contact</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                                    <h5 class="text-uppercase mb-4">Contact</h5>
-
-                                    <ul class="list-unstyled">
-                                        <li>
-                                            <p><i class="fas fa-map-marker-alt pe-2"></i>Warsaw, 57 Street, Poland</p>
-                                        </li>
-                                        <li>
-                                            <p><i class="fas fa-phone pe-2"></i>+ 01 234 567 89</p>
-                                        </li>
-                                        <li>
-                                            <p><i class="fas fa-envelope pe-2 mb-0"></i>contact@example.com</p>
-                                        </li>
-                                    </ul>
-                                </div>
+                                </form>
                             </div>
                         </div>
-                        <div class="text-center p-3" style={{backgroundColor: 'rgba(0, 0, 0, 0.2)'}}>
-                            <a class="text-white" href="https://mdbootstrap.com/">MDBootstrap.com</a>
-                        </div>
-                    </footer>
-
-                </div>
+                    </div>
+                </footer>
             </React.Fragment>
         );
     }

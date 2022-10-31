@@ -1,16 +1,51 @@
-import React, { Component } from 'react';
-import '../CSS/login.module.css';
+import Joi from 'joi-browser';
+import React from 'react';
+import '../CSS/login.css';
+import * as authenService from '../service/authenService';
+import Form from './common/form';
 
-class LoginForm extends Component {
+class LoginForm extends Form {
+    
+    state={
+        data:{email:"", password:""},
+        errors:{}
+    };
+    schema ={
+        email: Joi.string()
+            .required()
+            .label("Email"),
+        password: Joi.string()
+            .required()
+            .min(5)
+            .label("Password"),
+    };
+    doSubmit = async ()=>{
+        try {
+            console.log("submiting");
+            await authenService.login(this.state.data);
+            window.location = "/";
+        } catch (ex) {
+            console.log("Errors"+ex);
+            if (ex.response && ex.response.status === 400) {
+                console.log("errors");
+                let errors = { ...this.state.errors };
+                errors.email = ex.response.data.mess;
+                console.log("Mess" + errors);
+                this.setState({errors});
+            }
+        }
+    };
     render() {
         return (
             <React.Fragment>
-                    <section className="h-100 gradient-form" style={ { backgroundColor: '#eee' } }>
-                        <div className="container py-5 h-100">
+                
+               <div class="row d-flex justify-content-center" style={{display:'block', backgroundColor:'#eee', height:'50em'}}> 
+               <section className="gradient-form" style={ { backgroundColor: '#eee', display:'block', width:'fit-content', height:'fit-content' } }>
+                        <div className="container py-5 h-100" >
                             <div className="row d-flex justify-content-center align-items-center h-100">
-                                <div className="col-xl-10">
+                                <div className="col-xl-10" >
                                     <div className="card rounded-3 text-black">
-                                        <div className="row g-0">
+                                        <div className="row g-0" >
                                             <div className="col-lg-6">
                                                 <div className="card-body p-md-5 mx-md-4">
 
@@ -20,33 +55,14 @@ class LoginForm extends Component {
                                                         <h4 className="mt-1 mb-5 pb-1">We are The Lotus Team</h4>
                                                     </div>
 
-                                                    <form action="http://localhost:8080/login" method="post" >
-                                                        {/* <div  className="alert alert-danger">
-                                                            Invalid username and password.
-                                                        </div>
-                                                        <div  className="alert alert-success">
-                                                            You have been logged out.
+                                                    <form onSubmit={this.handleSubmit} >
+                                                        
+                                                        {this.renderInput("email", "Email")}
 
-                                                        </div>
-                                                        <div  className="alert alert-success">
-                                                            Created Account success
-                                                        </div>
-                                                        <p>Please login to your account</p>
-                                                        <p text="${successMess}"></p> */}
-
-                                                        <div className="form-outline mb-4">
-                                                            <input type="text" id="form2Example11" name="email" className="form-control"
-                                                                placeholder="Enter Your Email" />
-                                                        </div>
-
-                                                        <div className="form-outline mb-4">
-                                                            <input type="password" id="form2Example22" name="password" className="form-control" placeholder="Password" />
-                                                        </div>
+                                                        {this.renderInput("password","Password","password")}
 
                                                         <div className="text-center pt-1 mb-5 pb-1">
-                                                            <button className="btn btn-primary btn-block fa-lg  mb-3"
-                                                                type="submit">Log
-                                                                in</button>
+                                                            {this.renderButton("Login")}
                                                             <div style={ { display: 'block' } }>
                                                                 <input style={ { float: 'left' } } type="checkbox" name="remember-me" id="remember-me" />
                                                                 <p style={ { float: 'left' } }>Remember me?</p>
@@ -79,7 +95,7 @@ class LoginForm extends Component {
                             </div>
                         </div>
                     </section>
-                {/* <p>Loginform</p> */}
+               </div>
             </React.Fragment>
         );
     }
