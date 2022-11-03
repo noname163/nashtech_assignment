@@ -30,7 +30,7 @@ public class ProductDtoForAdmin {
     @NotBlank(message = "Categories Cannot Empty")
     private String categories;
 
-    private List<ImageProductDto> images = new ArrayList<>();
+    private List<String> images = new ArrayList<>();
 
     public long getId() {
         return id;
@@ -48,11 +48,11 @@ public class ProductDtoForAdmin {
         this.name = name;
     }
 
-    public List<ImageProductDto> getImages() {
+    public List<String> getImages() {
         return images;
     }
 
-    public void setImages(List<ImageProductDto> images) {
+    public void setImages(List<String> images) {
         this.images = images;
     }
 

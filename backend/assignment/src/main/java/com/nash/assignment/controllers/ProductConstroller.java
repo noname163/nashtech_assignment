@@ -21,8 +21,15 @@ import com.nash.assignment.services.ProductsServiceImpl;
 @RestController
 @RequestMapping("/products")
 public class ProductConstroller {
-    @Autowired ProductsServiceImpl productsServiceImpl;
-    @Autowired CategoriesServiceImpl categoriesServiceImpl;
+    ProductsServiceImpl productsServiceImpl;
+    CategoriesServiceImpl categoriesServiceImpl;
+
+    @Autowired
+    public ProductConstroller(ProductsServiceImpl productsServiceImpl, CategoriesServiceImpl categoriesServiceImpl) {
+        this.productsServiceImpl = productsServiceImpl;
+        this.categoriesServiceImpl = categoriesServiceImpl;
+    }
+    
     @GetMapping()
     public ResponseEntity<List<ProductDtoForUser>> displayProduct(){
         List<ProductDtoForUser> productDto = productsServiceImpl.getAllProducts();

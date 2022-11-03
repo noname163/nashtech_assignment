@@ -68,6 +68,7 @@ public class ImageServiceImpl implements ImageService {
         return result;
     }
 
+
     public Image insertAvatar(String imageValue, AccountDto accountDto) {
         if (imageValue == null || imageValue.equals("")) {
             return null;

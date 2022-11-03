@@ -75,18 +75,18 @@ public class ImageServiceImplTest {
         Account account = mock(Account.class);
         String imageUrl = "image";
 
-        when(accountRepositories.findByPhoneNumber(accountDto.getPhoneNumber())).thenReturn(account);
-        when(imagesRepositories.save(imageCaptor.capture())).thenReturn(imageCaptor.capture());
         Image actual = imageServiceImpl.insertAvatar(imageUrl, accountDto);
-        Image image = imageCaptor.getValue();
-
+        when(accountRepositories.findByPhoneNumber(accountDto.getPhoneNumber())).thenReturn(account);
         verify(imagesRepositories).save(imageCaptor.capture());
+        Image image = imageCaptor.getValue();
         assertThat(image, is(actual));
     }
 
     @Test
     void insertImage() {
-        Image image = mock(Image.class);
+        Image image = new Image();
+        image.setUrl("Test");
+        
         when(imagesRepositories.save(image)).thenReturn(image);
         Image actual = imageServiceImpl.insertImage(image);
         assertThat(actual, is(image));
@@ -112,8 +112,10 @@ public class ImageServiceImplTest {
 
         when(productsRepositories.findByName(productDto.getName())).thenReturn(product);
         when(imagesRepositories.saveAll(images.capture())).thenReturn(images.capture());
+
         List<Image> actual = imageServiceImpl.insertMultipeImages(imageName, productDto);
         List<Image> expected = images.getValue();
+        
         verify(imagesRepositories).saveAll(images.capture());
         assertThat(actual, is(expected));
 

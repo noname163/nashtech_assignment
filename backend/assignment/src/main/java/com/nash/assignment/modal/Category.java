@@ -30,8 +30,7 @@ public class Category {
     @Column(unique = false, nullable = true, length = 300)
     private String name;
 
-    @Column(unique = false)
-    @Lob
+    @Column(unique = false, columnDefinition = "text")
     private String description;
 
     @JsonIgnore

@@ -19,7 +19,7 @@ public class ProductMapperForAdmin {
         ProductDtoForAdmin productDto = new ProductDtoForAdmin();
         productDto.setId(product.getId());
         productDto.setCategories(product.getCategories().getName());
-        productDto.setImages(imageMapper.mapEntityToImageProductDto(product.getImages()));
+        productDto.setImages(imageMapper.mapEntityToSting(product.getImages()));
         productDto.setName(product.getName());
         productDto.setPrice(product.getPrice());
         productDto.setStatus(product.getStatus());
@@ -34,7 +34,7 @@ public class ProductMapperForAdmin {
         product.setId(productDto.getId());
         product.setCategories(categoriesRepositories.findByName(productDto.getCategories()));
         product.setName(productDto.getName());
-        product.setImages(imageMapper.mapImageProductDtoToEntity(productDto.getImages()));
+        product.setImages(imageMapper.mapImageProductDtoToEntity(productDto.getImages(), product));
         product.setPrice(productDto.getPrice());
         product.setStatus(productDto.getStatus());
         product.setDescription(productDto.getDescription());

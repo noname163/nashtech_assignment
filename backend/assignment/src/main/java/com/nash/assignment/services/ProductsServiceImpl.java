@@ -34,16 +34,19 @@ public class ProductsServiceImpl implements ProductsService {
 
     ImageMapper imageMapper;
 
+    ImageServiceImpl imageServiceImpl;
+
     ProductMapperForAdmin productMapperForAdmin;
 
     @Autowired
     public ProductsServiceImpl(ProductsRepositories productsRepositories, CategoriesRepositories categoriesRepositories,
-            ProductMapper productMapper, ImageMapper imageMapper, ProductMapperForAdmin productMapperForAdmin) {
+            ProductMapper productMapper, ImageMapper imageMapper, ProductMapperForAdmin productMapperForAdmin, ImageServiceImpl imageServiceImpl) {
         this.productsRepositories = productsRepositories;
         this.categoriesRepositories = categoriesRepositories;
         this.productMapper = productMapper;
         this.imageMapper = imageMapper;
         this.productMapperForAdmin = productMapperForAdmin;
+        this.imageServiceImpl = imageServiceImpl;
     }
 
     public Product insertProduct1(Product product) {
@@ -59,18 +62,30 @@ public class ProductsServiceImpl implements ProductsService {
         if (categories == null) {
             throw new ObjectNotFoundException("Cannot Find Category Name: " + categories);
         }
+        if(productDto.getImages() == null||
+         productDto.getImages().isEmpty()){
+            throw new ObjectNotFoundException("Image Null");
+        }
         productDto.setStatus(StatusEnum.ACTIVE);
         Product product = productMapperForAdmin.mapDtoToEntity(productDto);
         LocalDate date = LocalDate.now();
         product.setCreatedDate(date.toString());
         product = productsRepositories.save(product);
+        imageServiceImpl.insertMultipeImages(productDto.getImages(), productDto);
         return productMapperForAdmin.mapEntityToDto(product);
     }
 
     @Override
     public List<ProductDtoForUser> getAllProducts() {
-        return productsRepositories.findAll().stream()
+        return productsRepositories.findByStatus(StatusEnum.ACTIVE).stream()
                 .map(product -> productMapper.mapEntityToDto(product)).collect(Collectors.toList());
+    }
+
+    public List<ProductDtoForAdmin> getAllProductsAdmin() {
+        return productsRepositories.findByStatus(StatusEnum.ACTIVE).stream()
+                .map(product -> 
+                productMapperForAdmin.mapEntityToDto(product))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -107,7 +122,8 @@ public class ProductsServiceImpl implements ProductsService {
         productDatabase.setName(productValue.getName());
         productDatabase.setPrice(productValue.getPrice());
         productDatabase.setCategories(category);
-        productDatabase.setImages(imageMapper.mapImageProductDtoToEntity(productValue.getImages()));
+        productDatabase.setImages(imageMapper.mapImageProductDtoToEntity(productValue.getImages(),productDatabase));
+        productsRepositories.save(productDatabase);
         return productMapperForAdmin.mapEntityToDto(productDatabase);
     }
 

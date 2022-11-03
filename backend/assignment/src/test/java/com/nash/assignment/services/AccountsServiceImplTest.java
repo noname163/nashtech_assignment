@@ -69,15 +69,16 @@ public class AccountsServiceImplTest {
 
     @Test
     void getAccountById_WhenAccountNotNull_ShouldReturnAccountObject() {
-        Account account = mock(Account.class);
-        AccountDto accountDto = mock(AccountDto.class);
+        Account account = new Account();
+        account.setId(1l);
+        AccountDto expected = mock(AccountDto.class);
 
-        when(accountRepositories.findById(0L)).thenReturn(Optional.of(account));
-        when(modelMapper.map(account, AccountDto.class)).thenReturn(accountDto);
+        when(accountRepositories.findById(1L)).thenReturn(Optional.of(account));
+        when(modelMapper.map(account, AccountDto.class)).thenReturn(expected);
 
-        AccountDto expected = accountsServiceImpl.getAccountById(account.getId());
+        AccountDto actual = accountsServiceImpl.getAccountById(1l);
 
-        assertThat(accountDto, is(expected));
+        assertThat(actual, is(expected));
 
     }
 
@@ -91,7 +92,7 @@ public class AccountsServiceImplTest {
     }
 
     @Test
-    void insertAccounts_WhenAccountDataValid_ShouldReturnAccountDto() {
+    void insertAccounts_WhenAccountDataValid_Should_SetRole_SetStatus_SetPassword_Save() {
         Account expecAccount = mock(Account.class);
         AccountDto initAccount = mock(AccountDto.class);
 
@@ -107,6 +108,22 @@ public class AccountsServiceImplTest {
         verify(initAccount).setStatus(StatusEnum.ACTIVE);
         verify(initAccount).setPassword(passwordEncoder.encode(initAccount.getPassword()));
         verify(accountRepositories).save(expecAccount);
+        assertThat(actual, is(initAccount));
+    }
+    @Test
+    void insertAccounts_WhenAccountDataValid_ShouldReturnAccountDto() {
+        Account expecAccount = new Account();
+        AccountDto initAccount = new AccountDto();
+        initAccount.setPhoneNumber("0938577332");
+
+        when(accountRepositories.findByPhoneNumber(initAccount.getPhoneNumber())).thenReturn(null);
+        when(rolesRepositories.findByRole(RoleEnum.ROLE_USER)).thenReturn(role);
+        when(modelMapper.map(initAccount, Account.class)).thenReturn(expecAccount);
+        when(accountRepositories.save(expecAccount)).thenReturn(expecAccount);
+        when(modelMapper.map(expecAccount, AccountDto.class)).thenReturn(initAccount);
+
+        AccountDto actual = accountsServiceImpl.insertAccounts(initAccount);
+
         assertThat(actual, is(initAccount));
     }
 
@@ -200,6 +217,7 @@ public class AccountsServiceImplTest {
         when(modelMapper.map(accountinit, AccountDto.class)).thenReturn(accountExpect);
 
         AccountDto actual = accountsServiceImpl.updateAccountRole(1l);
+        
         verify(accountRepositories).save(accountinit);
         assertThat(actual.getRole().getRole(), is(RoleEnum.ROLE_ADMIN));
 

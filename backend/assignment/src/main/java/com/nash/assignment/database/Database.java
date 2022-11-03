@@ -36,8 +36,10 @@ public class Database {
         AccountsServiceImpl accountsServiceImpl;
         @Autowired
         ModelMapper modelMapper;
-        @Autowired OrderDetailServiceImpl orderDetailServiceImpl;
-        @Autowired OrderServiceImpl orderServiceImpl;
+        @Autowired
+        OrderDetailServiceImpl orderDetailServiceImpl;
+        @Autowired
+        OrderServiceImpl orderServiceImpl;
 
         @Bean
         CommandLineRunner initDatabase(
@@ -55,11 +57,11 @@ public class Database {
                                 Account adminAccount = new Account("0345323543", "Admin", "Admin User", "admin",
                                                 adminRole,
                                                 StatusEnum.ACTIVE);
-                                        adminAccount.setEmail("admin@gmail.com");
+                                adminAccount.setEmail("admin@gmail.com");
                                 Account userAccount = new Account("0345323542", "User", "Customer User", "user",
                                                 userRole,
                                                 StatusEnum.ACTIVE);
-                                        userAccount.setEmail("user@gmail.com");
+                                userAccount.setEmail("user@gmail.com");
 
                                 logger.info("Insert Account ",
                                                 accountsServiceImpl.insert(adminAccount));
@@ -79,10 +81,10 @@ public class Database {
                                 logger.info("Insert Product ",
                                                 productsServiceImpl.insertProduct1(product2));
 
-                                Image image1 = new Image("Test1",product1);
-                                Image image2 = new Image("Test2",product1);
-                                logger.info("Insert Image ", imageServiceImpl.insertImage(image1));
-                                logger.info("Insert Image ", imageServiceImpl.insertImage(image2));
+                                // Image image1 = new Image("Test1", product1);
+                                // Image image2 = new Image("Test2", product1);
+                                // logger.info("Insert Image ", imageServiceImpl.insertImage(image1));
+                                // logger.info("Insert Image ", imageServiceImpl.insertImage(image2));
 
                                 Order order = new Order("Test", "Test", userAccount);
                                 logger.info("Insert Order", orderServiceImpl.insert(order));

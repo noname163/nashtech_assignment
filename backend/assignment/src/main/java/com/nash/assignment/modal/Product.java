@@ -21,9 +21,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.nash.assignment.constant.StatusEnum;
 
 @Table
@@ -41,8 +39,8 @@ public class Product {
     @Column(nullable = true, unique = false, length = 300)
     private String price;
 
-    @Column(unique = false)
-    @Lob
+    @Column(unique = false, columnDefinition = "text")
+    
     private String description;
 
     @Column(unique = false)
@@ -63,7 +61,7 @@ public class Product {
     private Set<RateProduct> rate = new HashSet<>();
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "product", cascade = CascadeType.REFRESH)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "product", cascade = CascadeType.MERGE)
     private List<Image> images = new ArrayList<>();
 
     public Product() {

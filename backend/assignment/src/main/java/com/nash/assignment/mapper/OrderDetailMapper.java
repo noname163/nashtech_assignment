@@ -62,8 +62,7 @@ public class OrderDetailMapper {
 
     public List<OrderDetailDto> mapEntityToDto(List<OrderDetail> orderDetails) {
         List<OrderDetailDto> result = orderDetails.stream().map(order -> 
-        mapEntityToDto(order))
-                .collect(Collectors.toList());
+        mapEntityToDto(order)).collect(Collectors.toList());
         return result;
     }
 }

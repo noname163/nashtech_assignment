@@ -13,6 +13,7 @@ import com.nash.assignment.dto.request.OrderDetailDto;
 import com.nash.assignment.dto.request.OrderDto;
 import com.nash.assignment.exceptions.ObjectNotFoundException;
 import com.nash.assignment.mapper.OrderDetailMapper;
+import com.nash.assignment.mapper.ProductMapper;
 import com.nash.assignment.modal.Account;
 import com.nash.assignment.modal.Order;
 import com.nash.assignment.modal.OrderDetail;
@@ -32,6 +33,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
     OrderRepositories orderRepositories;
     @Autowired HttpServletRequest request;
     @Autowired AccountRepositories accountRepositories;
+    @Autowired ProductMapper productMapper;
 
     public OrderDetail insert(OrderDetail orderDetail) {
         return orderDetailRepositories.save(orderDetail);
