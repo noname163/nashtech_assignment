@@ -1,5 +1,6 @@
 import Joi from 'joi-browser';
 import React from 'react';
+import { ToastContainer, toast } from 'react-toastify';
 import '../CSS/login.css';
 import * as authenService from '../service/authenService';
 import Form from './common/form';
@@ -23,23 +24,20 @@ class LoginForm extends Form {
         try {
             console.log("submiting");
             await authenService.login(this.state.data);
+            toast.success('Login Success.');
             window.location = "/";
         } catch (ex) {
             console.log("Errors"+ex);
-            if (ex.response && ex.response.status === 400) {
-                console.log("errors");
-                let errors = { ...this.state.errors };
-                errors.email = ex.response.data.mess;
-                console.log("Mess" + errors);
-                this.setState({errors});
+            if (ex.response && ex.response.status === 500||ex.response && ex.response.status ==400)  {
+                toast.error(ex.response.data.mess)
             }
         }
     };
     render() {
         return (
             <React.Fragment>
-                
-               <div class="row d-flex justify-content-center" style={{display:'block', backgroundColor:'#eee', height:'50em'}}> 
+            <ToastContainer/>
+               <div className="row d-flex justify-content-center" style={{display:'block', backgroundColor:'#eee', height:'50em'}}> 
                <section className="gradient-form" style={ { backgroundColor: '#eee', display:'block', width:'fit-content', height:'fit-content' } }>
                         <div className="container py-5 h-100" >
                             <div className="row d-flex justify-content-center align-items-center h-100">

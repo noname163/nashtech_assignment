@@ -25,19 +25,19 @@ const Pagination = props =>{
     
     return (
         <nav aria-label="Page navigation example">
-            <ul class="pagination">
-                <li class="page-item">
-                    <a class="page-link" onClick={() => btn("pre")}>Previous</a>
+            <ul className="pagination">
+                <li className="page-item">
+                    <a className="page-link" onClick={() => btn("pre")}>Previous</a>
                 </li>
                 {
                     pages.map(page=>(
-                        <li class={page==currentPage ?"page-item active" :"page-item"} key={page}>
-                            <a class="page-link" onClick={() => onPageChange(page)}>{page}</a>
+                        <li className={page==currentPage ?"page-item active" :"page-item"} key={page}>
+                            <a className="page-link" onClick={() => onPageChange(page)}>{page}</a>
                         </li>
                     ))
                 }
-                <li class="page-item">
-                    <a class="page-link" onClick={() => btn("next")} >Next</a>
+                <li className="page-item">
+                    <a className="page-link" onClick={() => btn("next")} >Next</a>
                 </li>
             </ul>
         </nav>

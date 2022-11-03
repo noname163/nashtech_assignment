@@ -4,48 +4,61 @@ import Table from "./common/table";
 import config from "../config.json";
 import http from "../service/httpService";
 import ProductModel from "./common/productModel";
+import dataService from "../service/dataService";
 
 class ProductTable extends Component {
 
-    state={
-        posts:[]
+    state = {
+        posts: []
     };
     async componentDidMount() {
-        const { data: posts } = await http.get(config.apiEndpoint + "/products");
+        const accessToken = localStorage.getItem("Access-Token");
+        const options = {
+            headers: {
+                Authorizations: "Bearer "+accessToken
+            }
+        };
+        const { data: posts } = await http.get("http://localhost:8080/admin/product", options);
         this.setState({ posts });
+        
     }
-    columns=[
-        {path:"url",label:"Image"},
-        {
-            path: "name",
-            label:"Product Name",
-        },
-        {path:"categories",label:"Categories"},
-        {path:"price",label:"Price"},
-        {path:"status",label:"Status"},
-        {
-            key: "like",
-            label:"Action",
-            content: data => (
-                <div class="btn-group">
-                    <button type="button" class="btn btn-primary">Edit</button>
-                    <button type="button" class="btn btn-danger">Delete</button>
-                </div>
-            )
-        }
-
-    ]
-    render() { 
+    render() {
+        console.log("Product: " + this.state.posts);
         return (
-        <React.Fragment>
-            <Table
-            columns={this.columns}
-            data={this.state.posts}
-          />
-          <ProductModel/>
-        </React.Fragment>
+            <React.Fragment>
+                <table className="table">
+                    <thead className="thead-dark">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Product Name</th>
+                            <th scope="col">Categories</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        { this.state.posts.map((product,index) =>
+                            <tr key={index}>
+                                <th scope="row">{++index}</th>
+                                <td>{ product?.name }</td>
+                                <td>{ product?.categories }</td>
+                                <td>{ product?.price }</td>
+                                <td>{ product?.status }</td>
+                                <td>
+                                    <div className="btn-group" role="group" aria-label="Basic example">
+                                        <Link to={"/edit-product"} state={product} className="btn btn-primary">Eidt</Link>
+                                        <button type="button" className="btn btn-danger">Deleted</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        ) }
+
+                    </tbody>
+                </table>
+            </React.Fragment>
         );
     }
 }
- 
+
 export default ProductTable;

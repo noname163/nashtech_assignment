@@ -5,7 +5,7 @@ const TextArea = ({ name, label, error, ...rest }) => {
         <React.Fragment>
             <textarea
                 {...rest}
-                class="form-control validate"
+                className="form-control validate"
                 rows="3"
                 name={ name }
                 label={ label }

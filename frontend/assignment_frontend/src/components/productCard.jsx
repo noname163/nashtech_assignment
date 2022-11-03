@@ -33,25 +33,25 @@ class ProductCard extends Component {
         return (
             <React.Fragment>
                 <ToastContainer />
-                <div class="container mt-100" >
-                    <div class="row">
+                <div className="container mt-100" >
+                    <div className="row">
                         { productData.map(item =>
-                            <div class="col-md-4 col-sm-6" >
-                                <div class="card mb-30" >
-                                    <a class="card-img-tiles" href="#" data-abc="true"  >
-                                        <div class="inner" >
-                                            <div class="main-img" style={ { diplay: 'block', width: '30em', height: '20em' } }>
+                            <div className="col-md-4 col-sm-6" >
+                                <div className="card mb-30" >
+                                    <a className="card-img-tiles" href="#" data-abc="true"  >
+                                        <div className="inner" >
+                                            <div className="main-img" style={ { diplay: 'block', width: '30em', height: '20em' } }>
                                                 <img src={ item.images.slice(0, 1).map(image => image.url) } alt="Category" style={ { diplay: 'block', width: 'max-width', height: '18em' } } />
                                             </div>
-                                            <div class="thumblist" style={ { display: 'block', width: '8em', height: '20em' } } >
+                                            <div className="thumblist" style={ { display: 'block', width: '8em', height: '20em' } } >
                                                 { item.images.slice(1, 3).map(image => <img src={ image.url } alt="Category" style={ { display: 'block', width: '100%', height: '50%' } } />) }
                                             </div>
                                         </div>
                                     </a>
-                                    <div class="card-body text-center">
-                                        <h4 class="card-title">{ item.name }</h4>
-                                        <p class="text-muted"><span>{ item.categories }</span> { item.price } VND</p>
-                                        <Link class="btn btn-outline-primary btn-sm" to={ '/productDetail' } state={ item } data-abc="true" >
+                                    <div className="card-body text-center">
+                                        <h4 className="card-title">{ item.name }</h4>
+                                        <p className="text-muted"><span>{ item.categories }</span> { item.price } VND</p>
+                                        <Link className="btn btn-outline-primary btn-sm" to={ '/product-detail' } state={ item } data-abc="true" >
                                             View Products
                                         </Link>
                                     </div>

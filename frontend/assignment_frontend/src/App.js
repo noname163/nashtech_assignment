@@ -13,6 +13,7 @@ import ProductTable from './components/productTable';
 import RegisterForm from './components/registerForm';
 import auth from './service/authenService';
 import { getProductData } from './service/dataService';
+import EditProduct from './components/editProduct';
 
 class App extends Component {
     state = {};
@@ -37,10 +38,11 @@ class App extends Component {
                 <Routes>
                     <Route path='/login' element={ <LoginForm /> } />
                     <Route path='/logout' element={ <Logout /> } />
-                    <Route path='/productDetail' element={ <ProductDetail /> } />
-                    <Route path='/productAdmin' element={<ProductTable/>} />
+                    <Route path='/product-detail' element={ <ProductDetail /> } />
+                    <Route path='/product-admin' element={<ProductTable/>} />
+                    <Route path='/edit-product' element={<EditProduct/>} />
                     <Route path='/register' element={ <RegisterForm /> } />
-                    <Route path='/new_product' element={<NewProdut/>} />
+                    <Route path='/new-product' element={<NewProdut/>} />
                     <Route path='/' element={ <ProductCard /> } />
                 </Routes>
 
