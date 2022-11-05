@@ -3,7 +3,6 @@ package com.nash.assignment.services;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -12,8 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.nash.assignment.constant.StatusEnum;
-import com.nash.assignment.dto.AccountDto;
+import com.nash.assignment.constant.AccountStatus;
 import com.nash.assignment.dto.AccountLoginDto;
 import com.nash.assignment.exceptions.InformationNotValidException;
 import com.nash.assignment.exceptions.ObjectNotFoundException;
@@ -47,9 +45,9 @@ public class LoginServiceImpl {
         String email = accountDto.getEmail();
         Account account = accountRepositories.findByEmail(email);
         if(account == null){
-            throw new ObjectNotFoundException("Cannot Find Account With Email: " + email);
+            throw new ObjectNotFoundException("Invalid Email Or Password");
         }
-        if (StatusEnum.DEACTIVE.equals(account.getStatus())) {
+        if (AccountStatus.DEACTIVE.equals(account.getStatus())) {
             throw new InformationNotValidException("Your Account Have Been Block");
         }
         if (!passwordEncoder.matches(accountDto.getPassword(), account.getPassword())) {

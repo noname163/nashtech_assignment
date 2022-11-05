@@ -8,8 +8,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.nash.assignment.constant.RoleEnum;
-import com.nash.assignment.constant.StatusEnum;
+import com.nash.assignment.constant.UserRole;
+import com.nash.assignment.constant.AccountStatus;
+import com.nash.assignment.constant.ProductStatus;
 import com.nash.assignment.modal.Account;
 import com.nash.assignment.modal.Category;
 import com.nash.assignment.modal.Image;
@@ -48,19 +49,19 @@ public class Database {
                 return new CommandLineRunner() {
                         @Override
                         public void run(String... args) throws Exception {
-                                Role adminRole = new Role(RoleEnum.ROLE_ADMIN);
-                                Role userRole = new Role(RoleEnum.ROLE_USER);
-                                System.out.println("Role: " + RoleEnum.ROLE_ADMIN.name());
+                                Role adminRole = new Role(UserRole.ROLE_ADMIN);
+                                Role userRole = new Role(UserRole.ROLE_USER);
+                                System.out.println("Role: " + UserRole.ROLE_ADMIN.name());
                                 logger.info("Insert Roles ", rolesServicesImpl.insertRole(adminRole));
                                 logger.info("Insert Roles ", rolesServicesImpl.insertRole(userRole));
 
                                 Account adminAccount = new Account("0345323543", "Admin", "Admin User", "admin",
                                                 adminRole,
-                                                StatusEnum.ACTIVE);
+                                                AccountStatus.ACTIVE);
                                 adminAccount.setEmail("admin@gmail.com");
                                 Account userAccount = new Account("0345323542", "User", "Customer User", "user",
                                                 userRole,
-                                                StatusEnum.ACTIVE);
+                                                AccountStatus.ACTIVE);
                                 userAccount.setEmail("user@gmail.com");
 
                                 logger.info("Insert Account ",
@@ -74,8 +75,8 @@ public class Database {
                                 logger.info("Insert Categories ", categoriesServiceImpl.insertCategories(categories1));
                                 logger.info("Insert Categories ", categoriesServiceImpl.insertCategories(categories2));
 
-                                Product product1 = new Product("Product1", "12000", StatusEnum.ACTIVE, categories1);
-                                Product product2 = new Product("Product2", "14000", StatusEnum.ACTIVE, categories2);
+                                Product product1 = new Product("Product1", "12000", ProductStatus.AVAILABLE, categories1);
+                                Product product2 = new Product("Product2", "14000", ProductStatus.AVAILABLE, categories2);
                                 logger.info("Insert Product ",
                                                 productsServiceImpl.insertProduct1(product1));
                                 logger.info("Insert Product ",

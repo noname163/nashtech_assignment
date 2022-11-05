@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -18,7 +19,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@Table
+@Table(indexes = @Index(columnList = "name"))
 @Entity
 public class Category {
 
@@ -27,7 +28,7 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "categories_sequence")
 
     private long id;
-    @Column(unique = false, nullable = true, length = 300)
+    @Column( unique = true, nullable = true, length = 300)
     private String name;
 
     @Column(unique = false, columnDefinition = "text")

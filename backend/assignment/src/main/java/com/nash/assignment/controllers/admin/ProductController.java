@@ -2,7 +2,6 @@ package com.nash.assignment.controllers.admin;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -19,11 +18,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
+import com.nash.assignment.constant.ProductStatus;
 import com.nash.assignment.dto.ProductDtoForAdmin;
 import com.nash.assignment.mapper.ImageMapper;
-import com.nash.assignment.modal.Image;
 import com.nash.assignment.services.CloudinaryServiceImpl;
 import com.nash.assignment.services.FileServiceImpl;
 import com.nash.assignment.services.ImageServiceImpl;
@@ -62,8 +60,7 @@ public class ProductController {
 
     @PatchMapping(value = "/active/{id}")
     public ResponseEntity<ProductDtoForAdmin> activeProduct(@PathVariable long id) {
-        final int status = 1;
-        ProductDtoForAdmin productDto = productsServiceImpl.updateProductStatus(id, status);
+        ProductDtoForAdmin productDto = productsServiceImpl.updateProductStatus(id, ProductStatus.AVAILABLE);
         return ResponseEntity.status(HttpStatus.OK).body(
                 productDto);
     }
@@ -77,8 +74,7 @@ public class ProductController {
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<ProductDtoForAdmin> deleteProduct(@PathVariable long id) {
-        final int status = 2;
-        ProductDtoForAdmin productDto = productsServiceImpl.updateProductStatus(id, status);
+        ProductDtoForAdmin productDto = productsServiceImpl.updateProductStatus(id, ProductStatus.UNAVAILABLE);
         return ResponseEntity.status(HttpStatus.OK).body(
                 productDto);
     }

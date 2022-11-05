@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.nash.assignment.constant.RoleEnum;
-import com.nash.assignment.constant.StatusEnum;
+import com.nash.assignment.constant.UserRole;
+import com.nash.assignment.constant.AccountStatus;
 import com.nash.assignment.dto.AccountDto;
 import com.nash.assignment.exceptions.InformationNotValidException;
 import com.nash.assignment.exceptions.ObjectNotFoundException;
@@ -55,9 +55,9 @@ public class AccountsServiceImpl implements AccountService{
         if (accountRepositories.findByPhoneNumber(accountDto.getPhoneNumber()) != null) {
             throw new InformationNotValidException("This Phonenumber Already Exist.");
         }
-        Role role = rolesRepositories.findByRole(RoleEnum.ROLE_USER);
+        Role role = rolesRepositories.findByRole(UserRole.ROLE_USER);
         accountDto.setRole(role);
-        accountDto.setStatus(StatusEnum.ACTIVE);
+        accountDto.setStatus(AccountStatus.ACTIVE);
         accountDto.setPassword(passwordEncoder.encode(accountDto.getPassword()));
         Account account = modelMapper.map(accountDto, Account.class);
         account = accountRepositories.save(account);
@@ -68,7 +68,7 @@ public class AccountsServiceImpl implements AccountService{
     @Override
     public List<Account> getAllAccounts() {
         List<Account> list = accountRepositories.findAll();
-        if (list == null || list.isEmpty()) {
+        if (null == list || list.isEmpty()) {
             throw new ObjectNotFoundException("Account List Is Empty.");
         }
         return list;
@@ -93,7 +93,7 @@ public class AccountsServiceImpl implements AccountService{
     }
 
     @Override
-    public AccountDto updateAccountStatus(long id, StatusEnum statusValue) {
+    public AccountDto updateAccountStatus(long id, AccountStatus statusValue) {
         Optional<Account> accountOtp = accountRepositories.findById(id);
         if (accountOtp.isEmpty()) {
             throw new ObjectNotFoundException("Cannot Find Account With Id: " + id);
@@ -127,9 +127,9 @@ public class AccountsServiceImpl implements AccountService{
 
         }
         Account account = accountOtp.get();
-        Role role = rolesRepositories.findByRole(RoleEnum.ROLE_ADMIN);
+        Role role = rolesRepositories.findByRole(UserRole.ROLE_ADMIN);
         if (role == null) {
-            throw new ObjectNotFoundException("Cannot Found Role: " + RoleEnum.ROLE_ADMIN.toString());
+            throw new ObjectNotFoundException("Cannot Found Role: " + UserRole.ROLE_ADMIN.toString());
         }
         account.setRole(role);
         accountRepositories.save(account);

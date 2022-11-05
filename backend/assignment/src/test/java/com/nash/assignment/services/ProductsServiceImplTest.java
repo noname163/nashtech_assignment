@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.nash.assignment.constant.StatusEnum;
+import com.nash.assignment.constant.ProductStatus;
 import com.nash.assignment.dto.ProductDtoForAdmin;
 import com.nash.assignment.dto.response.ProductDtoForUser;
 import com.nash.assignment.exceptions.InformationNotValidException;
@@ -75,7 +75,7 @@ public class ProductsServiceImplTest {
         List<Product> productList = new ArrayList<>();
         productList.add(product);
 
-        when(productsRepositories.findByStatus(StatusEnum.ACTIVE)).thenReturn(productList);
+        when(productsRepositories.findByStatus(ProductStatus.AVAILABLE)).thenReturn(productList);
         when(productMapper.mapEntityToDto(product)).thenReturn(productDtoResp);
         expectedList.add(productDtoResp);
 
@@ -91,7 +91,7 @@ public class ProductsServiceImplTest {
         List<Product> productList = new ArrayList<>();
         productList.add(product);
 
-        when(productsRepositories.findByStatus(StatusEnum.ACTIVE)).thenReturn(productList);
+        when(productsRepositories.findByStatus(ProductStatus.AVAILABLE)).thenReturn(productList);
         when(productMapperForAdmin.mapEntityToDto(product)).thenReturn(productDtoForAdmin);
         expectedList.add(productDtoForAdmin);
 
@@ -117,7 +117,7 @@ public class ProductsServiceImplTest {
 
         ProductDtoForAdmin actual = productsServiceImpl.insertProduct(expected);
 
-        verify(expected).setStatus(StatusEnum.ACTIVE);
+        verify(expected).setStatus(ProductStatus.AVAILABLE);
         verify(productsRepositories).save(product);
         verify(product).setCreatedDate(date.toString());
         assertThat(expected, is(actual));
@@ -205,9 +205,9 @@ public class ProductsServiceImplTest {
         when(productsRepositories.save(product)).thenReturn(product);
         when(productMapperForAdmin.mapEntityToDto(product)).thenReturn(productDtoForAdmin);
 
-        ProductDtoForAdmin actual = productsServiceImpl.updateProductStatus(productDtoForAdmin.getId(), 1);
+        ProductDtoForAdmin actual = productsServiceImpl.updateProductStatus(productDtoForAdmin.getId(), ProductStatus.AVAILABLE);
         
-        verify(product).setStatus(StatusEnum.ACTIVE);
+        verify(product).setStatus(ProductStatus.AVAILABLE);
         assertThat(productDtoForAdmin.getStatus(), is(actual.getStatus()));
 
     }
@@ -218,31 +218,21 @@ public class ProductsServiceImplTest {
         when(productsRepositories.save(product)).thenReturn(product);
         when(productMapperForAdmin.mapEntityToDto(product)).thenReturn(productDtoForAdmin);
        
-        ProductDtoForAdmin actual = productsServiceImpl.updateProductStatus(productDtoForAdmin.getId(), 2);
+        ProductDtoForAdmin actual = productsServiceImpl.updateProductStatus(productDtoForAdmin.getId(), ProductStatus.UNAVAILABLE);
         
-        verify(product).setStatus(StatusEnum.DEACTIVE);
+        verify(product).setStatus(ProductStatus.UNAVAILABLE);
         assertThat(productDtoForAdmin.getStatus(), is(actual.getStatus()));
     }
 
-    @Test
-    void updateProductStatus_WhenStatusEqual0_ShouldThrowInformationNotValid() {
-        when(productsRepositories.findById(productDtoResp.getId())).thenReturn(Optional.of(product));
-        InformationNotValidException actual = Assertions.assertThrows(InformationNotValidException.class, () -> productsServiceImpl.updateProductStatus(productDtoResp.getId(), 0));
-        assertThat("Status Not Valid.", is(actual.getMessage()));
-    }
 
-    @Test
-    void updateProductStatus_WhenStatusEqual3_ShouldThrowInformationNotValid() {
-        when(productsRepositories.findById(productDtoResp.getId())).thenReturn(Optional.of(product));
-        InformationNotValidException actual = Assertions.assertThrows(InformationNotValidException.class, () -> productsServiceImpl.updateProductStatus(productDtoResp.getId(), 3));
-        assertThat("Status Not Valid.", is(actual.getMessage()));
-    }
+
+   
 
     @Test
     void updateProductStatus_WhenProductNull_ShouldThrowObjectNotFoundException() {
         when(productsRepositories.findById(productDtoResp.getId())).thenReturn(Optional.empty());
         ObjectNotFoundException actual = Assertions.assertThrows(ObjectNotFoundException.class,
-                () -> productsServiceImpl.updateProductStatus(productDtoResp.getId(), 0));
+                () -> productsServiceImpl.updateProductStatus(productDtoResp.getId(), ProductStatus.AVAILABLE));
         assertThat("Cannot Find Product With Id: " + productDtoResp.getId(), is(actual.getMessage()));
     }
 }

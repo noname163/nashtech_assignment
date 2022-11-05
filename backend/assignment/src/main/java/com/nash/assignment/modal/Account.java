@@ -14,6 +14,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -22,10 +23,10 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.nash.assignment.constant.StatusEnum;
+import com.nash.assignment.constant.AccountStatus;
 
 @Entity
-@Table
+@Table(indexes = @Index(columnList = "email, phone"))
 public class Account {
 
     @Id
@@ -33,9 +34,9 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "account_sequence")
 
     private long id;
-    @Column(nullable = true, unique = false, length = 13)
+    @Column(name="phone" ,nullable = true, unique = true, length = 13)
     private String phoneNumber;
-    @Column
+    @Column( name = "email" ,unique = true)
     private String email;
     @Column(nullable = true, unique = false, length = 100)
     private String fullName;
@@ -50,7 +51,7 @@ public class Account {
 
     @Column
     @Enumerated(EnumType.STRING)
-    private StatusEnum status;
+    private AccountStatus status;
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "account", cascade = CascadeType.REFRESH)
@@ -82,7 +83,7 @@ public class Account {
 
 
     public Account(String phoneNumber, String fullName, String userName, String password, Role role,
-            StatusEnum status) {
+            AccountStatus status) {
         this.phoneNumber = phoneNumber;
         this.fullName = fullName;
         this.username = userName;
@@ -164,11 +165,11 @@ public class Account {
         this.image = image;
     }
 
-    public StatusEnum getStatus() {
+    public AccountStatus getStatus() {
         return status;
     }
 
-    public void setStatus(StatusEnum status) {
+    public void setStatus(AccountStatus status) {
         this.status = status;
     }
 

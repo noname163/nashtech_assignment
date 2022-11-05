@@ -1,8 +1,6 @@
 package com.nash.assignment.constant;
 
-public enum StatusEnum {
-    ACTIVE,
-    DEACTIVE,
+public enum OrderStatus {
     CANCEL,
     PENDING,
     ACCEPT,

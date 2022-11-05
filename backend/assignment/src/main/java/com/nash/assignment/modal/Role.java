@@ -12,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -19,10 +20,10 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.nash.assignment.constant.RoleEnum;
+import com.nash.assignment.constant.UserRole;
 
 @Entity
-@Table
+@Table(indexes = @Index(columnList = "role"))
 @JsonIdentityReference
 public class Role {
 
@@ -34,7 +35,7 @@ public class Role {
 
     @Column(nullable = true, unique = false, length = 30)
     @Enumerated(EnumType.STRING)
-    private RoleEnum role;
+    private UserRole role;
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "role", cascade = CascadeType.REFRESH)
@@ -43,7 +44,7 @@ public class Role {
     public Role() {
     }
 
-    public Role(RoleEnum role) {
+    public Role(UserRole role) {
         this.role = role;
     }
 
@@ -55,11 +56,11 @@ public class Role {
         this.id = id;
     }
 
-    public RoleEnum getRole() {
+    public UserRole getRole() {
         return role;
     }
 
-    public void setRole(RoleEnum role) {
+    public void setRole(UserRole role) {
         this.role = role;
     }
 

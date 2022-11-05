@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -16,8 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nash.assignment.constant.RoleEnum;
-import com.nash.assignment.constant.StatusEnum;
+import com.nash.assignment.constant.AccountStatus;
 import com.nash.assignment.dto.AccountDto;
 import com.nash.assignment.modal.Account;
 import com.nash.assignment.services.AccountsServiceImpl;
@@ -43,14 +41,14 @@ public class AccountController {
 
     @PatchMapping(value = "/active/{id}")
     public ResponseEntity<AccountDto> acctiveAccount(@PathVariable long id) {
-        AccountDto account = accountsServiceImpl.updateAccountStatus(id, StatusEnum.ACTIVE);
+        AccountDto account = accountsServiceImpl.updateAccountStatus(id, AccountStatus.ACTIVE);
         return ResponseEntity.status(HttpStatus.OK).body(
                 account);
     }
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<AccountDto> deleteAccount(@PathVariable long id) {
-        AccountDto account = accountsServiceImpl.updateAccountStatus(id, StatusEnum.DEACTIVE);
+        AccountDto account = accountsServiceImpl.updateAccountStatus(id, AccountStatus.DEACTIVE);
         return ResponseEntity.status(HttpStatus.OK).body(
                 account);
     }

@@ -17,8 +17,8 @@ import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.nash.assignment.constant.RoleEnum;
-import com.nash.assignment.constant.StatusEnum;
+import com.nash.assignment.constant.UserRole;
+import com.nash.assignment.constant.AccountStatus;
 import com.nash.assignment.dto.AccountDto;
 import com.nash.assignment.exceptions.InformationNotValidException;
 import com.nash.assignment.exceptions.ObjectNotFoundException;
@@ -38,7 +38,7 @@ public class AccountsServiceImplTest {
     Account account;
     AccountDto accountDto;
 
-    private StatusEnum status;
+    private AccountStatus status;
 
     @BeforeEach
     void setUpBefore() {
@@ -85,7 +85,7 @@ public class AccountsServiceImplTest {
     @Test
     void insertAccounts_WhenAccountNotNull_ShouldThrowInformationNotValid() {
         when(accountRepositories.findByPhoneNumber(account.getPhoneNumber())).thenReturn(account);
-        when(rolesRepositories.findByRole(RoleEnum.ROLE_USER)).thenReturn(role);
+        when(rolesRepositories.findByRole(UserRole.ROLE_USER)).thenReturn(role);
         InformationNotValidException actual = Assertions.assertThrows(InformationNotValidException.class,
                 () -> accountsServiceImpl.insertAccounts(accountDto));
         assertEquals("This Phonenumber Already Exist.", actual.getMessage());
@@ -97,7 +97,7 @@ public class AccountsServiceImplTest {
         AccountDto initAccount = mock(AccountDto.class);
 
         when(accountRepositories.findByPhoneNumber(initAccount.getPhoneNumber())).thenReturn(null);
-        when(rolesRepositories.findByRole(RoleEnum.ROLE_USER)).thenReturn(role);
+        when(rolesRepositories.findByRole(UserRole.ROLE_USER)).thenReturn(role);
         when(modelMapper.map(initAccount, Account.class)).thenReturn(expecAccount);
         when(accountRepositories.save(expecAccount)).thenReturn(expecAccount);
         when(modelMapper.map(expecAccount, AccountDto.class)).thenReturn(initAccount);
@@ -105,7 +105,7 @@ public class AccountsServiceImplTest {
         AccountDto actual = accountsServiceImpl.insertAccounts(initAccount);
 
         verify(initAccount).setRole(role);
-        verify(initAccount).setStatus(StatusEnum.ACTIVE);
+        verify(initAccount).setStatus(AccountStatus.ACTIVE);
         verify(initAccount).setPassword(passwordEncoder.encode(initAccount.getPassword()));
         verify(accountRepositories).save(expecAccount);
         assertThat(actual, is(initAccount));
@@ -117,7 +117,7 @@ public class AccountsServiceImplTest {
         initAccount.setPhoneNumber("0938577332");
 
         when(accountRepositories.findByPhoneNumber(initAccount.getPhoneNumber())).thenReturn(null);
-        when(rolesRepositories.findByRole(RoleEnum.ROLE_USER)).thenReturn(role);
+        when(rolesRepositories.findByRole(UserRole.ROLE_USER)).thenReturn(role);
         when(modelMapper.map(initAccount, Account.class)).thenReturn(expecAccount);
         when(accountRepositories.save(expecAccount)).thenReturn(expecAccount);
         when(modelMapper.map(expecAccount, AccountDto.class)).thenReturn(initAccount);
@@ -179,12 +179,12 @@ public class AccountsServiceImplTest {
     @Test
     void updateAccountRole_WhenRoleNull_ShouldThrowInfomationNotValidException() {
         when(accountRepositories.findById(account.getId())).thenReturn(Optional.of(account));
-        when(rolesRepositories.findByRole(RoleEnum.ROLE_ADMIN)).thenReturn(null);
+        when(rolesRepositories.findByRole(UserRole.ROLE_ADMIN)).thenReturn(null);
 
         ObjectNotFoundException actual = Assertions.assertThrows(ObjectNotFoundException.class,
                 () -> accountsServiceImpl.updateAccountRole(account.getId()));
 
-        assertThat("Cannot Found Role: " + RoleEnum.ROLE_ADMIN.toString(), is(actual.getMessage()));
+        assertThat("Cannot Found Role: " + UserRole.ROLE_ADMIN.toString(), is(actual.getMessage()));
 
     }
 
@@ -202,9 +202,9 @@ public class AccountsServiceImplTest {
     @Test
     void updateAccountRole_WhenDataValid_ShouldReturnAccountDtoWithRoleAdmin() {
         Role adminRole = new Role();
-        adminRole.setRole(RoleEnum.ROLE_ADMIN);
+        adminRole.setRole(UserRole.ROLE_ADMIN);
         Role userRole = new Role();
-        userRole.setRole(RoleEnum.ROLE_USER);
+        userRole.setRole(UserRole.ROLE_USER);
         Account accountinit = new Account();
         AccountDto accountExpect = new AccountDto();
         accountinit.setId(1);
@@ -213,13 +213,13 @@ public class AccountsServiceImplTest {
         accountExpect.setRole(adminRole);
 
         when(accountRepositories.findById(1l)).thenReturn(Optional.of(accountinit));
-        when(rolesRepositories.findByRole(RoleEnum.ROLE_ADMIN)).thenReturn(adminRole);
+        when(rolesRepositories.findByRole(UserRole.ROLE_ADMIN)).thenReturn(adminRole);
         when(modelMapper.map(accountinit, AccountDto.class)).thenReturn(accountExpect);
 
         AccountDto actual = accountsServiceImpl.updateAccountRole(1l);
         
         verify(accountRepositories).save(accountinit);
-        assertThat(actual.getRole().getRole(), is(RoleEnum.ROLE_ADMIN));
+        assertThat(actual.getRole().getRole(), is(UserRole.ROLE_ADMIN));
 
     }
 
@@ -227,7 +227,7 @@ public class AccountsServiceImplTest {
     void updateAccountStatus_WhenAccountNull_ShouldThrowObjectNotFound() {
         when(accountRepositories.findById(accountDto.getId())).thenReturn(Optional.empty());
         ObjectNotFoundException actual = Assertions.assertThrows(ObjectNotFoundException.class,
-                () -> accountsServiceImpl.updateAccountStatus(accountDto.getId(), StatusEnum.ACTIVE));
+                () -> accountsServiceImpl.updateAccountStatus(accountDto.getId(), AccountStatus.ACTIVE));
         assertThat("Cannot Find Account With Id: " + accountDto.getId(), is(actual.getMessage()));
     }
 
@@ -236,16 +236,16 @@ public class AccountsServiceImplTest {
         Account accountinit = new Account();
         AccountDto accountExpect = new AccountDto();
         accountinit.setId(1);
-        accountinit.setStatus(StatusEnum.DEACTIVE);
+        accountinit.setStatus(AccountStatus.DEACTIVE);
         accountExpect.setId(1);
-        accountExpect.setStatus(StatusEnum.ACTIVE);
+        accountExpect.setStatus(AccountStatus.ACTIVE);
 
         when(accountRepositories.findById(1l)).thenReturn(Optional.of(accountinit));
         when(modelMapper.map(accountinit, AccountDto.class)).thenReturn(accountExpect);
-        AccountDto actual = accountsServiceImpl.updateAccountStatus(accountinit.getId(), StatusEnum.ACTIVE);
+        AccountDto actual = accountsServiceImpl.updateAccountStatus(accountinit.getId(), AccountStatus.ACTIVE);
 
         verify(accountRepositories).save(accountinit);
-        assertThat(actual.getStatus(), is(StatusEnum.ACTIVE));
+        assertThat(actual.getStatus(), is(AccountStatus.ACTIVE));
     }
 
     @Test
@@ -253,16 +253,16 @@ public class AccountsServiceImplTest {
         Account accountinit = new Account();
         AccountDto accountExpect = new AccountDto();
         accountinit.setId(1);
-        accountinit.setStatus(StatusEnum.ACTIVE);
+        accountinit.setStatus(AccountStatus.ACTIVE);
         accountExpect.setId(1);
-        accountExpect.setStatus(StatusEnum.DEACTIVE);
+        accountExpect.setStatus(AccountStatus.DEACTIVE);
 
         when(accountRepositories.findById(1l)).thenReturn(Optional.of(accountinit));
         when(modelMapper.map(accountinit, AccountDto.class)).thenReturn(accountExpect);
 
-        AccountDto actual = accountsServiceImpl.updateAccountStatus(1l, StatusEnum.DEACTIVE);
+        AccountDto actual = accountsServiceImpl.updateAccountStatus(1l, AccountStatus.DEACTIVE);
         verify(accountRepositories).save(accountinit);
 
-        assertThat(actual.getStatus(), is(StatusEnum.DEACTIVE));
+        assertThat(actual.getStatus(), is(AccountStatus.DEACTIVE));
     }
 }

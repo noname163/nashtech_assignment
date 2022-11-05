@@ -14,7 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.nash.assignment.constant.StatusEnum;
+import com.nash.assignment.constant.AccountStatus;
 import com.nash.assignment.database.Database;
 import com.nash.assignment.modal.Account;
 import com.nash.assignment.repositories.AccountRepositories;

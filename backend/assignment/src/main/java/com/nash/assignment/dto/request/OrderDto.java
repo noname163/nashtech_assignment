@@ -3,8 +3,7 @@ package com.nash.assignment.dto.request;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.nash.assignment.constant.StatusEnum;
-import com.nash.assignment.modal.OrderDetail;
+import com.nash.assignment.constant.OrderStatus;
 
 public class OrderDto {
 
@@ -12,7 +11,7 @@ public class OrderDto {
     private String orderDate;
     private String deliveryDate;
 
-    private StatusEnum status;
+    private OrderStatus status;
 
     private String email;
 
@@ -42,11 +41,11 @@ public class OrderDto {
         this.deliveryDate = deliveryDate;
     }
 
-    public StatusEnum getStatus() {
+    public OrderStatus getStatus() {
         return status;
     }
 
-    public void setStatus(StatusEnum status) {
+    public void setStatus(OrderStatus status) {
         this.status = status;
     }
 

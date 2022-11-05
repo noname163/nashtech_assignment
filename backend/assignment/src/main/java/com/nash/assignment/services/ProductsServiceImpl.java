@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.nash.assignment.constant.StatusEnum;
+import com.nash.assignment.constant.ProductStatus;
 import com.nash.assignment.dto.ProductDtoForAdmin;
 import com.nash.assignment.dto.response.ProductDtoForUser;
 import com.nash.assignment.exceptions.InformationNotValidException;
@@ -66,7 +66,7 @@ public class ProductsServiceImpl implements ProductsService {
          productDto.getImages().isEmpty()){
             throw new ObjectNotFoundException("Image Null");
         }
-        productDto.setStatus(StatusEnum.ACTIVE);
+        productDto.setStatus(ProductStatus.AVAILABLE);
         Product product = productMapperForAdmin.mapDtoToEntity(productDto);
         LocalDate date = LocalDate.now();
         product.setCreatedDate(date.toString());
@@ -77,30 +77,21 @@ public class ProductsServiceImpl implements ProductsService {
 
     @Override
     public List<ProductDtoForUser> getAllProducts() {
-        return productsRepositories.findByStatus(StatusEnum.ACTIVE).stream()
+        return productsRepositories.findByStatus(ProductStatus.AVAILABLE).stream()
                 .map(product -> productMapper.mapEntityToDto(product)).collect(Collectors.toList());
     }
 
-    public List<ProductDtoForAdmin> getAllProductsAdmin() {
-        return productsRepositories.findByStatus(StatusEnum.ACTIVE).stream()
-                .map(product -> 
-                productMapperForAdmin.mapEntityToDto(product))
-                .collect(Collectors.toList());
-    }
+    
 
     @Override
-    public ProductDtoForAdmin updateProductStatus(long id, int statusVale) {
-        Optional<Product> productotp = productsRepositories.findById(id);
-        if (productotp.isEmpty()) {
+    public ProductDtoForAdmin updateProductStatus(long id, ProductStatus statusValue) {
+        Optional<Product> productOtp = productsRepositories.findById(id);
+        if (productOtp.isEmpty()) {
             throw new ObjectNotFoundException("Cannot Find Product With Id: " + id);
         }
-        if (statusVale < 1 || statusVale > 2) {
-            throw new InformationNotValidException("Status Not Valid.");
-        }
-        Product productDataBase = productotp.get();
-        StatusEnum statusEnum = statusVale == 1 ? StatusEnum.ACTIVE : StatusEnum.DEACTIVE;
+        Product productDataBase = productOtp.get();
         LocalDate date = LocalDate.now();
-        productDataBase.setStatus(statusEnum);
+        productDataBase.setStatus(statusValue);
         productDataBase.setUpdateDate(date.toString());
         Product product = productsRepositories.save(productDataBase);
 
@@ -134,6 +125,19 @@ public class ProductsServiceImpl implements ProductsService {
         }
         List<Product> products = productsRepositories.findByCategories(category);
         return productMapper.mapEntityToDto(products);
+    }
+
+    public List<ProductDtoForAdmin> getAllProductsAdmin() {
+        return productsRepositories.findByStatus(ProductStatus.AVAILABLE).stream()
+                .map(product -> 
+                productMapperForAdmin.mapEntityToDto(product))
+                .collect(Collectors.toList());
+    }
+
+    public List<ProductDtoForUser> findProductByName(String name){
+        List<Product> productList = productsRepositories.findByNameContainingIgnoreCaseAndStatus(name, ProductStatus.AVAILABLE);
+        return productMapper.mapEntityToDto(productList);
+        
     }
 
 }

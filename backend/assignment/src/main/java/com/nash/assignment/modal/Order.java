@@ -21,7 +21,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.nash.assignment.constant.StatusEnum;
+import com.nash.assignment.constant.OrderStatus;
 
 @Entity
 @Table(name = "orders")
@@ -39,7 +39,7 @@ public class Order {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = true, unique = false, length = 300)
-    private StatusEnum status;
+    private OrderStatus status;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "account_id")
@@ -99,11 +99,11 @@ public class Order {
         this.id = id;
     }
 
-    public StatusEnum getStatus() {
+    public OrderStatus getStatus() {
         return status;
     }
 
-    public void setStatus(StatusEnum status) {
+    public void setStatus(OrderStatus status) {
         this.status = status;
     }
 

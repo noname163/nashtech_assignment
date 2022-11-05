@@ -11,7 +11,6 @@ import com.nash.assignment.constant.RatingStatus;
 import com.nash.assignment.dto.RateProductDto;
 import com.nash.assignment.dto.request.OrderDetailDto;
 import com.nash.assignment.dto.request.OrderDto;
-import com.nash.assignment.exceptions.InformationNotValidException;
 import com.nash.assignment.exceptions.ObjectNotFoundException;
 import com.nash.assignment.mapper.OrderDetailMapper;
 import com.nash.assignment.mapper.OrderMapper;
@@ -19,7 +18,6 @@ import com.nash.assignment.mapper.RateProductMapper;
 import com.nash.assignment.modal.Account;
 import com.nash.assignment.modal.Order;
 import com.nash.assignment.modal.OrderDetail;
-import com.nash.assignment.modal.Product;
 import com.nash.assignment.modal.RateProduct;
 import com.nash.assignment.repositories.AccountRepositories;
 import com.nash.assignment.repositories.OrderDetailRepositories;
@@ -33,37 +31,31 @@ public class RateProductServiceImpl implements RateProductService {
 
     private AccountRepositories accountRepositories;
     private RateProductRepositories rateProductRepositories;
-    private ProductsRepositories productsRepositories;
     private OrderDetailRepositories orderDetailRepositories;
     private RateProductMapper rateProductMapper;
-    private OrderRepositories orderRepositories;
     private OrderMapper orderMapper;
-    private OrderDetailMapper orderDetailMapper;
 
-    @Autowired
+    
+
     public RateProductServiceImpl(AccountRepositories accountRepositories,
-            RateProductRepositories rateProductRepositories, ProductsRepositories productsRepositories,
-            OrderDetailRepositories orderDetailRepositories, OrderRepositories orderRepositories,
-            RateProductMapper rateProductMapper, OrderMapper orderMapper, OrderDetailMapper orderDetailMapper) {
+            RateProductRepositories rateProductRepositories, OrderDetailRepositories orderDetailRepositories,
+            RateProductMapper rateProductMapper, OrderMapper orderMapper) {
         this.accountRepositories = accountRepositories;
         this.rateProductRepositories = rateProductRepositories;
-        this.productsRepositories = productsRepositories;
         this.orderDetailRepositories = orderDetailRepositories;
-        this.orderRepositories = orderRepositories;
         this.rateProductMapper = rateProductMapper;
         this.orderMapper = orderMapper;
-        this.orderDetailMapper = orderDetailMapper;
     }
 
     @Override
     public List<RateProductDto> insertRate(OrderDto orderDto) {
         List<RateProduct> rates = new ArrayList<>();
         Order order = orderMapper.mapDtoToEntity(orderDto);
-        Account account = accountRepositories.findByEmail(orderDto.getEmail());
         List<OrderDetail> orderDetails = orderDetailRepositories.findByOrder(order);
         if(orderDetails == null){
             throw new ObjectNotFoundException("Cannot Find Order Id: " + order.getId());
         }
+        Account account = accountRepositories.findByEmail(orderDto.getEmail());
         for (OrderDetail orderDetail : orderDetails) {
             RateProduct rate = new RateProduct();
             rate.setAccount(account);

@@ -1,15 +1,11 @@
 package com.nash.assignment.controllers;
 
-import static org.hamcrest.Matchers.containsString;
-import static org.mockito.Mockito.mock;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,25 +13,16 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nash.assignment.constant.StatusEnum;
 import com.nash.assignment.dto.response.ProductDtoForUser;
 import com.nash.assignment.mapper.ProductMapper;
 import com.nash.assignment.modal.Category;
-import com.nash.assignment.modal.Product;
-import com.nash.assignment.repositories.CategoriesRepositories;
-import com.nash.assignment.repositories.ProductsRepositories;
 import com.nash.assignment.services.CategoriesServiceImpl;
 import com.nash.assignment.services.ProductsServiceImpl;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
 
 // @SpringBootTest
 // @AutoConfigureMockMvc
@@ -45,8 +32,6 @@ public class ProductConstrollerTest {
 
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
-    private ObjectMapper objectMapper;
     @MockBean
     private ProductsServiceImpl productsServiceImpl;
     @MockBean
@@ -57,13 +42,17 @@ public class ProductConstrollerTest {
     @Test
     void DisplayProductController_ShouldReturnListProductDtoForUser() throws Exception {
         List<ProductDtoForUser> expected = new ArrayList<>();
+        ProductDtoForUser productDto = new ProductDtoForUser();
+        expected.add(productDto);
 
         RequestBuilder request = MockMvcRequestBuilders.get("http://localhost:8080/products");
         when(productsServiceImpl.getAllProducts()).thenReturn(expected);
 
-        mockMvc.perform(request).andDo(print()).andExpect(status().isOk())
-                .andExpect(content().string(containsString(expected.toString())));
+        MvcResult result = mockMvc.perform(request).andReturn();
 
+        assertThat(result.getResponse().getStatus(), is(HttpStatus.OK.value()));
+        assertThat(result.getResponse().getContentAsString(),
+                is( "[{\"id\":0,\"name\":null,\"price\":null,\"status\":null,\"description\":null,\"categories\":null,\"images\":[]}]"));
     }
 
     @Test
@@ -79,7 +68,7 @@ public class ProductConstrollerTest {
 
         assertThat(result.getResponse().getStatus(), is(HttpStatus.OK.value()));
         assertThat(result.getResponse().getContentAsString(),
-                is(objectMapper.writeValueAsString(expectedList)));    
+                is("[{\"id\":0,\"name\":null,\"price\":null,\"status\":null,\"description\":null,\"categories\":null,\"images\":[]}]"));    
     }
 
     @Test
@@ -93,6 +82,6 @@ public class ProductConstrollerTest {
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
         assertThat(result.getResponse().getStatus(), is(HttpStatus.OK.value()));
         assertThat(result.getResponse().getContentAsString(),
-                is(objectMapper.writeValueAsString(expected)));  
+                is("[{\"name\":null,\"description\":null}]"));  
     }
 }

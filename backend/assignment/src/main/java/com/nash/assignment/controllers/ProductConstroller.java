@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nash.assignment.dto.request.CategoriesDto;
 import com.nash.assignment.dto.response.ProductDtoForUser;
 import com.nash.assignment.modal.Category;
+import com.nash.assignment.modal.Product;
 import com.nash.assignment.services.CategoriesServiceImpl;
 import com.nash.assignment.services.ProductsServiceImpl;
 
@@ -35,6 +36,13 @@ public class ProductConstroller {
         List<ProductDtoForUser> productDto = productsServiceImpl.getAllProducts();
         return ResponseEntity.status(HttpStatus.OK).body(
             productDto
+        );
+    }
+    @PostMapping(value="/find-by-name/{name}")
+    public ResponseEntity<List<ProductDtoForUser>> findByProductName(@PathVariable String name){
+        List<ProductDtoForUser> productList = productsServiceImpl.findProductByName(name);
+        return ResponseEntity.status(HttpStatus.OK).body(
+            productList
         );
     }
     @PostMapping(value = "/by-categories/{category}")

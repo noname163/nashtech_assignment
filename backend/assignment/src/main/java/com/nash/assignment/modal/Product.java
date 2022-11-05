@@ -14,17 +14,17 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.nash.assignment.constant.StatusEnum;
+import com.nash.assignment.constant.ProductStatus;
 
-@Table
+@Table(indexes = @Index(columnList = "name"))
 @Entity
 public class Product {
 
@@ -34,7 +34,7 @@ public class Product {
 
     private long id;
 
-    @Column(nullable = true, unique = false, length = 300)
+    @Column(nullable = true, unique = true, length = 300)
     private String name;
     @Column(nullable = true, unique = false, length = 300)
     private String price;
@@ -50,7 +50,7 @@ public class Product {
 
     @Column(nullable = true, unique = false)
     @Enumerated(EnumType.STRING)
-    private StatusEnum status;
+    private ProductStatus status;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "categories_id")
@@ -67,7 +67,7 @@ public class Product {
     public Product() {
     }
 
-    public Product(String name, String price, StatusEnum status, Category categories) {
+    public Product(String name, String price, ProductStatus status, Category categories) {
         this.name = name;
         this.price = price;
         this.status = status;
@@ -98,11 +98,11 @@ public class Product {
         this.images = images;
     }
 
-    public StatusEnum getStatus() {
+    public ProductStatus getStatus() {
         return status;
     }
 
-    public void setStatus(StatusEnum status) {
+    public void setStatus(ProductStatus status) {
         this.status = status;
     }
 

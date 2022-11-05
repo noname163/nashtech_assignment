@@ -2,9 +2,9 @@ package com.nash.assignment.services.interfaces;
 
 import java.util.List;
 
+import com.nash.assignment.constant.ProductStatus;
 import com.nash.assignment.dto.ProductDtoForAdmin;
 import com.nash.assignment.dto.response.ProductDtoForUser;
-import com.nash.assignment.modal.Product;
 
 public interface ProductsService {
 
@@ -12,7 +12,7 @@ public interface ProductsService {
 
     List<ProductDtoForUser> getAllProducts();
 
-    ProductDtoForAdmin updateProductStatus(long id, int statusValue);
+    ProductDtoForAdmin updateProductStatus(long id, ProductStatus statusValue);
 
     ProductDtoForAdmin updateProductInformation(ProductDtoForAdmin productValue);
 }

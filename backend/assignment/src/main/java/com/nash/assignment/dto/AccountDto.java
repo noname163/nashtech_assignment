@@ -5,7 +5,7 @@ import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.nash.assignment.constant.StatusEnum;
+import com.nash.assignment.constant.AccountStatus;
 import com.nash.assignment.modal.Image;
 import com.nash.assignment.modal.Role;
 
@@ -31,26 +31,17 @@ public class AccountDto {
 
     private Image image;
 
-    private String test;
-
     private Role role;
 
-    private StatusEnum status;
+    private AccountStatus status;
 
-    public String getTest() {
-        return test;
-    }
-
-    public void setTest(String test) {
-        this.test = test;
-    }
 
     @JsonIgnore
-    public StatusEnum getStatus() {
+    public AccountStatus getStatus() {
         return status;
     }
 
-    public void setStatus(StatusEnum status) {
+    public void setStatus(AccountStatus status) {
         this.status = status;
     }
 

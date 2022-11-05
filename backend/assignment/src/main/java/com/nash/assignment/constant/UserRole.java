@@ -1,6 +1,6 @@
 package com.nash.assignment.constant;
 
-public enum RoleEnum {
+public enum UserRole {
     ROLE_ADMIN,
     ROLE_USER;
 }

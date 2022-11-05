@@ -8,7 +8,7 @@ import java.util.Set;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
-import com.nash.assignment.constant.StatusEnum;
+import com.nash.assignment.constant.ProductStatus;
 import com.nash.assignment.dto.response.ImageProductDto;
 
 public class ProductDtoForAdmin {
@@ -19,7 +19,7 @@ public class ProductDtoForAdmin {
     @Min(value = 1, message = "Price Cannot Empty")
     private String price;
 
-    private StatusEnum status;
+    private ProductStatus status;
 
     private String description;
 
@@ -56,11 +56,11 @@ public class ProductDtoForAdmin {
         this.images = images;
     }
 
-    public StatusEnum getStatus() {
+    public ProductStatus getStatus() {
         return status;
     }
 
-    public void setStatus(StatusEnum status) {
+    public void setStatus(ProductStatus status) {
         this.status = status;
     }
 

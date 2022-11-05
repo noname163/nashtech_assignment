@@ -10,7 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.nash.assignment.constant.StatusEnum;
+import com.nash.assignment.constant.OrderStatus;
 import com.nash.assignment.dto.request.OrderDto;
 import com.nash.assignment.exceptions.InformationNotValidException;
 import com.nash.assignment.exceptions.ObjectNotFoundException;
@@ -54,7 +54,7 @@ public class OrderServiceImpl implements OrderService {
         HttpSession session = request.getSession();
         String email = (String) session.getAttribute("email");
         orderDto.setEmail(email);
-        orderDto.setStatus(StatusEnum.PENDING);
+        orderDto.setStatus(OrderStatus.PENDING);
         Order order = orderMapper.mapDtoToEntity(orderDto);
         LocalDate date = LocalDate.now();
         order.setOrderDate(date.toString());
@@ -67,7 +67,7 @@ public class OrderServiceImpl implements OrderService {
         HttpSession session = request.getSession();
         String email = (String) session.getAttribute("email");
         orderDto.setEmail(email);
-        orderDto.setStatus(StatusEnum.PENDING);
+        orderDto.setStatus(OrderStatus.PENDING);
         Order order = orderMapper.mapDtoToEntity(orderDto);
         LocalDate date = LocalDate.now();
         order.setOrderDate(date.toString());
@@ -76,9 +76,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDto updateOrderStatus(int id, StatusEnum status) {
+    public OrderDto updateOrderStatus(int id, OrderStatus status) {
         Optional<Order> orderOtp = orderRepositories.findById(id);
-        StatusEnum statusEnum = null;
+        OrderStatus statusEnum = null;
         if (orderOtp.isEmpty()) {
             throw new ObjectNotFoundException("Cannot Find Order With iD: " + id);
         }
@@ -96,7 +96,7 @@ public class OrderServiceImpl implements OrderService {
             throw new ObjectNotFoundException("Cannot Find Order With Id: " + id);
         }
         Order order = orderOtp.get();
-        order.setStatus(StatusEnum.CANCEL);
+        order.setStatus(OrderStatus.CANCEL);
         order = orderRepositories.save(order);
         return orderMapper.mapOrderEntityToDto(order);
     }
@@ -108,7 +108,7 @@ public class OrderServiceImpl implements OrderService {
             throw new ObjectNotFoundException("Cannot Find Order With Id: " + id);
         }
         Order order = orderOtp.get();
-        order.setStatus(StatusEnum.SUCCESS);
+        order.setStatus(OrderStatus.SUCCESS);
         order = orderRepositories.save(order);
         return orderMapper.mapOrderEntityToDto(order);
     }
