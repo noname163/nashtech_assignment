@@ -28,27 +28,27 @@ public class DataNotValidHander extends ResponseEntityExceptionHandler {
     @ExceptionHandler({InformationNotValidException.class})
     protected ResponseEntity<ExceptionDto> handleIllegalArgumentException(RuntimeException exception,
             WebRequest request) {
-        ExceptionDto error = new ExceptionDto("400", "BAD_REQUEST", exception.getMessage());
+        ExceptionDto error = new ExceptionDto(400, "BAD_REQUEST", exception.getMessage());
         return new ResponseEntity<ExceptionDto>(error, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({ObjectNotFoundException.class})
     protected ResponseEntity<ExceptionDto> handleObjectNotFoundException(RuntimeException exception,
             WebRequest request) {
-        ExceptionDto error = new ExceptionDto("500", "INTERNAL_SERVER_ERROR", exception.getMessage());
+        ExceptionDto error = new ExceptionDto(500, "INTERNAL_SERVER_ERROR", exception.getMessage());
         return new ResponseEntity<ExceptionDto>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
     @ExceptionHandler({ObjectExistException.class})
     protected ResponseEntity<ExceptionDto> handleObjectExistException(RuntimeException exception,
             WebRequest request) {
-        ExceptionDto error = new ExceptionDto("500", "INTERNAL_SERVER_ERROR", exception.getMessage());
+        ExceptionDto error = new ExceptionDto(500, "INTERNAL_SERVER_ERROR", exception.getMessage());
         return new ResponseEntity<ExceptionDto>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler({TokenExpiredException.class})
     protected ResponseEntity<ExceptionDto> handleJwtNotValidException(JWTVerificationException exception,
             WebRequest request) {
-        ExceptionDto error = new ExceptionDto("500", "INTERNAL_SERVER_ERROR", exception.getMessage());
+        ExceptionDto error = new ExceptionDto(500, "INTERNAL_SERVER_ERROR", exception.getMessage());
         return new ResponseEntity<ExceptionDto>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -61,7 +61,7 @@ public class DataNotValidHander extends ResponseEntityExceptionHandler {
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);
         });
-        ExceptionDto exception = new ExceptionDto("400", "BAD_REQUEST", errors);
+        ExceptionDto exception = new ExceptionDto(400, "BAD_REQUEST", errors);
 
         return new ResponseEntity<Object>(exception, HttpStatus.BAD_REQUEST);
     }

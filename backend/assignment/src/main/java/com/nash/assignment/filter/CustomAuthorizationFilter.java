@@ -1,4 +1,4 @@
-package com.nash.assignment.jwt;
+package com.nash.assignment.filter;
 
 import java.io.IOException;
 import java.time.LocalDate;

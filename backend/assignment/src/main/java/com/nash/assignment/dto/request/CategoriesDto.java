@@ -1,9 +1,14 @@
 package com.nash.assignment.dto.request;
 
+import javax.validation.constraints.NotBlank;
+
 public class CategoriesDto {
 
+    @NotBlank(message = "Category Name Cannot Empty")
     private String name;
+    @NotBlank(message = "Category Description Cannot Empty")
     private String description;
+
 
     public String getName() {
         return name;

@@ -7,31 +7,31 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 public class ExceptionDto {
 
-    private String code;
+    private int code;
     private String status;
-    private String mess;
+    private String message;
     @JsonInclude(Include.NON_NULL)
     private Map<String, String> errors;
 
-    public ExceptionDto(String code, String status, Map<String, String> errors) {
+    public ExceptionDto(int code, String status, Map<String, String> errors) {
         super();
         this.code = code;
         this.status = status;
         this.errors = errors;
     }
 
-    public ExceptionDto(String code, String status, String mess) {
+    public ExceptionDto(int code, String status, String message) {
         super();
         this.code = code;
         this.status = status;
-        this.mess = mess;
+        this.message = message;
     }
 
-    public String getCode() {
+    public int getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(int code) {
         this.code = code;
     }
 
@@ -51,12 +51,12 @@ public class ExceptionDto {
         this.errors = errors;
     }
 
-    public String getMess() {
-        return mess;
+    public String getMessage() {
+        return message;
     }
 
-    public void setMess(String mess) {
-        this.mess = mess;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
 }

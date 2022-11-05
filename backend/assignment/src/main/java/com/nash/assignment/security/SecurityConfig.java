@@ -1,5 +1,6 @@
 package com.nash.assignment.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -14,7 +15,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-import com.nash.assignment.jwt.CustomAuthorizationFilter;
+import com.nash.assignment.filter.CustomAuthorizationFilter;
+import com.nash.assignment.filter.ExceptionHandlerFilter;
 import com.nash.assignment.services.UserDetailServiceImpl;
 
 import lombok.RequiredArgsConstructor;
@@ -26,13 +28,10 @@ import lombok.RequiredArgsConstructor;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
-    private final UserDetailsService userDetailsService;
+    @Autowired ExceptionHandlerFilter exceptionHandlerFilter;
     private final PasswordEncoder passwordEncoder;
 
-    // @Bean
-    // public BCryptPasswordEncoder passwordEncoder() {
-    //     return new BCryptPasswordEncoder();
-    // }
+
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -46,6 +45,7 @@ public class SecurityConfig {
         http.authorizeRequests().antMatchers("/login").permitAll();
         http.authenticationProvider(authenticationProvider());
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new ExceptionHandlerFilter(), CustomAuthorizationFilter.class);
         http.headers().frameOptions().sameOrigin();
         return http.build();
     }

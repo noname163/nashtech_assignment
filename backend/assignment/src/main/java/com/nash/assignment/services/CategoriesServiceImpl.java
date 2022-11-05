@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.nash.assignment.dto.request.CategoriesDto;
 import com.nash.assignment.exceptions.InformationNotValidException;
+import com.nash.assignment.exceptions.ObjectNotFoundException;
 import com.nash.assignment.modal.Category;
 import com.nash.assignment.repositories.CategoriesRepositories;
 import com.nash.assignment.services.interfaces.CategoriesService;
@@ -39,6 +40,16 @@ public class CategoriesServiceImpl implements CategoriesService {
         }
         Category category = modelMapper.map(categoriesDto, Category.class);
         category = categoriesRepositories.save(category);
+        return modelMapper.map(category, CategoriesDto.class);
+    }
+
+    public CategoriesDto updateCategoryDescription(String name,String description){
+        Category category = categoriesRepositories.findByName(name);
+        if(category==null){
+            throw new ObjectNotFoundException("Cannot Find Category Name: " + name);
+        }
+        category.setDescription(description);
+        categoriesRepositories.save(category);
         return modelMapper.map(category, CategoriesDto.class);
     }
 
