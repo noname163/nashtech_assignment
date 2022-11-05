@@ -17,6 +17,7 @@ import com.nash.assignment.dto.response.ProductDtoForUser;
 import com.nash.assignment.modal.Category;
 import com.nash.assignment.modal.Product;
 import com.nash.assignment.services.CategoriesServiceImpl;
+import com.nash.assignment.services.PaginationServiceImpl;
 import com.nash.assignment.services.ProductsServiceImpl;
 
 @RestController
@@ -24,11 +25,13 @@ import com.nash.assignment.services.ProductsServiceImpl;
 public class ProductConstroller {
     ProductsServiceImpl productsServiceImpl;
     CategoriesServiceImpl categoriesServiceImpl;
+    PaginationServiceImpl paginationServiceImpl;
 
     @Autowired
-    public ProductConstroller(ProductsServiceImpl productsServiceImpl, CategoriesServiceImpl categoriesServiceImpl) {
+    public ProductConstroller(ProductsServiceImpl productsServiceImpl, CategoriesServiceImpl categoriesServiceImpl, PaginationServiceImpl paginationServiceImpl) {
         this.productsServiceImpl = productsServiceImpl;
         this.categoriesServiceImpl = categoriesServiceImpl;
+        this.paginationServiceImpl = paginationServiceImpl;
     }
     
     @GetMapping()
@@ -36,6 +39,19 @@ public class ProductConstroller {
         List<ProductDtoForUser> productDto = productsServiceImpl.getAllProducts();
         return ResponseEntity.status(HttpStatus.OK).body(
             productDto
+        );
+    }
+    @GetMapping(value = "/categories")
+    public ResponseEntity<List<Category>> getAllCategories(){
+        return ResponseEntity.status(HttpStatus.OK).body(
+            categoriesServiceImpl.getAllCategories()
+        );
+    }
+    @PostMapping(value="/product-pagination/{page}")
+    public ResponseEntity<List<ProductDtoForUser>> getAllUsePagination(@PathVariable int page){
+        List<ProductDtoForUser> productList = paginationServiceImpl.getAllProductPagination(page,6);
+        return ResponseEntity.status(HttpStatus.OK).body(
+            productList
         );
     }
     @PostMapping(value="/find-by-name/{name}")
@@ -53,10 +69,5 @@ public class ProductConstroller {
         );
     }
 
-    @GetMapping(value = "/categories")
-    public ResponseEntity<List<Category>> getAllCategories(){
-        return ResponseEntity.status(HttpStatus.OK).body(
-            categoriesServiceImpl.getAllCategories()
-        );
-    }
+    
 }
