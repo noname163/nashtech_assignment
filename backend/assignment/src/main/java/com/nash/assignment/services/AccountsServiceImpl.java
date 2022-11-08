@@ -84,11 +84,10 @@ public class AccountsServiceImpl implements AccountService{
     }
 
     public AccountDto getAccountByPhonenumber(String phone) {
-        Optional<Account> accountOtp = Optional.of(accountRepositories.findByPhoneNumber(phone));
-        if (accountOtp.isEmpty()) {
+        Account account = accountRepositories.findByPhoneNumber(phone);
+        if (account==null) {
             throw new ObjectNotFoundException("Cannot Find Account With Phone: " + phone);
         }
-        Account account = accountOtp.get();
         return modelMapper.map(account, AccountDto.class);
     }
 

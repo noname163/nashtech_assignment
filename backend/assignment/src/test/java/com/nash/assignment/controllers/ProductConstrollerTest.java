@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -22,6 +23,7 @@ import com.nash.assignment.dto.response.ProductDtoForUser;
 import com.nash.assignment.mapper.ProductMapper;
 import com.nash.assignment.modal.Category;
 import com.nash.assignment.services.CategoriesServiceImpl;
+import com.nash.assignment.services.PaginationServiceImpl;
 import com.nash.assignment.services.ProductsServiceImpl;
 
 // @SpringBootTest
@@ -38,13 +40,14 @@ public class ProductConstrollerTest {
     private CategoriesServiceImpl categoriesServiceImpl;
     @MockBean
     private ProductMapper productMapper;
+    @MockBean
+    PaginationServiceImpl paginationServiceImpl;
 
     @Test
     void DisplayProductController_ShouldReturnListProductDtoForUser() throws Exception {
         List<ProductDtoForUser> expected = new ArrayList<>();
         ProductDtoForUser productDto = new ProductDtoForUser();
         expected.add(productDto);
-
         RequestBuilder request = MockMvcRequestBuilders.get("http://localhost:8080/products");
         when(productsServiceImpl.getAllProducts()).thenReturn(expected);
 

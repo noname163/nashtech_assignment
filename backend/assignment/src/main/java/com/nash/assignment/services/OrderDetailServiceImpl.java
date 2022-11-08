@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.nash.assignment.dto.request.OrderDetailDto;
 import com.nash.assignment.dto.request.OrderDto;
+import com.nash.assignment.exceptions.InformationNotValidException;
 import com.nash.assignment.exceptions.ObjectNotFoundException;
 import com.nash.assignment.mapper.OrderDetailMapper;
 import com.nash.assignment.mapper.ProductMapper;
@@ -56,11 +57,15 @@ public class OrderDetailServiceImpl implements OrderDetailService {
     @Override
     public List<OrderDetailDto> insertOrderDetail(List<OrderDetailDto> orderDetailDtos, OrderDto orderDto) {
 
+        if(orderDetailDtos==null || orderDetailDtos.isEmpty()){
+            throw new InformationNotValidException("OrderDetail Are Empty");
+        }
         int id = orderDto.getId();
         Optional<Order> orderOtp = orderRepositories.findById(id);
         if (orderOtp.isEmpty()) {
             throw new ObjectNotFoundException("Cannot Find Order With Id: " + id);
         }
+
         Order order = orderOtp.get();
         List<OrderDetail> orderDetails = orderDetailMapper.mapDtoToEntity(orderDetailDtos);
         for (OrderDetail orderDetail : orderDetails) {

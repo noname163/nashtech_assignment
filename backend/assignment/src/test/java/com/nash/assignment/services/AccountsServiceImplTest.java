@@ -265,4 +265,18 @@ public class AccountsServiceImplTest {
 
         assertThat(actual.getStatus(), is(AccountStatus.DEACTIVE));
     }
+
+    @Test
+    void getAccountByPhonenumber_WhenAccountNull_ShouldThrowObjectNotFoundException(){
+        when(accountRepositories.findByPhoneNumber("012234565656")).thenReturn(null);
+        ObjectNotFoundException actual = Assertions.assertThrows(ObjectNotFoundException.class,()-> accountsServiceImpl.getAccountByPhonenumber("012234565656"));
+        assertThat(actual.getMessage(), is("Cannot Find Account With Phone: " + "012234565656"));
+    }
+    @Test
+    void getAccountByPhonenumber_WhenDataValid_ShouldReturnAccountDtoObject(){
+        when(accountRepositories.findByPhoneNumber("012234565656")).thenReturn(account);
+        when(modelMapper.map(account, AccountDto.class)).thenReturn(accountDto);
+        AccountDto actual = accountsServiceImpl.getAccountByPhonenumber("012234565656");
+        assertThat(actual, is(accountDto));
+    }
 }

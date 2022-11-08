@@ -39,6 +39,10 @@ public class ImageMapper {
     public String mapEntityToSting(Image image){
         return image.getUrl();
     }
+    public Image mapStringToImage(String url){
+        Image image = new Image(url);
+        return image;
+    }
     public List<String> mapEntityToSting(List<Image> images){
         return images.stream().map(image -> mapEntityToSting(image)).collect(Collectors.toList());
     }

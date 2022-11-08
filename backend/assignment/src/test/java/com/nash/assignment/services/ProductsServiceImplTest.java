@@ -224,10 +224,6 @@ public class ProductsServiceImplTest {
         assertThat(productDtoForAdmin.getStatus(), is(actual.getStatus()));
     }
 
-
-
-   
-
     @Test
     void updateProductStatus_WhenProductNull_ShouldThrowObjectNotFoundException() {
         when(productsRepositories.findById(productDtoResp.getId())).thenReturn(Optional.empty());
@@ -235,4 +231,50 @@ public class ProductsServiceImplTest {
                 () -> productsServiceImpl.updateProductStatus(productDtoResp.getId(), ProductStatus.AVAILABLE));
         assertThat("Cannot Find Product With Id: " + productDtoResp.getId(), is(actual.getMessage()));
     }
+
+    @Test
+    void getProductByCategories_WhenCategoryNull_ShouldThrowObjectNotFoundException(){
+        when(categoriesRepositories.findByName("test")).thenReturn(null);
+        ObjectNotFoundException actual = Assertions.assertThrows(ObjectNotFoundException.class, ()->productsServiceImpl.getProductByCategories("test"));
+        assertThat(actual.getMessage(), is("Cannot Find Category Name: test"));
+    }
+    @Test
+    void getProductByCategories_WhenCategoryValid_ShouldReturnListProductDtoForUser(){
+        List<Product> productList = mock(List.class);
+        List<ProductDtoForUser> expected = mock(List.class);
+        when(categoriesRepositories.findByName("test")).thenReturn(category);
+        when(productsRepositories.findByCategories(category)).thenReturn(productList);
+        when(productMapper.mapEntityToDto(productList)).thenReturn(expected);
+        List<ProductDtoForUser> actual = productsServiceImpl.getProductByCategories("test");
+        assertThat(actual, is(expected));
+    }
+
+    @Test
+    void findProductByName_ShouldReturnListProductDtoForUse(){
+        List<Product> product = mock(List.class);
+        List<ProductDtoForUser> expected = mock(List.class);
+        when(productsRepositories.findByNameContainingIgnoreCaseAndStatus("test", ProductStatus.AVAILABLE)).thenReturn(product);
+        when(productMapper.mapEntityToDto(product)).thenReturn(expected);
+        List<ProductDtoForUser> actual = productsServiceImpl.findProductByName("test");
+        assertThat(actual, is(expected));
+    }
+    @Test
+    void findProductByName_WhenNull_ShouldReturnNull(){
+        List<Product> product = mock(List.class);
+        List<ProductDtoForUser> expected = null;
+        when(productsRepositories.findByNameContainingIgnoreCaseAndStatus("test", ProductStatus.AVAILABLE)).thenReturn(product);
+        when(productMapper.mapEntityToDto(product)).thenReturn(null);
+        List<ProductDtoForUser> actual = productsServiceImpl.findProductByName("test");
+        assertThat(actual, is(expected));
+    }
+    @Test
+    void findProductByName_WhenEmpty_ShouldReturnNull(){
+        List<Product> product = new ArrayList<>();
+        List<ProductDtoForUser> expected = null;
+        when(productsRepositories.findByNameContainingIgnoreCaseAndStatus("test", ProductStatus.AVAILABLE)).thenReturn(product);
+        when(productMapper.mapEntityToDto(product)).thenReturn(null);
+        List<ProductDtoForUser> actual = productsServiceImpl.findProductByName("test");
+        assertThat(actual, is(expected));
+    }
+
 }

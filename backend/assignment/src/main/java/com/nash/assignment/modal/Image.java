@@ -30,7 +30,7 @@ public class Image {
     private String url;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY, optional = true, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY, optional = true, cascade = CascadeType.MERGE)
     @JoinColumn(name = "product_id")
     private Product product;
 

@@ -41,9 +41,7 @@ public class OrderServiceImpl implements OrderService {
         List<Order> orders = orderRepositories.findAll();
         return orderMapper.mapEntityToDto(orders);
     }
-    public List<OrderDto> getAllOrderByAccount() {
-        HttpSession session = request.getSession();
-        String email = (String) session.getAttribute("email");
+    public List<OrderDto> getAllOrderByAccount(String email) {
         Account account = accountRepositories.findByEmail(email);
         List<Order> orders = orderRepositories.findByAccount(account);
         return orderMapper.mapEntityToDto(orders);
@@ -51,9 +49,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDto insertOrder(OrderDto orderDto) {
-        HttpSession session = request.getSession();
-        String email = (String) session.getAttribute("email");
-        orderDto.setEmail(email);
         orderDto.setStatus(OrderStatus.PENDING);
         Order order = orderMapper.mapDtoToEntity(orderDto);
         LocalDate date = LocalDate.now();
@@ -62,18 +57,6 @@ public class OrderServiceImpl implements OrderService {
         return orderMapper.mapOrderEntityToDto(order);
     }
 
-    public OrderDto insertOrder2() {
-        OrderDto orderDto = new OrderDto();
-        HttpSession session = request.getSession();
-        String email = (String) session.getAttribute("email");
-        orderDto.setEmail(email);
-        orderDto.setStatus(OrderStatus.PENDING);
-        Order order = orderMapper.mapDtoToEntity(orderDto);
-        LocalDate date = LocalDate.now();
-        order.setOrderDate(date.toString());
-        order = orderRepositories.save(order);
-        return orderMapper.mapOrderEntityToDto(order);
-    }
 
     @Override
     public OrderDto updateOrderStatus(int id, OrderStatus status) {
@@ -109,6 +92,32 @@ public class OrderServiceImpl implements OrderService {
         }
         Order order = orderOtp.get();
         order.setStatus(OrderStatus.SUCCESS);
+        order = orderRepositories.save(order);
+        return orderMapper.mapOrderEntityToDto(order);
+    }
+
+    public OrderDto acceptedOrder(int id){
+        Optional<Order> orderOtp = orderRepositories.findById(id);
+        if (orderOtp.isEmpty()) {
+            throw new ObjectNotFoundException("Cannot Find Order With Id: " + id);
+        }
+        Order order = orderOtp.get();
+        LocalDate date = LocalDate.now();
+        date.plusDays(7);
+        order.setDeliveryDate(date.toString());
+        order.setStatus(OrderStatus.ACCEPT);
+        order = orderRepositories.save(order);
+        return orderMapper.mapOrderEntityToDto(order);
+    }
+    public OrderDto deliveryOrder(int id){
+        Optional<Order> orderOtp = orderRepositories.findById(id);
+        if (orderOtp.isEmpty()) {
+            throw new ObjectNotFoundException("Cannot Find Order With Id: " + id);
+        }
+        Order order = orderOtp.get();
+        LocalDate date = LocalDate.now();
+        order.setDeliveryDate(date.toString());
+        order.setStatus(OrderStatus.ACCEPT);
         order = orderRepositories.save(order);
         return orderMapper.mapOrderEntityToDto(order);
     }

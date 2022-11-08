@@ -21,29 +21,30 @@ import com.nash.assignment.repositories.AccountRepositories;
 @Service
 public class LoginServiceImpl {
 
-    @Autowired
+    
     JwtServiceImpl jwtServiceImpl;
-    @Autowired
+    
     AccountRepositories accountRepositories;
-    @Autowired
+    
     UserDetailServiceImpl userDetailServiceImpl;
-    @Autowired
+    
     HttpServletRequest request;
     private final PasswordEncoder passwordEncoder;
 
+    @Autowired
     public LoginServiceImpl(JwtServiceImpl jwtServiceImpl, AccountRepositories accountRepositories,
-            UserDetailServiceImpl userDetailServiceImpl, PasswordEncoder passwordEncoder) {
+            UserDetailServiceImpl userDetailServiceImpl, PasswordEncoder passwordEncoder, HttpServletRequest request) {
         this.jwtServiceImpl = jwtServiceImpl;
         this.accountRepositories = accountRepositories;
         this.userDetailServiceImpl = userDetailServiceImpl;
         this.passwordEncoder = passwordEncoder;
+        this.request = request;
     }
 
     public Map<String, String> login(AccountLoginDto accountDto) {
         Map<String, String> result = new HashMap<>();
         HttpSession session = request.getSession();
-        String email = accountDto.getEmail();
-        Account account = accountRepositories.findByEmail(email);
+        Account account = accountRepositories.findByEmail(accountDto.getEmail());
         if(account == null){
             throw new ObjectNotFoundException("Invalid Email Or Password");
         }
@@ -53,12 +54,13 @@ public class LoginServiceImpl {
         if (!passwordEncoder.matches(accountDto.getPassword(), account.getPassword())) {
             throw new InformationNotValidException("Invalid Email Or Password");
         }
-        session.setAttribute("email", email);
-        UserDetails user = userDetailServiceImpl.loadUserByUsername(email);
+        session.setAttribute("email", accountDto.getEmail());
+        UserDetails user = userDetailServiceImpl.loadUserByUsername(accountDto.getEmail());
         String accessToken = jwtServiceImpl.createAccessToken(user);
         String refeshToken = jwtServiceImpl.createRefreshToken(user);
         result.put("accessToken", accessToken);
         result.put("refeshToken", refeshToken);
+        System.out.println("Session: " + session.getAttribute("email"));
         return result;
 
     }

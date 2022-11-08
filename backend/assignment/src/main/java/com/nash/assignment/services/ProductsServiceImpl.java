@@ -114,6 +114,7 @@ public class ProductsServiceImpl implements ProductsService {
         productDatabase.setUpdateDate(date.toString());
         productDatabase.setName(productValue.getName());
         productDatabase.setPrice(productValue.getPrice());
+        productDatabase.setDescription(productValue.getDescription());
         productDatabase.setCategories(category);
         productDatabase.setImages(imageMapper.mapImageProductDtoToEntity(productValue.getImages(),productDatabase));
         productsRepositories.save(productDatabase);
@@ -138,6 +139,9 @@ public class ProductsServiceImpl implements ProductsService {
 
     public List<ProductDtoForUser> findProductByName(String name){
         List<Product> productList = productsRepositories.findByNameContainingIgnoreCaseAndStatus(name, ProductStatus.AVAILABLE);
+        if(productList == null || productList.isEmpty()){
+            return null;
+        }
         return productMapper.mapEntityToDto(productList);
         
     }

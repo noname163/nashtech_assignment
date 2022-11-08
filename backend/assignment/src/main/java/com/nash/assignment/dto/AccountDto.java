@@ -36,7 +36,7 @@ public class AccountDto {
     private AccountStatus status;
 
 
-    @JsonIgnore
+
     public AccountStatus getStatus() {
         return status;
     }

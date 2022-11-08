@@ -75,8 +75,8 @@ public class ImageServiceImplTest {
         Account account = mock(Account.class);
         String imageUrl = "image";
 
-        Image actual = imageServiceImpl.insertAvatar(imageUrl, accountDto);
         when(accountRepositories.findByPhoneNumber(accountDto.getPhoneNumber())).thenReturn(account);
+        Image actual = imageServiceImpl.insertAvatar(imageUrl, accountDto);
         verify(imagesRepositories).save(imageCaptor.capture());
         Image image = imageCaptor.getValue();
         assertThat(image, is(actual));

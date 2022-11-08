@@ -65,9 +65,9 @@ public class AddToCartController {
         );
     }
 
-    @GetMapping(value = "/get-order")
-    public ResponseEntity<List<OrderDto>> getOrder() {
-        List<OrderDto> orders = orderServiceImpl.getAllOrderByAccount();
+    @GetMapping(value = "/get-order/{email}")
+    public ResponseEntity<List<OrderDto>> getOrder(@PathVariable String email) {
+        List<OrderDto> orders = orderServiceImpl.getAllOrderByAccount(email);
         return ResponseEntity.status(HttpStatus.OK).body(
                 orders);
     }
