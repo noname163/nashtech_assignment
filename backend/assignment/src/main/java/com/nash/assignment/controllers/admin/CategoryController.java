@@ -16,7 +16,7 @@ import com.nash.assignment.dto.request.CategoriesDto;
 import com.nash.assignment.services.CategoriesServiceImpl;
 
 @RestController
-@RequestMapping("/categories")
+@RequestMapping("/admin/categories")
 @PreAuthorize("hasAuthority('ROLE_ADMIN')")
 public class CategoryController {
     @Autowired

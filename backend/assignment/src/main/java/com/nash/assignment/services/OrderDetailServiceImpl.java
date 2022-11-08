@@ -45,6 +45,11 @@ public class OrderDetailServiceImpl implements OrderDetailService {
         List<OrderDetailDto> orderDetailDtos = orderDetailMapper.mapEntityToDto(orderDetails);
         return orderDetailDtos;
     }
+    public List<OrderDetailDto> getAllOrderDetailByOrderId(int id) {
+        List<OrderDetail> orderDetails = orderDetailRepositories.findByOrderId(id);
+        List<OrderDetailDto> orderDetailDtos = orderDetailMapper.mapEntityToDto(orderDetails);
+        return orderDetailDtos;
+    }
     public List<OrderDetailDto> getAllOrderDetailByAccount() {
         HttpSession session = request.getSession();
         String email = (String) session.getAttribute("email");

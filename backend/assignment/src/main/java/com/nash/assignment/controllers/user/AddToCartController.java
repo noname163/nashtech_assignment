@@ -78,5 +78,11 @@ public class AddToCartController {
         return ResponseEntity.status(HttpStatus.OK).body(
                 orderDetails);
     }
+    @GetMapping(value = "/get-order-detail/{id}")
+    public ResponseEntity<List<OrderDetailDto>> viewOrderDetail(@PathVariable int id) {
+        List<OrderDetailDto> orderDetails = orderDetailServiceImpl.getAllOrderDetailByOrderId(id);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                orderDetails);
+    }
 
 }

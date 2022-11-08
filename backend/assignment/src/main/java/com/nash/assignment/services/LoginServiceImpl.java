@@ -60,7 +60,6 @@ public class LoginServiceImpl {
         String refeshToken = jwtServiceImpl.createRefreshToken(user);
         result.put("accessToken", accessToken);
         result.put("refeshToken", refeshToken);
-        System.out.println("Session: " + session.getAttribute("email"));
         return result;
 
     }

@@ -103,8 +103,7 @@ public class OrderServiceImpl implements OrderService {
         }
         Order order = orderOtp.get();
         LocalDate date = LocalDate.now();
-        date.plusDays(7);
-        order.setDeliveryDate(date.toString());
+        order.setDeliveryDate(date.plusDays(7).toString());
         order.setStatus(OrderStatus.ACCEPT);
         order = orderRepositories.save(order);
         return orderMapper.mapOrderEntityToDto(order);
@@ -117,7 +116,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderOtp.get();
         LocalDate date = LocalDate.now();
         order.setDeliveryDate(date.toString());
-        order.setStatus(OrderStatus.ACCEPT);
+        order.setStatus(OrderStatus.DELIVERY);
         order = orderRepositories.save(order);
         return orderMapper.mapOrderEntityToDto(order);
     }
