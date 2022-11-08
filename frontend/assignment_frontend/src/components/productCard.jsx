@@ -43,9 +43,9 @@ class ProductCard extends Component {
                                             <div className="main-img" style={ { diplay: 'block', width: '30em', height: '20em' } }>
                                                 <img src={ item.images.slice(0, 1).map(image => image.url) } alt="Category" style={ { diplay: 'block', width: 'max-width', height: '18em' } } />
                                             </div>
-                                            <div className="thumblist" style={ { display: 'block', width: '8em', height: '20em' } } >
+                                            {/* <div className="thumblist" style={ { display: 'block', width: '8em', height: '20em' } } >
                                                 { item.images.slice(1, 3).map(image => <img src={ image.url } alt="Category" style={ { display: 'block', width: '100%', height: '50%' } } />) }
-                                            </div>
+                                            </div> */}
                                         </div>
                                     </a>
                                     <div className="card-body text-center">

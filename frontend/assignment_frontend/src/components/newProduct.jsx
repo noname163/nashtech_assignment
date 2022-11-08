@@ -33,7 +33,6 @@ class NewProduct extends From {
         this.setState({ cates });
     };
     componentDidUpdate() {
-        // console.log("FILE UPDATE: ", this.state.file);
         if (this.state.file != null) {
             let templeImage = URL.createObjectURL(this.state.file);
             let thumble = document.getElementById("thumble");

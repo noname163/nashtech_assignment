@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+import { swal } from 'sweetalert';
 const Navbar = ({ user,role }) => {
     return (
         <React.Fragment>
             <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-                <a className="navbar-brand" href="#">Navbar</a>
+                <Link to="/" className="navbar-brand">Home</Link>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
@@ -15,10 +15,13 @@ const Navbar = ({ user,role }) => {
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav mr-auto">
                         <li className="nav-item active">
-                            <Link className="nav-link" to="/">Home <span className="sr-only">(current)</span></Link>
+                            <Link className="nav-link" to="/cart">Cart <span className="sr-only">(current)</span></Link>
                         </li>
                         <li>
                         <Link className="nav-link" to="/product-admin">Product <span className="sr-only">(current)</span></Link>
+                        </li>
+                        <li>
+                        <Link className="nav-link" to="/view-order">Order <span className="sr-only">(current)</span></Link>
                         </li>
                         {
                             !user && (
@@ -46,7 +49,7 @@ const Navbar = ({ user,role }) => {
                                             <button className="dropdown-item" data-toggle="modal" data-target="#myModal" href="#">Product</button>
                                             </Link>
                                             <button className="dropdown-item" data-toggle="modal" data-target="#categoriesModal"
-                                                href="#">Categories</button>
+                                                href="#" >Categories</button>
                                             <a className="dropdown-item" href="#">Price</a>
                                         </div>
                                     </li>

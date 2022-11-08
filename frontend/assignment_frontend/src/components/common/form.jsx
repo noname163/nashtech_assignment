@@ -58,7 +58,6 @@ class Form extends Component {
   }
   renderTextArea(name, label) {
     const { data, errors } = this.state;
-    console.log("Des: "+data.des);
     return(
       <TextArea 
       name={name} 
@@ -87,7 +86,7 @@ class Form extends Component {
 
   renderInput(name, label, type = "text", className = "") {
     const { data, errors } = this.state;
-
+    console.log("data: "+data)
     return (
       <Input
         type={ type }

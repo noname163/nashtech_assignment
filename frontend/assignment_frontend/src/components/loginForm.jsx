@@ -29,14 +29,13 @@ class LoginForm extends Form {
         } catch (ex) {
             console.log("Errors"+ex);
             if (ex.response && ex.response.status === 500||ex.response && ex.response.status ==400)  {
-                toast.error(ex.response.data.mess)
+                toast.error(ex.response.data.message)
             }
         }
     };
     render() {
         return (
             <React.Fragment>
-            <ToastContainer/>
                <div className="row d-flex justify-content-center" style={{display:'block', backgroundColor:'#eee', height:'50em'}}> 
                <section className="gradient-form" style={ { backgroundColor: '#eee', display:'block', width:'fit-content', height:'fit-content' } }>
                         <div className="container py-5 h-100" >

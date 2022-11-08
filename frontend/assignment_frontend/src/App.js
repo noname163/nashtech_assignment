@@ -14,6 +14,9 @@ import RegisterForm from './components/registerForm';
 import auth from './service/authenService';
 import { getProductData } from './service/dataService';
 import EditProduct from './components/editProduct';
+import { ToastContainer } from 'react-toastify';
+import Cart from './components/cart';
+import ViewOrder from './components/viewOrder';
 
 class App extends Component {
     state = {};
@@ -31,6 +34,7 @@ class App extends Component {
     render() {
         return (
             <React.Fragment>
+                <ToastContainer/>
                 <Navbar user={ this.state.user } role={ this.state.role } />
                 <Header />
                 <hr />
@@ -39,8 +43,10 @@ class App extends Component {
                     <Route path='/login' element={ <LoginForm /> } />
                     <Route path='/logout' element={ <Logout /> } />
                     <Route path='/product-detail' element={ <ProductDetail /> } />
+                    <Route path='/view-order' element={ <ViewOrder /> } />
                     <Route path='/product-admin' element={<ProductTable/>} />
                     <Route path='/edit-product' element={<EditProduct/>} />
+                    <Route path='/cart' element={<Cart/>} />
                     <Route path='/register' element={ <RegisterForm /> } />
                     <Route path='/new-product' element={<NewProdut/>} />
                     <Route path='/' element={ <ProductCard /> } />

@@ -38,18 +38,12 @@ class RegisterForm extends From {
         try {
             console.log("Submiting");
             await accountService.register(this.state.data);
+            toast.success("Register Success");
             window.location = "/login";
         } catch (ex) {
             if (ex.response && ex.response.status === 400) {
-                let errorMess = ex.response.data.mess;
-                let mess;
-                if(errorMess==null){
-                    mess = ex.response.data.errors.phoneNumber || ex.response.data.errors.email;
-                    toast.error(mess);
-                }
-                if(errorMess!=null){
+                let errorMess = ex.response.data.message;
                     toast.error(errorMess);
-                }
             }
         }
 
@@ -58,7 +52,6 @@ class RegisterForm extends From {
 
         return (
             <React.Fragment>
-                <ToastContainer/>
                 <div className="row d-flex justify-content-center" style={ { display: 'block', backgroundColor: '#eee', height: '70em' } }>
                     <section className="h-100 gradient-form" style={ { backgroundColor: '#eee' } }>
                         <div className="container py-5 h-100">

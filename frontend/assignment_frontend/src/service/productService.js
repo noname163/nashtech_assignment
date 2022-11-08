@@ -30,12 +30,34 @@ export async function updateProduct(product){
         name: product.name,
         price:product.price,
         categories: product.categories,
-        description: product.des,
+        description: product.description,
         images:product.images
     },options)
+}
+export async function newCategory(category){
+    let accessToken = localStorage.getItem("Access-Token");
+    const options = {
+        headers: {
+            Authorizations: "Bearer "+accessToken
+        }
+    };
+    return http.post("http://localhost:8080/categories",{
+        name: category.name,
+        description: category.description
+    },options)
+}
+
+export async function deleteProduct(id){
+    let accessToken = localStorage.getItem("Access-Token");
+    const options = {
+        headers: {
+            Authorizations: "Bearer "+accessToken
+        }
+    };
+    return http.delete("http://localhost:8080/admin/product/"+id,options)
 }
 
 
 export default{
-    addNewProduct,updateProduct
+    addNewProduct,updateProduct, newCategory
 }
