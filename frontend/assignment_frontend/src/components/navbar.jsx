@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { swal } from 'sweetalert';
-const Navbar = ({ user,role }) => {
+const Navbar = ({ user, role }) => {
     return (
         <React.Fragment>
             <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
@@ -18,10 +18,7 @@ const Navbar = ({ user,role }) => {
                             <Link className="nav-link" to="/cart">Cart <span className="sr-only">(current)</span></Link>
                         </li>
                         <li>
-                        <Link className="nav-link" to="/product-admin">Product <span className="sr-only">(current)</span></Link>
-                        </li>
-                        <li>
-                        <Link className="nav-link" to="/view-order">Order <span className="sr-only">(current)</span></Link>
+                            <Link className="nav-link" to="/view-order">Order <span className="sr-only">(current)</span></Link>
                         </li>
                         {
                             !user && (
@@ -45,12 +42,14 @@ const Navbar = ({ user,role }) => {
                                             Create
                                         </a>
                                         <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                            <Link to='/new-product'>
-                                            <button className="dropdown-item" data-toggle="modal" data-target="#myModal" href="#">Product</button>
+
+                                            <Link to="/product-admin">
+                                                <button className="dropdown-item" data-toggle="modal" data-target="#categoriesModal"
+                                                    href="#" >Manage Product</button> <span className="sr-only">(current)</span>
                                             </Link>
-                                            <button className="dropdown-item" data-toggle="modal" data-target="#categoriesModal"
-                                                href="#" >Categories</button>
-                                            <a className="dropdown-item" href="#">Price</a>
+                                            <Link to='/manage-order'>
+                                                <button className="dropdown-item" data-toggle="modal" data-target="#myModal" href="#">Manage Order</button>
+                                            </Link>
                                         </div>
                                     </li>
                                 </React.Fragment>

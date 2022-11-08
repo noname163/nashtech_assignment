@@ -17,6 +17,8 @@ import EditProduct from './components/editProduct';
 import { ToastContainer } from 'react-toastify';
 import Cart from './components/cart';
 import ViewOrder from './components/viewOrder';
+import OrderTable from './components/orderTable';
+import OrderDetail from './components/orderDetai';
 
 class App extends Component {
     state = {};
@@ -44,7 +46,9 @@ class App extends Component {
                     <Route path='/logout' element={ <Logout /> } />
                     <Route path='/product-detail' element={ <ProductDetail /> } />
                     <Route path='/view-order' element={ <ViewOrder /> } />
+                    <Route path='/order-detail/:id' element={ <OrderDetail /> } />
                     <Route path='/product-admin' element={<ProductTable/>} />
+                    <Route path='/manage-order' element={<OrderTable/>} />
                     <Route path='/edit-product' element={<EditProduct/>} />
                     <Route path='/cart' element={<Cart/>} />
                     <Route path='/register' element={ <RegisterForm /> } />

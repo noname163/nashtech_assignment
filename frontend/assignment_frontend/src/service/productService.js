@@ -41,7 +41,7 @@ export async function newCategory(category){
             Authorizations: "Bearer "+accessToken
         }
     };
-    return http.post("http://localhost:8080/categories",{
+    return http.post("http://localhost:8080/admin/categories",{
         name: category.name,
         description: category.description
     },options)

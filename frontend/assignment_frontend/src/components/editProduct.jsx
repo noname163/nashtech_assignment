@@ -38,9 +38,6 @@ export default function EditProduct() {
     useEffect(() => {
         setProduct(data);
     }, []);
-    const handleSubmit = () => {
-
-    };
     const handleChange = (e) => {
         setProduct({
             ...product,
@@ -132,7 +129,7 @@ export default function EditProduct() {
                             </div>
                             <div className="row tm-edit-product-row" style={ { display: 'flex', flexWrap: 'wrap', marginRight: '-15px', marginLeft: -'15px' } }>
                                 <div className="col-xl-6 col-lg-6 col-md-12" style={ { flex: '0 0 50%', maxWidth: '50%' } }>
-                                    <form action="" className="tm-edit-product-form" style={ { display: 'block', marginTop: '0em' } } onSubmit={ handleSubmit() }>
+                                    <form action="" className="tm-edit-product-form" style={ { display: 'block', marginTop: '0em' } }>
                                         <div className="form-group mb-3" style={ { marginBottom: '1rem !important' } }>
                                             <label htmlFor="name">Product Name
                                             </label>

@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import "../CSS/cart.css";
-import { confirmOrder, getOrder } from '../service/orderService';
+import { acceptOrder, deliveryOrder, getAllOrder } from '../service/orderService';
 import { getCurrentUser } from './../service/authenService';
+import { swal } from 'sweetalert';
 
-const ViewOrder = () => {
+const OrderTable = () => {
     const [cart, setCart] = useState([]);
-    const [reload,setReload] = useState(false);
+    const [button, setButton] = useState("Accept");
     const user = getCurrentUser();
     console.log("User: " + user.sub)
     const getOrders = async () => {
         try {
             console.log("Get Data")
-            const { data: response } = await getOrder(user.sub);
+            const { data: response } = await getAllOrder();
             console.log("Get Data")
             setCart(response);
         } catch (error) {
@@ -25,22 +25,30 @@ const ViewOrder = () => {
         getOrders();
 
     }, []);
-    const confirmHandle = async (id) =>{
+    console.log("Cart ", cart)
+    const acceptHanlde = async (status,id) => {
+        console.log("Changing");
         try {
-            await confirmOrder(id)
-            toast.success("Confirm Order Success");
-            setReload(true)
-            window.location.reload()
+            if (status == "PENDING") {
+                await acceptOrder(id);
+                setButton("Delivery");
+                toast.success("Change Status to Accept");
+                window.location.reload()
+            }
+            if (status == "ACCEPT") {
+                await deliveryOrder(id);
+                setButton("");
+                toast.success("Change Status to Delivery");
+                window.location.reload()
+            }
         } catch (error) {
-            toast.error(error.response.data.message)
+            // toast.error(error.response.message)
+            console.log("Error")
         }
     }
-    // useEffect(() =>{
-    //     window.location.reload()
-    // },[reload])
-    console.log("Cart ", cart)
     return (
         <React.Fragment>
+            <ToastContainer/>
             <div class="container">
                 { cart.length === 0 ? (
                     <div>
@@ -69,8 +77,8 @@ const ViewOrder = () => {
                                 </td>
                                 <td data-th="Subtotal" class="text-center">{ item?.status }</td>
                                 <td class="actions group-btn" data-th="">
-                                    { item?.status == 'DELIVERY' ? <button class="btn btn-info btn-sm" onClick={()=>confirmHandle(item.id)}>Confirm</button> : "" }
-                                    {item?.status=='SUCCESS' ? <Link to={`/order-detail/${item.id}`} class="btn btn-info btn-sm" >View</Link>:<button class="btn btn-danger btn-sm" >Report</button>}
+                                    { button == "" || item?.status=="DELIVERY" || item?.status =="SUCCESS"  ? "" : <button class="btn btn-info btn-sm" onClick={ () => acceptHanlde(item?.status,item?.id) }>{ button}</button> }
+                                    <button class="btn btn-danger btn-sm" >Cancel</button>
                                 </td>
                             </tr>
                         ) }
@@ -92,4 +100,4 @@ const ViewOrder = () => {
     )
 }
 
-export default ViewOrder
+export default OrderTable

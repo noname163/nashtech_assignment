@@ -24,8 +24,9 @@ const Cart = () => {
     const handelCheckout = async () => {
         try {
             await addOrder(cart,user.sub);
-            toast.success("Shopping Completed.")
             localStorage.removeItem("cartItems")
+            toast.success("Shopping Completed.")
+            window.location.reload()
         } catch (error) {
             console.log("Error: " ,error.response.data.message);
             toast.error(error.response.data.message);
