@@ -10,7 +10,7 @@ public interface ProductsService {
 
     ProductDtoForAdmin insertProduct(ProductDtoForAdmin products);
 
-    List<ProductDtoForUser> getAllProducts();
+    List<ProductDtoForUser> getAllProductsAvailble();
 
     ProductDtoForAdmin updateProductStatus(long id, ProductStatus statusValue);
 

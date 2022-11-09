@@ -1,7 +1,6 @@
 package com.nash.assignment.controllers.admin;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nash.assignment.constant.AccountStatus;
 import com.nash.assignment.dto.AccountDto;
-import com.nash.assignment.modal.Account;
 import com.nash.assignment.services.AccountsServiceImpl;
+import com.nash.assignment.services.PaginationServiceImpl;
 
 @RestController
 @RequestMapping("/admin/accounts")
@@ -29,14 +28,22 @@ public class AccountController {
     AccountsServiceImpl accountsServiceImpl;
     @Autowired
     ModelMapper modelMapper;
+    @Autowired
+    PaginationServiceImpl paginationServiceImpl;
 
     @GetMapping
     public ResponseEntity<List<AccountDto>> displayAccount() {
-        List<Account> accountList = accountsServiceImpl.getAllAccounts();
+        List<AccountDto> accountList = accountsServiceImpl.getAllAccounts();
         return ResponseEntity.status(HttpStatus.OK).body(
-                accountList.stream()
-                        .map(account -> modelMapper.map(account, AccountDto.class))
-                        .collect(Collectors.toList()));
+                accountList
+                );
+    }
+    @GetMapping(value="/{page}/{item}")
+    public ResponseEntity<List<AccountDto>> displayAccountPagination(@PathVariable int page, @PathVariable int item) {
+        List<AccountDto> accountList = paginationServiceImpl.getAllAccountPagination(page, item);
+        return ResponseEntity.status(HttpStatus.OK).body(
+            accountList        
+        );
     }
 
     @PatchMapping(value = "/active/{id}")

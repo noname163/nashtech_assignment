@@ -79,7 +79,7 @@ public class ProductsServiceImplTest {
         when(productMapper.mapEntityToDto(product)).thenReturn(productDtoResp);
         expectedList.add(productDtoResp);
 
-        List<ProductDtoForUser> actual = productsServiceImpl.getAllProducts();
+        List<ProductDtoForUser> actual = productsServiceImpl.getAllProductsAvailble();
         verify(productMapper).mapEntityToDto(product);
 
         assertThat(actual, is(expectedList));
@@ -91,7 +91,7 @@ public class ProductsServiceImplTest {
         List<Product> productList = new ArrayList<>();
         productList.add(product);
 
-        when(productsRepositories.findByStatus(ProductStatus.AVAILABLE)).thenReturn(productList);
+        when(productsRepositories.findAll()).thenReturn(productList);
         when(productMapperForAdmin.mapEntityToDto(product)).thenReturn(productDtoForAdmin);
         expectedList.add(productDtoForAdmin);
 

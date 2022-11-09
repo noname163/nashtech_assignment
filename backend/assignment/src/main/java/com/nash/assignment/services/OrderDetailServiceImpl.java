@@ -26,18 +26,25 @@ import com.nash.assignment.services.interfaces.OrderDetailService;
 @Service
 public class OrderDetailServiceImpl implements OrderDetailService {
 
-    @Autowired
     OrderDetailRepositories orderDetailRepositories;
-    @Autowired
-    OrderDetailMapper orderDetailMapper;
-    @Autowired
-    OrderRepositories orderRepositories;
-    @Autowired HttpServletRequest request;
-    @Autowired AccountRepositories accountRepositories;
-    @Autowired ProductMapper productMapper;
 
-    public OrderDetail insert(OrderDetail orderDetail) {
-        return orderDetailRepositories.save(orderDetail);
+    OrderDetailMapper orderDetailMapper;
+
+    OrderRepositories orderRepositories;
+    HttpServletRequest request;
+    AccountRepositories accountRepositories;
+    ProductMapper productMapper;
+
+    @Autowired
+    public OrderDetailServiceImpl(OrderDetailRepositories orderDetailRepositories, OrderDetailMapper orderDetailMapper,
+            OrderRepositories orderRepositories, HttpServletRequest request, AccountRepositories accountRepositories,
+            ProductMapper productMapper) {
+        this.orderDetailRepositories = orderDetailRepositories;
+        this.orderDetailMapper = orderDetailMapper;
+        this.orderRepositories = orderRepositories;
+        this.request = request;
+        this.accountRepositories = accountRepositories;
+        this.productMapper = productMapper;
     }
 
     public List<OrderDetailDto> getAllOrderDetail() {
@@ -45,11 +52,13 @@ public class OrderDetailServiceImpl implements OrderDetailService {
         List<OrderDetailDto> orderDetailDtos = orderDetailMapper.mapEntityToDto(orderDetails);
         return orderDetailDtos;
     }
+
     public List<OrderDetailDto> getAllOrderDetailByOrderId(int id) {
         List<OrderDetail> orderDetails = orderDetailRepositories.findByOrderId(id);
         List<OrderDetailDto> orderDetailDtos = orderDetailMapper.mapEntityToDto(orderDetails);
         return orderDetailDtos;
     }
+
     public List<OrderDetailDto> getAllOrderDetailByAccount() {
         HttpSession session = request.getSession();
         String email = (String) session.getAttribute("email");
@@ -62,7 +71,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
     @Override
     public List<OrderDetailDto> insertOrderDetail(List<OrderDetailDto> orderDetailDtos, OrderDto orderDto) {
 
-        if(orderDetailDtos==null || orderDetailDtos.isEmpty()){
+        if (orderDetailDtos == null || orderDetailDtos.isEmpty()) {
             throw new InformationNotValidException("OrderDetail Are Empty");
         }
         int id = orderDto.getId();

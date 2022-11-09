@@ -80,11 +80,4 @@ public class ImageServiceImpl implements ImageService {
         imagesRepositories.save(image);
         return image;
     }
-
-    // public Set<ImageProductDto> getProductImage(String productName){
-    //     Product product = productsRepositories.findByName(productName);
-    //     Set<Image> images = imagesRepositories.findByProduct(product);
-    //     Set<ImageProductDto> imagesDto = imageMapper.mapEntityToImageProductDto(images);
-    //     return imagesDto;
-    // }
 }

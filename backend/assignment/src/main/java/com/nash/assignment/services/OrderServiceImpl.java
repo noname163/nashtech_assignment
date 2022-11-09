@@ -24,19 +24,20 @@ import com.nash.assignment.services.interfaces.OrderService;
 @Service
 public class OrderServiceImpl implements OrderService {
 
-    @Autowired
     OrderRepositories orderRepositories;
-    @Autowired
     OrderMapper orderMapper;
-    @Autowired
     HttpServletRequest request;
-    @Autowired
     AccountRepositories accountRepositories;
 
-    public Order insert(Order order) {
-        return orderRepositories.save(order);
-    }
 
+    @Autowired
+    public OrderServiceImpl(OrderRepositories orderRepositories, OrderMapper orderMapper, HttpServletRequest request,
+            AccountRepositories accountRepositories) {
+        this.orderRepositories = orderRepositories;
+        this.orderMapper = orderMapper;
+        this.request = request;
+        this.accountRepositories = accountRepositories;
+    }
     public List<OrderDto> getAllOrder() {
         List<Order> orders = orderRepositories.findAll();
         return orderMapper.mapEntityToDto(orders);

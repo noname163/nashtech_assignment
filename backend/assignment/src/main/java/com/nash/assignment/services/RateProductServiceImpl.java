@@ -2,17 +2,14 @@ package com.nash.assignment.services;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nash.assignment.constant.RatingStatus;
 import com.nash.assignment.dto.RateProductDto;
-import com.nash.assignment.dto.request.OrderDetailDto;
 import com.nash.assignment.dto.request.OrderDto;
 import com.nash.assignment.exceptions.ObjectNotFoundException;
-import com.nash.assignment.mapper.OrderDetailMapper;
 import com.nash.assignment.mapper.OrderMapper;
 import com.nash.assignment.mapper.RateProductMapper;
 import com.nash.assignment.modal.Account;
@@ -21,8 +18,6 @@ import com.nash.assignment.modal.OrderDetail;
 import com.nash.assignment.modal.RateProduct;
 import com.nash.assignment.repositories.AccountRepositories;
 import com.nash.assignment.repositories.OrderDetailRepositories;
-import com.nash.assignment.repositories.OrderRepositories;
-import com.nash.assignment.repositories.ProductsRepositories;
 import com.nash.assignment.repositories.RateProductRepositories;
 import com.nash.assignment.services.interfaces.RateProductService;
 
@@ -36,7 +31,7 @@ public class RateProductServiceImpl implements RateProductService {
     private OrderMapper orderMapper;
 
     
-
+    @Autowired
     public RateProductServiceImpl(AccountRepositories accountRepositories,
             RateProductRepositories rateProductRepositories, OrderDetailRepositories orderDetailRepositories,
             RateProductMapper rateProductMapper, OrderMapper orderMapper) {

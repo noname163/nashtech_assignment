@@ -10,7 +10,7 @@ public interface AccountService {
 
     AccountDto insertAccounts(AccountDto account);
 
-    List<Account> getAllAccounts();
+    List<AccountDto> getAllAccounts();
 
     AccountDto updateAccountStatus(long id, AccountStatus statusValue);
 

@@ -2,6 +2,7 @@ package com.nash.assignment.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,12 +70,12 @@ public class AccountsServiceImpl implements AccountService{
     }
 
     @Override
-    public List<Account> getAllAccounts() {
+    public List<AccountDto> getAllAccounts() {
         List<Account> list = accountRepositories.findAll();
         if (null == list || list.isEmpty()) {
             throw new ObjectNotFoundException("Account List Is Empty.");
         }
-        return list;
+        return list.stream().map(account -> modelMapper.map(account, AccountDto.class)).collect(Collectors.toList());
     }
 
     public AccountDto getAccountById(long id) {

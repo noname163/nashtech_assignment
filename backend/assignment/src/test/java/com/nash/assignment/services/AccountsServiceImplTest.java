@@ -162,11 +162,15 @@ public class AccountsServiceImplTest {
     }
 
     @Test
-    void getAllAccounts_WhenDataValid_ShouldReturnListOfAccount() {
-        List<Account> expected = new ArrayList<>();
-        expected.add(account);
-        when(accountRepositories.findAll()).thenReturn(expected);
-        List<Account> actual = accountsServiceImpl.getAllAccounts();
+    void getAllAccounts_WhenDataValid_ShouldReturnListOfAccountDto() {
+        List<Account> accountList = new ArrayList<>();
+        List<AccountDto> expected = new ArrayList<>();
+        expected.add(accountDto);
+        accountList.add(account);
+        when(accountRepositories.findAll()).thenReturn(accountList);
+        when(modelMapper.map(account, AccountDto.class)).thenReturn(accountDto);
+
+        List<AccountDto> actual = accountsServiceImpl.getAllAccounts();
         assertThat(expected, is(actual));
     }
 

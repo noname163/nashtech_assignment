@@ -29,7 +29,7 @@ import com.nash.assignment.services.ProductsServiceImpl;
 // @SpringBootTest
 // @AutoConfigureMockMvc
 
-@WebMvcTest(value = ProductConstroller.class, excludeAutoConfiguration = { SecurityAutoConfiguration.class })
+@WebMvcTest(value = ProductController.class, excludeAutoConfiguration = { SecurityAutoConfiguration.class })
 public class ProductConstrollerTest {
 
     @Autowired
@@ -49,7 +49,7 @@ public class ProductConstrollerTest {
         ProductDtoForUser productDto = new ProductDtoForUser();
         expected.add(productDto);
         RequestBuilder request = MockMvcRequestBuilders.get("http://localhost:8080/products");
-        when(productsServiceImpl.getAllProducts()).thenReturn(expected);
+        when(productsServiceImpl.getAllProductsAvailble()).thenReturn(expected);
 
         MvcResult result = mockMvc.perform(request).andReturn();
 

@@ -30,7 +30,7 @@ import com.nash.assignment.services.ProductsServiceImpl;
 @RestController
 @RequestMapping("/admin/product")
 @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-public class ProductController {
+public class ProductControllerAdmin {
 
     @Autowired
     ProductsServiceImpl productsServiceImpl;

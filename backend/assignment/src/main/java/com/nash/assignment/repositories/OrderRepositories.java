@@ -11,6 +11,6 @@ import com.nash.assignment.modal.Order;
 public interface OrderRepositories extends JpaRepository<Order, Integer> {
 
     List<Order> findByAccount(Account accountValue);
-
+    List<Order> findByAccountId(int id);
     Order findByStatus(OrderStatus statusValue);
 }

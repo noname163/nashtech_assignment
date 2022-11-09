@@ -2,6 +2,7 @@ package com.nash.assignment.services;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +31,7 @@ public class CloudinaryServiceImpl {
 
     public List<String> uploadImages(MultipartFile[] multipartFile) throws IOException {
         if(multipartFile==null){
-            return null;
+            return Collections.emptyList();
         }
         List<String> urls = new ArrayList<>();
         for (MultipartFile image : multipartFile) {

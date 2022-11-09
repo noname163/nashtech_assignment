@@ -1,19 +1,17 @@
 package com.nash.assignment.services;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.springdoc.core.converters.models.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.nash.assignment.constant.ProductStatus;
 import com.nash.assignment.dto.ProductDtoForAdmin;
 import com.nash.assignment.dto.response.ProductDtoForUser;
-import com.nash.assignment.exceptions.InformationNotValidException;
 import com.nash.assignment.exceptions.ObjectExistException;
 import com.nash.assignment.exceptions.ObjectNotFoundException;
 import com.nash.assignment.mapper.ImageMapper;
@@ -51,9 +49,6 @@ public class ProductsServiceImpl implements ProductsService {
         this.imageServiceImpl = imageServiceImpl;
     }
 
-    public Product insertProduct1(Product product) {
-        return productsRepositories.save(product);
-    }
 
     @Override
     public ProductDtoForAdmin insertProduct(ProductDtoForAdmin productDto) {
@@ -78,12 +73,10 @@ public class ProductsServiceImpl implements ProductsService {
     }
 
     @Override
-    public List<ProductDtoForUser> getAllProducts() {
+    public List<ProductDtoForUser> getAllProductsAvailble() {
         return productsRepositories.findByStatus(ProductStatus.AVAILABLE).stream()
                 .map(product -> productMapper.mapEntityToDto(product)).collect(Collectors.toList());
     }
-
-    
 
     @Override
     public ProductDtoForAdmin updateProductStatus(long id, ProductStatus statusValue) {
@@ -131,7 +124,7 @@ public class ProductsServiceImpl implements ProductsService {
     }
 
     public List<ProductDtoForAdmin> getAllProductsAdmin() {
-        return productsRepositories.findByStatus(ProductStatus.AVAILABLE).stream()
+        return productsRepositories.findAll().stream()
                 .map(product -> 
                 productMapperForAdmin.mapEntityToDto(product))
                 .collect(Collectors.toList());
@@ -140,7 +133,7 @@ public class ProductsServiceImpl implements ProductsService {
     public List<ProductDtoForUser> findProductByName(String name){
         List<Product> productList = productsRepositories.findByNameContainingIgnoreCaseAndStatus(name, ProductStatus.AVAILABLE);
         if(productList == null || productList.isEmpty()){
-            return null;
+            return Collections.emptyList();
         }
         return productMapper.mapEntityToDto(productList);
         

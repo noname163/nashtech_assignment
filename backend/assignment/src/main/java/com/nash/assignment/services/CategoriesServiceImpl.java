@@ -12,25 +12,32 @@ import com.nash.assignment.exceptions.ObjectNotFoundException;
 import com.nash.assignment.modal.Category;
 import com.nash.assignment.repositories.CategoriesRepositories;
 import com.nash.assignment.services.interfaces.CategoriesService;
+import java.util.Collections;
 
 @Service
 public class CategoriesServiceImpl implements CategoriesService {
 
-    @Autowired
     CategoriesRepositories categoriesRepositories;
 
-    @Autowired
     ModelMapper modelMapper;
+
+    @Autowired
+    public CategoriesServiceImpl(CategoriesRepositories categoriesRepositories, ModelMapper modelMapper) {
+        this.categoriesRepositories = categoriesRepositories;
+        this.modelMapper = modelMapper;
+    }
 
     @Override
     public Category insertCategories(Category categories) {
-        Category insert = categoriesRepositories.save(categories);
-        return insert;
+        return categoriesRepositories.save(categories);
     }
 
     @Override
     public List<Category> getAllCategories() {
         List<Category> list = categoriesRepositories.findAll();
+        if (list.isEmpty()) {
+            return Collections.emptyList();
+        }
         return list;
     }
 
@@ -43,9 +50,9 @@ public class CategoriesServiceImpl implements CategoriesService {
         return modelMapper.map(category, CategoriesDto.class);
     }
 
-    public CategoriesDto updateCategoryDescription(String name,String description){
+    public CategoriesDto updateCategoryDescription(String name, String description) {
         Category category = categoriesRepositories.findByName(name);
-        if(category==null){
+        if (category == null) {
             throw new ObjectNotFoundException("Cannot Find Category Name: " + name);
         }
         category.setDescription(description);
