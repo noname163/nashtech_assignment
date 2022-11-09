@@ -65,7 +65,7 @@ const Cart = () => {
                                         </div>
                                     </div>
                                 </td>
-                                <td data-th="Price">{ item?.price }</td>
+                                <td data-th="Price">{ item?.product?.price }</td>
                                 <td data-th="Quantity">
                                     <input type="number"
                                         class="form-control text-center"

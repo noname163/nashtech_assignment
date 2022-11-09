@@ -14,12 +14,16 @@ const Navbar = ({ user, role }) => {
 
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav mr-auto">
-                        <li className="nav-item active">
-                            <Link className="nav-link" to="/cart">Cart <span className="sr-only">(current)</span></Link>
-                        </li>
-                        <li>
-                            <Link className="nav-link" to="/view-order">Order <span className="sr-only">(current)</span></Link>
-                        </li>
+                        { role == 'ROLE_USER' && (
+                            <React.Fragment>
+                                <li className="nav-item active">
+                                    <Link className="nav-link" to="/cart">Cart <span className="sr-only">(current)</span></Link>
+                                </li>
+                                <li>
+                                    <Link className="nav-link" to="/view-order">Order <span className="sr-only">(current)</span></Link>
+                                </li>
+                            </React.Fragment>
+                        ) }
                         {
                             !user && (
                                 <React.Fragment>
@@ -39,13 +43,17 @@ const Navbar = ({ user, role }) => {
                                     <li className="nav-item dropdown" >
                                         <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                                             aria-haspopup="true" aria-expanded="false">
-                                            Create
+                                            Manage
                                         </a>
                                         <div className="dropdown-menu" aria-labelledby="navbarDropdown">
 
                                             <Link to="/product-admin">
                                                 <button className="dropdown-item" data-toggle="modal" data-target="#categoriesModal"
                                                     href="#" >Manage Product</button> <span className="sr-only">(current)</span>
+                                            </Link>
+                                            <Link to="/account-admin">
+                                                <button className="dropdown-item" data-toggle="modal" data-target="#categoriesModal"
+                                                    href="#" >Manage Account</button> <span className="sr-only">(current)</span>
                                             </Link>
                                             <Link to='/manage-order'>
                                                 <button className="dropdown-item" data-toggle="modal" data-target="#myModal" href="#">Manage Order</button>

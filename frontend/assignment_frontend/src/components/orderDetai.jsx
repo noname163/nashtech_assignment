@@ -1,18 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { toast, ToastContainer } from 'react-toastify';
 import Rating from '@material-ui/lab/Rating';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-import "../CSS/cart.css";
-import { acceptOrder, deliveryOrder, getAllOrder, getOrderDetailById } from '../service/orderService';
-import { getCurrentUser } from './../service/authenService';
-import { swal } from 'sweetalert';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import "../CSS/cart.css";
+import { getOrderDetailById } from '../service/orderService';
+import rating from '../service/ratingService';
+import { getCurrentUser } from './../service/authenService';
 
 
 const OrderDetail = () => {
     const [cart, setCart] = useState([]);
-    const [button, setButton] = useState("Accept");
+    const [style, setStyle] = useState("");
     const user = getCurrentUser();
     const [ratingValue, setRatingValue] = React.useState(0);
     console.log("User: " + user.sub)
@@ -34,8 +32,11 @@ const OrderDetail = () => {
     }, []);
     console.log("Cart ", cart)
     console.log("Rating: ", ratingValue)
-    const ratingHandel = () => {
-
+    const hanldeRating = async (id, star) => {
+        await rating(id,star);
+        console.log("Rating Success");
+        toast.success("Rating Success");
+        setStyle("none");
     }
 
     return (
@@ -83,23 +84,11 @@ const OrderDetail = () => {
                                 </td>
                                 <td data-th="Subtotal" class="text-center">{ item?.status }</td>
                                 <td class="actions group-btn" data-th="">
-                                    { button == "" || item?.status == "DELIVERY" || item?.status == "SUCCESS" ? "" : <button class="btn btn-info btn-sm" onClick={ () => ratingHandel(item?.status, item?.id) }>{ button }</button> }
-                                    <button class="btn btn-danger btn-sm" >Cancel</button>
+                                    <button class="btn btn-info btn-sm" onClick={()=>hanldeRating(item?.id,ratingValue)} style={{display:style}} >Submit Rating</button>
                                 </td>
                             </tr>
                         ) }
                     </tbody>
-                    {/* <tfoot>
-                        <tr class="visible-xs">
-                            <td class="text-center"><strong>Total 1.99</strong></td>
-                        </tr>
-                        <tr>
-                            <td><a href="#" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
-                            <td colspan="2" class="hidden-xs"></td>
-                            <td class="hidden-xs text-center"><strong>Total $1.99</strong></td>
-                            <td><a href="#" class="btn btn-success btn-block" >Checkout <i class="fa fa-angle-right"></i></a></td>
-                        </tr>
-                    </tfoot> */}
                 </table>
             </div>
         </React.Fragment>
