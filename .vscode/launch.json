@@ -1,0 +1,22 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "type": "java",
+            "name": "Launch AssignmentApplication",
+            "request": "launch",
+            "mainClass": "com.nash.assignment.AssignmentApplication",
+            "projectName": "assignment",
+            "env":{
+                "jwt_key":"supersecretkey",
+                "cloudinary_name": "dyvrvbcxx",
+                "cloudinary_key":"212142713724382",
+                "cloudinary_secret":"NA_z6IN7hUbfIWIdUjRCANtwjgI"
+            }
+        }
+    ]
+}

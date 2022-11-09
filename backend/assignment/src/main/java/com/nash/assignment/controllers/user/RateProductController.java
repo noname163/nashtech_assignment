@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,9 +28,9 @@ public class RateProductController {
     @Autowired
     RateProductServiceImpl rateProductServiceImpl;
 
-    @PostMapping("/{start}")
-    public ResponseEntity<RateProductDto> ratingProduct(@RequestBody OrderDetailDto orderDetailDto, @PathVariable int start) {
-        RateProductDto rating = rateProductServiceImpl.updateRate(orderDetailDto, start);
+    @PatchMapping("/{id}/{star}")
+    public ResponseEntity<RateProductDto> ratingProduct(@PathVariable int id, @PathVariable int star) {
+        RateProductDto rating = rateProductServiceImpl.updateRate(id, star);
         return ResponseEntity.status(HttpStatus.OK).body(
                 rating
         );

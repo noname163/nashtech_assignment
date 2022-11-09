@@ -83,12 +83,26 @@ public class AccountsServiceImplTest {
     }
 
     @Test
-    void insertAccounts_WhenAccountNotNull_ShouldThrowInformationNotValid() {
-        when(accountRepositories.findByPhoneNumber(account.getPhoneNumber())).thenReturn(account);
+    void insertAccounts_WhenAccountPhoneNumberExist_ShouldThrowInformationNotValid() {
+        AccountDto accountDto = new AccountDto();
+        accountDto.setPhoneNumber("01234");
+        when(accountRepositories.findByPhoneNumber("01234")).thenReturn(account);
         when(rolesRepositories.findByRole(UserRole.ROLE_USER)).thenReturn(role);
         InformationNotValidException actual = Assertions.assertThrows(InformationNotValidException.class,
                 () -> accountsServiceImpl.insertAccounts(accountDto));
         assertEquals("This Phonenumber Already Exist.", actual.getMessage());
+    }
+    @Test
+    void insertAccounts_WhenEmailExist_ShouldThrowInformationNotValid() {
+        AccountDto accountDto = new AccountDto();
+        accountDto.setPhoneNumber("01234");
+        accountDto.setEmail("test@gmail.com");
+        when(accountRepositories.findByPhoneNumber("01234")).thenReturn(null);
+        when(accountRepositories.findByEmail("test@gmail.com")).thenReturn(account);
+        when(rolesRepositories.findByRole(UserRole.ROLE_USER)).thenReturn(role);
+        InformationNotValidException actual = Assertions.assertThrows(InformationNotValidException.class,
+                () -> accountsServiceImpl.insertAccounts(accountDto));
+        assertEquals("This Email Already Exist.", actual.getMessage());
     }
 
     @Test
@@ -97,6 +111,7 @@ public class AccountsServiceImplTest {
         AccountDto initAccount = mock(AccountDto.class);
 
         when(accountRepositories.findByPhoneNumber(initAccount.getPhoneNumber())).thenReturn(null);
+        when(accountRepositories.findByEmail(initAccount.getEmail())).thenReturn(null);
         when(rolesRepositories.findByRole(UserRole.ROLE_USER)).thenReturn(role);
         when(modelMapper.map(initAccount, Account.class)).thenReturn(expecAccount);
         when(accountRepositories.save(expecAccount)).thenReturn(expecAccount);
@@ -115,8 +130,10 @@ public class AccountsServiceImplTest {
         Account expecAccount = new Account();
         AccountDto initAccount = new AccountDto();
         initAccount.setPhoneNumber("0938577332");
+        initAccount.setEmail("test@gmail.com");
 
-        when(accountRepositories.findByPhoneNumber(initAccount.getPhoneNumber())).thenReturn(null);
+        when(accountRepositories.findByPhoneNumber("0938577332")).thenReturn(null);
+        when(accountRepositories.findByEmail("test@gmail.com")).thenReturn(null);
         when(rolesRepositories.findByRole(UserRole.ROLE_USER)).thenReturn(role);
         when(modelMapper.map(initAccount, Account.class)).thenReturn(expecAccount);
         when(accountRepositories.save(expecAccount)).thenReturn(expecAccount);

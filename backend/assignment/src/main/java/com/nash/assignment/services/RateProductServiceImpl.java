@@ -68,10 +68,8 @@ public class RateProductServiceImpl implements RateProductService {
         return rateProductMapper.mapEntityToDto(rates);
     }
 
-    public RateProductDto updateRate(OrderDetailDto orderDetailDto, int rateStar) {
-        Optional<OrderDetail> orderDetailOtp = orderDetailRepositories.findById(orderDetailDto.getId());
-        OrderDetail orderDetail = orderDetailOtp.get();
-        RateProduct rate = rateProductRepositories.findByOrderDetail(orderDetail);
+    public RateProductDto updateRate(int orderDetailId, int rateStar) {
+        RateProduct rate = rateProductRepositories.findByOrderDetailId(orderDetailId);
         rate.setRate(rateStar);
         rate.setStatus(RatingStatus.RATED);
         rate = rateProductRepositories.save(rate);

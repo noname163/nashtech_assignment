@@ -55,6 +55,9 @@ public class AccountsServiceImpl implements AccountService{
         if (accountRepositories.findByPhoneNumber(accountDto.getPhoneNumber()) != null) {
             throw new InformationNotValidException("This Phonenumber Already Exist.");
         }
+        if(accountRepositories.findByEmail(accountDto.getEmail())!=null){
+            throw new InformationNotValidException("This Email Already Exist.");
+        }
         Role role = rolesRepositories.findByRole(UserRole.ROLE_USER);
         accountDto.setRole(role);
         accountDto.setStatus(AccountStatus.ACTIVE);
