@@ -13,7 +13,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,14 +32,11 @@ import com.nash.assignment.exceptions.JwtNotValidException;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
     public static final String APPLICATION_JSON_VALUE = "application/json";
     private static final String AUTHORIZATION = "Authorizations";
 
-    @Value("${jwt.secret.key}")
-    private String secretKey;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -56,7 +55,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
             if (authorrizationHeader != null && authorrizationHeader.startsWith("Bearer ")) {
                 try {
                     String token = authorrizationHeader.substring("Bearer ".length());
-                    Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+                    Algorithm algorithm = Algorithm.HMAC256("OqLtAAxIu8Xgsy1CkBBuNrEf1w0ZB6cy_qTq53n_Gw4".getBytes());
                     JWTVerifier verifier = JWT.require(algorithm).build();
                     DecodedJWT decodedJWT = verifier.verify(token);
                     String username = decodedJWT.getSubject();

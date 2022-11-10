@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,15 +45,6 @@ public class AddToCartController {
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 order);
     }
-    // @PostMapping()
-    // public ResponseEntity<OrderDto> addToCart2(@RequestBody List<OrderDetailDto> orderDetailDtos) {
-    //     OrderDto order = orderServiceImpl.insertOrder();
-    //     List<OrderDetailDto> orderDetail = orderDetailServiceImpl
-    //             .insertOrderDetail(orderDetailDtos, order);
-    //     order.setOrderDetails(orderDetailMapper.mapDtoToEntity(orderDetail));
-    //     return ResponseEntity.status(HttpStatus.CREATED).body(
-    //             order);
-    // }
 
     @PatchMapping(value="/confirm-order/{id}")
     public ResponseEntity<OrderDto> confirmOrder(@PathVariable int id){

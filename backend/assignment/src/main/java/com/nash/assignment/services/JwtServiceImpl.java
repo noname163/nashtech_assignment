@@ -3,6 +3,7 @@ package com.nash.assignment.services;
 import java.sql.Date;
 import java.util.stream.Collectors;
 
+import org.springframework.core.env.Environment;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,12 +14,16 @@ import com.auth0.jwt.algorithms.Algorithm;
 
 @Service
 public class JwtServiceImpl {
-    // @Value("${jwt.secret.key}")
-    // private String secretKey;
 
-    private final Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+    private Environment env;
+    
+    public JwtServiceImpl(Environment env) {
+        this.env = env;
+    }
 
     public String createAccessToken(UserDetails userDetails) {
+        String secretKey =  env.getProperty("jwt.secret.key");
+        Algorithm algorithm = Algorithm.HMAC256(secretKey.getBytes());
         return JWT.create().withSubject(userDetails.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
                 .withClaim("Roles",
@@ -28,6 +33,8 @@ public class JwtServiceImpl {
     }
 
     public String createRefreshToken(UserDetails userDetails) {
+        String secretKey =  env.getProperty("jwt.secret.key");
+        Algorithm algorithm = Algorithm.HMAC256(secretKey.getBytes());
         return JWT.create().withSubject(userDetails.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
                 .sign(algorithm);

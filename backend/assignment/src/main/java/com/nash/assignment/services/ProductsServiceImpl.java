@@ -95,11 +95,13 @@ public class ProductsServiceImpl implements ProductsService {
 
     @Override
     public ProductDtoForAdmin updateProductInformation(ProductDtoForAdmin productValue) {
-        Product productDatabase = productsRepositories.findByName(productValue.getName());
-        Category category = categoriesRepositories.findByName(productValue.getCategories());
-        if (productDatabase == null) {
-            throw new ObjectNotFoundException("Cannot Find Product With Name: " + productValue.getName());
+        Optional<Product> productOtp = productsRepositories.findById(productValue.getId());
+        if (productOtp.isEmpty()) {
+            throw new ObjectNotFoundException("Cannot Find Product With Id: " + productValue.getId());
         }
+        Product productDatabase = productOtp.get();
+        
+        Category category = categoriesRepositories.findByName(productValue.getCategories());
         if (category == null) {
             throw new ObjectNotFoundException("Cannot Found Category Name: " + productValue.getCategories());
         }

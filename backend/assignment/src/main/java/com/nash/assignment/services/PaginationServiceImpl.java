@@ -1,7 +1,10 @@
 package com.nash.assignment.services;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,22 +32,38 @@ import com.nash.assignment.repositories.pagination.ProductRepositoriesPagination
 @Service
 public class PaginationServiceImpl {
 
-    @Autowired
+    
     ProductRepositoriesPagination productRepositoriesPagination;
-    @Autowired
+    
     AccountRepositoriesPagination accountRepositoriesPagination;
-    @Autowired
+    
     OrderRepositoriesPagination orderRepositoriesPagination;
-    @Autowired
+    
     OrderDetailRepositoriesPagination orderDetailRepositoriesPagination;
-    @Autowired
+    
     ProductMapper productMapper;
-    @Autowired
+    
     ModelMapper modelMapper;
-    @Autowired
+    
     OrderMapper orderMapper;
-    @Autowired
+    
     OrderDetailMapper orderDetailMapper;
+
+    @Autowired
+    public PaginationServiceImpl(ProductRepositoriesPagination productRepositoriesPagination,
+            AccountRepositoriesPagination accountRepositoriesPagination,
+            OrderRepositoriesPagination orderRepositoriesPagination,
+            OrderDetailRepositoriesPagination orderDetailRepositoriesPagination, ProductMapper productMapper,
+            ModelMapper modelMapper, OrderMapper orderMapper, OrderDetailMapper orderDetailMapper) {
+        this.productRepositoriesPagination = productRepositoriesPagination;
+        this.accountRepositoriesPagination = accountRepositoriesPagination;
+        this.orderRepositoriesPagination = orderRepositoriesPagination;
+        this.orderDetailRepositoriesPagination = orderDetailRepositoriesPagination;
+        this.productMapper = productMapper;
+        this.modelMapper = modelMapper;
+        this.orderMapper = orderMapper;
+        this.orderDetailMapper = orderDetailMapper;
+    }
 
     public List<ProductDtoForUser> getAllProductPagination(int page, int itemDisplay) {
         int dataFrom = page == 0 ? 0 : page + itemDisplay;
@@ -52,6 +71,9 @@ public class PaginationServiceImpl {
         Pageable paginaton = PageRequest.of(dataFrom, toData);
         List<ProductDtoForUser> result = new ArrayList<>();
         Page<Product> productList = productRepositoriesPagination.findAll(paginaton);
+        if(productList.isEmpty()){
+            return Collections.emptyList();
+        }
         for (Product product : productList) {
             result.add(productMapper.mapEntityToDto(product));
         }
@@ -64,6 +86,9 @@ public class PaginationServiceImpl {
         Pageable paginaton = PageRequest.of(dataFrom, toData);
         List<AccountDto> result = new ArrayList<>();
         Page<Account> accountList = accountRepositoriesPagination.findAll(paginaton);
+        if(accountList.isEmpty()){
+            return Collections.emptyList();
+        }
         for (Account account : accountList) {
             result.add(modelMapper.map(account, AccountDto.class));
         }
@@ -75,6 +100,9 @@ public class PaginationServiceImpl {
         Pageable paginaton = PageRequest.of(dataFrom, toData);
         List<OrderDetailDto> result = new ArrayList<>();
         Page<OrderDetail> orderDetailList = orderDetailRepositoriesPagination.findAll(paginaton);
+        if(orderDetailList.isEmpty()){
+            return Collections.emptyList();
+        }
         for (OrderDetail order : orderDetailList) {
             result.add(orderDetailMapper.mapEntityToDto(order));
         }
@@ -86,6 +114,9 @@ public class PaginationServiceImpl {
         Pageable paginaton = PageRequest.of(dataFrom, toData);
         List<OrderDto> result = new ArrayList<>();
         Page<Order> orderList = orderRepositoriesPagination.findAll(paginaton);
+        if(orderList.isEmpty()){
+            return Collections.emptyList();
+        }
         for (Order order : orderList) {
             result.add(orderMapper.mapOrderEntityToDto(order));
         }
